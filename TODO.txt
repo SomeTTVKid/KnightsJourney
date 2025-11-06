@@ -1,0 +1,106 @@
+// LOOK INTO MORE EFFECIENT GARBAGE CLEANUP system
+// TODO Possibly create a vector for items that have their states turned off
+// Then we would loop through deleting all the pointers in that vector
+// Would need to update our shit once again, turning all raw pointers in scene to unique_ptr
+// Then in update, we would check state and either update or std::move to the garbage collection vector
+// Then at the end of update, we would call a function to clear that vector if it wasnt empty
+
+// TODO Make MAIN_MENU fade in, then start playing audio and listening to inputs
+
+// TODO Next audio is enemy sounds :D
+
+// TODO Revamp dialogue menu artwork and layout :D
+
+// TODO Could always redo our entity class to be more like projectiles and items
+// We would have to redo our player, npc, and enemy class BUT we could end up making prefabs...
+// Would be a lot of work but something to think about
+
+// TODO Maybe a skin selection which could set states for buffs/debuffs?
+
+// TODO create a function for items called useConsumable
+// Switch case inside this function on the ID of the item
+// If health, do health checks and increase player health
+// If mana, do above for mana
+// Do a check of the item count to see if item.second - 1 <= 0
+// if it is, remove the item from inventory
+// Delete the item pointer once its out of inventory
+// If not just decrement item.second
+
+// TODO Work on interacting with the inventory
+// Think about how we can draw weapons
+
+// TODO Create a floating damage number system 
+// When dealing or taking damage, temporarily draw the number above the entity that took damage
+// Reuse code for doing interact text :D
+
+// TODO Fix knockback ignoring collision checks lol, 
+// Certainly something weird happening here...might need to fix how we resolve collisions
+// Maybe a shunt mechanic is finally called for
+
+// TODO Quest system
+//		   int,      			bool		   std::string,   std::string,      Item
+// Quest(questID, questState(Active/NotActive), questName, questDescription, questReward)
+// Probably need another header file like levelstates and g_vars for this
+
+// TODO Save system
+// LOOK AT BRAINROT GAME
+// Using nholman create a save and load system
+// Make new pointer in SceneManager called m_LastScene;
+// When loading game or loading last save, return player to m_LastScene
+
+// TODO Add in a permanenet resource manager class, loads all our static member variables for us
+
+// TODO create more artwork for flora, npcs, and structures
+// Artwork for fencing for the map borders?
+// Artwork for the shore scene
+//	including: Water, Ship, Dock, NPC, and enemy or two for later
+
+// TODO think of how we can continue from dying
+// Would make sense to save the last scene the player was in
+// Give two options after death, QUIT or LAST SAVE
+// Change the scene BACK to previous scene and reset other variables
+
+// TODO add in weapons that rotate around the player
+// Weapons need a collisionbox as well
+// Should be able to rotate 180 degrees around the player on each side
+
+// TODO add in other UI features
+
+// TODO Change our id section so its actually working as collision layers :D..maybe...NAH this can also be removed :D
+
+// TODO perhaps have ids tied to what objects can and cant be interacted with OR remove this all together, Probably this
+// Basically making a shit small ecs
+// If the id is npc and e is clicked then we play dialogue
+// If the id is a scene switcher we switch the scenes 
+// If the id is a chest or container we open and retrieve whats insids
+
+// CREDITS
+
+// WALKING AND RUNNING
+// Grassy Footstep 2 by OwlStorm -- https://freesound.org/s/151229/ -- License: Creative Commons 0
+
+// ITEM PICKUP SOUND
+// Acquire by Kenneth_Cooney -- https://freesound.org/s/781199/ -- License: Creative Commons 0
+
+// INVENTORY SOUND
+// OpenBag.wav by TriqyStudio -- https://freesound.org/s/467604/ -- License: Attribution 4.0
+
+// LEVEL CHANGE SOUND
+// Footsteps - Walking in ChainMail - Loop - WAV by OGsoundFX -- https://freesound.org/s/423147/ -- License: Attribution 4.0
+// Wooden_Door_Open_Close_01 by BlondPanda -- https://freesound.org/s/778451/ -- License: Creative Commons 0
+// wooden_door_close.wav by joedeshon -- https://freesound.org/s/117415/ -- License: Attribution 4.0
+
+// POTION USE SOUND
+// Action SFX (Proceed) by moodyfingers -- https://freesound.org/s/829982/ -- License: Attribution 4.0
+
+// FIREBALL SOUND
+// fireball.wav by perduuus -- https://freesound.org/s/701804/ -- License: Attribution NonCommercial 4.0
+// Fireball Explosion.wav by HighPixel -- https://freesound.org/s/431174/ -- License: Creative Commons 0
+
+// FROSTORB SOUND
+// Ice Magic Arrow_type 01 by lotteria001 -- https://freesound.org/s/709888/ -- License: Creative Commons 0
+// SFX_Spell_IceShoot_02 by Omiranda14 -- https://freesound.org/s/790466/ -- License: Attribution 4.0
+
+// LIGHTNING ORB SOUND
+// spark(fm_tri-90_sin-110).wav by FreqMan -- https://freesound.org/s/24726/ -- License: Attribution 4.0
+// Electric zap.wav by michael_grinnell -- https://freesound.org/s/512471/ -- License: Creative Commons 0

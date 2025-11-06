@@ -1,0 +1,14 @@
+// THIS FILE IS FOR PLANNING OUT GAME
+
+// Make a goblin encampment
+// Make a goblin BOSS
+// The boss arena should be a pit where you fight the goblin boss/king 
+// Goblins surround you in a circle, not actualy enemies
+// Have some drums and other instruments 
+
+// TODO level layout
+// Forest has 4 level loaders
+//	1. at the top that leads to the town
+//	2. on the right...tbd
+//	3. on the left...tbd
+//	4. Secret level loader...in the treeline...tbd
