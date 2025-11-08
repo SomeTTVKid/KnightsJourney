@@ -164,6 +164,7 @@ void SceneManager::Update(float& dT){
 			G_VARS.WIDTH_SCALE = G_VARS.WIDTH / 1000.0f;
 			G_VARS.HEIGHT_SCALE = G_VARS.HEIGHT / 1000.0f;
 		}
+		std::cout << G_VARS.WIDTH_SCALE << std::endl;
 	}
 	if(G_VARS.IN_DIALOGUE){
 		if(IsKeyPressed(KEY_ESCAPE)){

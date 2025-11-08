@@ -10,6 +10,21 @@
 
 // valgrind --tool=callgrind ./KnightsJourney
 
+// TODO Redo tree colliders to have two colliders
+// One collision collider and one interact collider
+// Use interact collider for raycasting to turn transparent && Woodcutting
+// Give different trees different sized colliders, Spruce needs to be bigger so far
+
+// TODO Clamp UI to a max size when scaling it, maybe just clamp WIDTH/HEIGHT_SCALE?
+
+// TODO Scale interact text and fix y position when scaling it
+
+// TODO Fix rock bounding box, make it bigger in general
+
+// TODO Move mapoffset into base scene class
+
+// TODO Rename loader position and loader out position to be less vague
+
 // TODO Minimize the amount of times we draw static things
 // Wait, since the screen is cleared, can we even do this?
 

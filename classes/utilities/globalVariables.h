@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <string>
 #include <vector>
+#include <algorithm>
 
 struct GlobalVariables{
 	enum SCENEIDS{
@@ -56,8 +57,9 @@ struct GlobalVariables{
 	int HEIGHT = BASE_HEIGHT;
 	int FULLSCREEN_WIDTH;
 	int FULLSCREEN_HEIGHT;
-	float WIDTH_SCALE = WIDTH / 1000.0f;
+	float WIDTH_SCALE = std::clamp(WIDTH_SCALE, BASE_WIDTH / 1000.0f, 1.5f);
 	float HEIGHT_SCALE = HEIGHT / 1000.0f;
+	// float WIDTH_SCALE = std::clamp(WIDTH_SCALE, BASE_WIDTH / 1000.0f, 1.5f);
 
 	// Place-Holder Text Size
 	int INTERACT_TEXT = MeasureText("Press 'E' to interact.", 22);
