@@ -18,12 +18,10 @@ class Level03 : public Scene{
 
 	private:
 		Texture2D loaderTex = LoadTexture("artwork/levelLoader.png");
-		Texture2D mossyRockTex = LoadTexture("artwork/mossyRock.png");
 		LevelLoader* toTown = nullptr;
 		size_t rockCount = 3;
 		size_t treeCount = 1;
 		Vector2 m_MapSize = { 5.0f, 15.0f };
-		Vector2 m_MapOffset = { 2.0f, 2.0f };
 		Vector3 m_ToTownPos = { -0.8f, 1.0f, m_MapSize.y / 2.0f + 0.5f};
 		Vector3 m_ToTownOut = { -0.5f, 1.0f, -3.9f };
 		std::vector<Vector3> rockPositions{

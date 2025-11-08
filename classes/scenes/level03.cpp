@@ -6,9 +6,11 @@
 #include "classes/utilities/globalVariables.h"
 #include "classes/utilities/levelLoader.h"
 #include "classes/structures/trees.h"
+#include "classes/structures/foliage.h"
 
 void Level03::Load(){
 	SpruceTree::m_SpruceTreeTex = LoadTexture("classes/structures/artwork/trees/spruceTree.png");
+	Stone01::m_Stone01Tex = LoadTexture("classes/structures/artwork/stones/stone01.png");
 
 	Scene::Load();
 
@@ -19,8 +21,10 @@ void Level03::Load(){
 	Scene::m_LevelLoaders.push_back(toTown);
 
 	for(size_t r = 0; r < rockCount; ++r){
-		Entity* rock = new Entity(mossyRockTex, G_VARS.ROCK_SIZE, rockPositions[r], G_VARS.RIGHT, true, G_VARS.STRUCTURE_ID, 1);
-		Scene::m_Entities.push_back(rock);
+		// Entity* rock = new Entity(mossyRockTex, G_VARS.ROCK_SIZE, rockPositions[r], G_VARS.RIGHT, true, G_VARS.STRUCTURE_ID, 1);
+		// Scene::m_Entities.push_back(rock);
+		auto stone = std::make_unique<Stone01>(rockPositions[r], G_VARS.ROCK_SIZE);
+		Scene::m_Structures.push_back(std::move(stone));
 	}
 
 	for(size_t t = 0; t < treeCount; ++t){
@@ -36,7 +40,7 @@ void Level03::Update(float& dT){
 
 void Level03::Draw(){
 	BeginMode3D(Scene::m_Camera);
-		DrawPlane({}, m_MapSize + m_MapOffset, DARKGREEN);
+		DrawPlane({}, m_MapSize + Scene::m_MapOffset, DARKGREEN);
 
 		// Use shared Scene draw logic which builds the draw list from Scene::m_Entities
 		Scene::Draw();
@@ -48,7 +52,7 @@ void Level03::Unload(){
 	Scene::Unload();
 
 	UnloadTexture(loaderTex);
-	UnloadTexture(mossyRockTex);
+	UnloadTexture(Stone01::m_Stone01Tex);
 	UnloadTexture(SpruceTree::m_SpruceTreeTex);
 
 	for(size_t i = 0; i < 20; ++i){

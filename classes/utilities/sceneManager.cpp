@@ -299,6 +299,16 @@ void SceneManager::DrawUI(){
 		}
 	}
 
+	if(Player::m_AxeEquipped){
+		std::string AxeText = "Tier:" + std::to_string(Player::m_AxeTier) + " Axe Equipped";
+		Vector2 AxeTextSize = MeasureTextEx(G_VARS.FONT, AxeText.c_str(), 32 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING);
+		DrawTextEx(
+			G_VARS.FONT,
+			AxeText.c_str(),
+			{G_VARS.WIDTH / 2.0f - AxeTextSize.x / 2.0f, 75.0f * G_VARS.HEIGHT_SCALE},
+			32 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, WHITE);
+	}
+
 // Player Resources
 	// Heart Positions
 	Vector2 heartPosition = {10 * G_VARS.WIDTH_SCALE, 15 * G_VARS.HEIGHT_SCALE};
@@ -377,18 +387,21 @@ void SceneManager::DrawUI(){
 	DrawRectangle(G_VARS.WIDTH - 200 * G_VARS.WIDTH_SCALE, 0, 200 * G_VARS.WIDTH_SCALE, 150 * G_VARS.HEIGHT_SCALE, YELLOW);
 
 // Current Active Quest
-	DrawRectangle(0, 175 * G_VARS.HEIGHT_SCALE, 200 * G_VARS.WIDTH_SCALE, 85 * G_VARS.HEIGHT_SCALE, GREEN);
+	Rectangle ActiveQuest = {
+		0.0f,
+		175 * G_VARS.HEIGHT_SCALE,
+		200 * G_VARS.WIDTH_SCALE,
+		85 * G_VARS.HEIGHT_SCALE
+	};
+
+	DrawTextEx(
+		G_VARS.FONT, 
+		"Save the Blacksmith from the goblins!", 
+		{ActiveQuest.x + 10 * G_VARS.WIDTH_SCALE, ActiveQuest.y + 5 * G_VARS.HEIGHT_SCALE},
+		25 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, WHITE);
 
 // Action Bar 
 	if(!G_VARS.IN_DIALOGUE){
-		// Create a Rectangle
-		Rectangle ActionBarSource = {
-			0.0f,
-			0.0f,
-			(float)m_ActionBarTex.width,
-			(float)m_ActionBarTex.height
-		};
-
 		Rectangle ActionBar = {
 			G_VARS.WIDTH / 2.0f - 80 * G_VARS.WIDTH_SCALE / 2.0f, 
 			G_VARS.HEIGHT - 150 * G_VARS.HEIGHT_SCALE, 
@@ -398,7 +411,7 @@ void SceneManager::DrawUI(){
 
 		DrawTexturePro(
 			m_ActionBarTex,
-			ActionBarSource,
+			{0.0f, 0.0f, (float)m_ActionBarTex.width, (float)m_ActionBarTex.height},
 			ActionBar,
 			{}, 0.0f, WHITE);
 
@@ -417,7 +430,7 @@ void SceneManager::DrawUI(){
 // Character Panel
 	if(G_VARS.CHARACTER_PANEL && !G_VARS.IN_DIALOGUE){
 		// Character Panel
-		// Change x position to be relative
+		// Fuck it this looks good enough and works
 		Rectangle CharacterPanel = {
 			G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE,
 			G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
@@ -563,13 +576,6 @@ void SceneManager::DrawDialogue(){
 	// Rectangles
 	Rectangle dialogueWindow = {0, (float)G_VARS.HEIGHT - dialogueWindowHeight, (float)G_VARS.WIDTH, dialogueWindowHeight};
 	// Dialogue Headshot
-	Rectangle source = {
-		(float)Scene::npcInDialogue->GetDialogueTexture().width,
-		0.0f,
-		-1.0f * (float)Scene::npcInDialogue->GetDialogueTexture().width,
-		(float)Scene::npcInDialogue->GetDialogueTexture().height
-
-	};
 	Rectangle dest = {
 		(float)G_VARS.WIDTH - npcHeadshotWidth,
 		(float)G_VARS.HEIGHT - (npcHeadshotHeight + dialogueWindowHeight),
@@ -586,14 +592,20 @@ void SceneManager::DrawDialogue(){
 		{},
 		0.0f,
 		WHITE);
-	// DrawRectangleRec(dest, BLACK);
+
+	// W.I.P Npc Headshot
+	DrawTexturePro(
+		Scene::npcInDialogue->GetDialogueTexture(), 
+		{(float)Scene::npcInDialogue->GetDialogueTexture().width, 
+			0.0f, 
+			-1.0f * (float)Scene::npcInDialogue->GetDialogueTexture().width, 
+			(float)Scene::npcInDialogue->GetDialogueTexture().height}, 
+		dest, 
+		{}, 0.0f, WHITE);
 
 	// Temp Text Size
 	Vector2 escapeSize = MeasureTextEx(G_VARS.FONT, "'ESCAPE' To Leave Dialogue", 15 * G_VARS.WIDTH_SCALE, 1.0f);
 	Vector2 npcTextSize = MeasureTextEx(G_VARS.FONT, Scene::npcInDialogue->GetDialogue().c_str(), 32 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING);
-
-	// W.I.P Npc Headshot
-	DrawTexturePro(Scene::npcInDialogue->GetDialogueTexture(), source, dest, {}, 0.0f, WHITE);\
 
 	// Text
 	DrawTextEx(G_VARS.FONT, "<< 'Z'", {45 * G_VARS.WIDTH_SCALE, dialogueWindow.y + 15 * G_VARS.HEIGHT_SCALE}, 15 * G_VARS.WIDTH_SCALE, 1.0f, WHITE);
@@ -617,13 +629,6 @@ void SceneManager::DrawDialogue(){
 
 // Inventory Screen
 void SceneManager::DrawInventory(){
-	Rectangle InventorySource = {
-		0.0f,
-		0.0f,
-		(float)m_InventoryTex.width,
-		(float)m_InventoryTex.height
-	};
-
 	Rectangle InventoryDest = {
 		(float)G_VARS.WIDTH / 1.46f, 
 		(float)G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
@@ -631,7 +636,10 @@ void SceneManager::DrawInventory(){
 		300 * G_VARS.HEIGHT_SCALE
 	};
 
-	DrawTexturePro(m_InventoryTex, InventorySource, InventoryDest, {}, 0.0f, WHITE);
+	DrawTexturePro(
+		m_InventoryTex, 
+		{0.0f, 0.0f, (float)m_InventoryTex.width, (float)m_InventoryTex.height}, 
+		InventoryDest, {}, 0.0f, WHITE);
 
 	float itemWidth = 45 * G_VARS.WIDTH_SCALE;
 	float itemHeight = 50 * G_VARS.HEIGHT_SCALE;
@@ -643,13 +651,6 @@ void SceneManager::DrawInventory(){
 	//
 	for( auto& [item, itemCount] : Scene::m_Player->GetInventory()){
 		if(item != nullptr){
-			Rectangle source = {
-				0.0f,
-				0.0f,
-				(float)item.get()->GetTexture().width,
-				(float)item.get()->GetTexture().height
-			};
-
 			item.get()->SetRect() = {
 				(float)posX, 
 				(float)posY,
@@ -661,7 +662,11 @@ void SceneManager::DrawInventory(){
 			// Shouldn't be too hard tbh
 			DrawRectangleRec(item.get()->GetRect(), GRAY);
 
-			DrawTexturePro(item.get()->GetTexture(), source, item.get()->GetRect(), {}, 0.0f, WHITE);
+			DrawTexturePro(
+				item.get()->GetTexture(), 
+				{0.0f, 0.0f, (float)item.get()->GetTexture().width, (float)item.get()->GetTexture().height}, 
+				item.get()->GetRect(), {}, 0.0f, WHITE);
+
 			// Fix Text Count Positioning
 			DrawText(std::to_string(itemCount).c_str(), 
 					item.get()->GetRect().x + item.get()->GetRect().width - 5 * G_VARS.WIDTH_SCALE, 
@@ -691,13 +696,6 @@ void SceneManager::DrawInventory(){
 
 void SceneManager::DrawSelectedItem(){
 	// Item Card
-	Rectangle ItemCardSource = {
-		0.0f,
-		0.0f,
-		(float)m_ItemCardTex.width,
-		(float)m_ItemCardTex.height
-	};
-
 	Rectangle ItemCardDest = {
 		// G_VARS.WIDTH / 5.3f * G_VARS.WIDTH_SCALE,
 		G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f),
@@ -706,7 +704,11 @@ void SceneManager::DrawSelectedItem(){
 		250 * G_VARS.HEIGHT_SCALE
 	};
 
-	DrawTexturePro(m_ItemCardTex, ItemCardSource, ItemCardDest, {}, 0.0f, WHITE);
+	DrawTexturePro(
+		m_ItemCardTex, 
+		{0.0f, 0.0f, (float)m_ItemCardTex.width, (float)m_ItemCardTex.height}, 
+		ItemCardDest, 
+		{}, 0.0f, WHITE);
 
 	// Item Name
 	Vector2 nameTextSize = MeasureTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemName().c_str(), 16 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 1.0f);
@@ -715,13 +717,6 @@ void SceneManager::DrawSelectedItem(){
 	DrawTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemName().c_str(), {nameXPos, ItemCardDest.y + 10 * G_VARS.HEIGHT_SCALE}, 18 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 1.0f, WHITE);
 
 	// Item Texture
-	Rectangle source = {
-		0.0f,
-		0.0f,
-		(float)Scene::m_SelectedItem->GetTexture().width,
-		(float)Scene::m_SelectedItem->GetTexture().height
-	};
-
 	float itemWidth = 100 * G_VARS.WIDTH_SCALE;
 	float itemHeight = 100 * G_VARS.HEIGHT_SCALE;
 	float posX = ItemCardDest.x + ItemCardDest.width / 2.0f - itemWidth / 2.0f;
@@ -734,7 +729,11 @@ void SceneManager::DrawSelectedItem(){
 		itemHeight
 	};
 
-	DrawTexturePro(Scene::m_SelectedItem->GetTexture(), source, dest, {}, 1.0f, WHITE);
+	DrawTexturePro(
+		Scene::m_SelectedItem->GetTexture(), 
+		{0.0f, 0.0f, (float)Scene::m_SelectedItem->GetTexture().width, (float)Scene::m_SelectedItem->GetTexture().height}, 
+		dest, 
+		{}, 1.0f, WHITE);
 
 	// Item Description
 	Vector2 descriptionTextSize = MeasureTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemDescription().c_str(), 25 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 1.0f);

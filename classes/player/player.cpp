@@ -164,7 +164,12 @@ void Player::Update(float& dT){
 
 		// Dyslexic Setting lol
 		if(IsKeyPressed(KEY_FOUR)){
-			G_VARS.FONT_SPACING = 2.5f;
+			G_VARS.DYSLEXIC = !G_VARS.DYSLEXIC;
+			if(G_VARS.DYSLEXIC){
+				G_VARS.FONT_SPACING = G_VARS.FONT_DYSLEXIC_SPACING;
+			}else{
+				G_VARS.FONT_SPACING = G_VARS.DEFAULT_FONT_SPACING;
+			}
 		}
 
 		Entity::Update(dT);
@@ -364,16 +369,8 @@ float& Player::GetSpellDamage(){
 	return m_SpellDamage;
 }
 
-bool& Player::IsAxeEquipped(){
-	return m_AxeEquipped;
-}
-
 size_t& Player::GetInventoryMaxSize(){
 	return m_MaxInventorySize;
-}
-
-size_t& Player::GetAxeTier(){
-	return m_AxeTier;
 }
 
 void Player::checkWorldBounds(){

@@ -37,7 +37,6 @@ class Level02 : public Scene{
 		size_t treeCount = 9;
 		size_t grassCount = 13;
 		Vector2 m_MapSize = { 10.0f, 10.0f };
-		Vector2 m_MapOffset = { 2.0f, 2.0f };
 		Vector3 m_ToForestPos = { m_MapSize.x / 2.0f - 1.5f, 1.0f, -1.0f };
 		Vector3 m_ToForestOut = { -4.9f, 1.0f, 0.5f };
 		Vector3 m_ToWoodsPos = { -0.5f, 1.0f, -m_MapSize.y / 2.0f };

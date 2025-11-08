@@ -72,7 +72,7 @@ void Level02::Update(float& dT){
 
 void Level02::Draw(){
 	BeginMode3D(Scene::m_Camera);
-		DrawPlane({}, m_MapSize + m_MapOffset, DARKGREEN);
+		DrawPlane({}, m_MapSize + Scene::m_MapOffset, DARKGREEN);
 
 		Scene::Draw();
 

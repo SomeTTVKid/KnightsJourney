@@ -39,7 +39,6 @@ class Level01 : public Scene{
 		size_t treeCount = 17;
 		size_t goblinCount = 3;
 		Vector2 m_MapSize = { 10.0f, 8.0f };
-		Vector2 m_MapOffset = { 2.0f, 2.0f };
 		Vector3 m_ToTownPos = { -m_MapSize.x / 2.0f, 1.0f, 0.0f };
 		Vector3 m_ToTownOut = { 3.9f, 1.0f, -0.5f };
 	// Negative X and Negative Z is TOP LEFT QUADRANT

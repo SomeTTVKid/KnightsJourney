@@ -10,18 +10,16 @@
 
 // valgrind --tool=callgrind ./KnightsJourney
 
-// TODO Move source rectangles inside of header file, no need to constantly recreate them
+// TODO Add in a function that can briefly display text
+// PopupText(Text, Size, Position, TimeToDisplay)
+// Will be easier to reuse later down the line
+
+// TODO When doing quest system, create a pointer to the active quest to display it in sceneManager
 
 // TODO Redo tree colliders to have two colliders
 // One collision collider and one interact collider
 // Use interact collider for raycasting to turn transparent && Woodcutting
 // Give different trees different sized colliders, Spruce needs to be bigger so far
-
-// TODO Clamp UI to a max size when scaling it, maybe just clamp WIDTH/HEIGHT_SCALE?
-
-// TODO Scale interact text and fix y position when scaling it
-
-// TODO Fix rock bounding box, make it bigger in general
 
 // TODO Move mapoffset into base scene class
 
@@ -41,14 +39,6 @@
 
 // TODO Create player textures
 // Resize player && || Trees for better sizes
-
-// TODO In structures add switch statement to constructor
-// Check for tree id 
-// Set smaller colliders 
-
-// TODO Also in structures switch for rocks
-// Future proof for different rocks...
-// Make z depth for collider bigger, for percieved rock size
 
 // TODO New main menu artwork :D add in new trees and hopefully new enemy models
 

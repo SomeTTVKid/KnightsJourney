@@ -9,13 +9,14 @@
 
 void Scene::SetInteractText(){
 	G_VARS.DISPLAY_TEXT = true;
-	worldSpace = GetWorldToScreen(Scene::m_Player->GetPos(), Scene::m_Camera);
-	worldSpace.x = worldSpace.x - 75.0f;
-	worldSpace.y = worldSpace.y - 85.0f;
+	Vector2 interactTextSize = MeasureTextEx(G_VARS.FONT, G_VARS.INTERACT_TEXT.c_str(), 28 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING);
+	m_WorldSpace = GetWorldToScreen(Scene::m_Player->GetPos(), Scene::m_Camera);
+	m_WorldSpace.x = m_WorldSpace.x - interactTextSize.x / 3.0f;
+	m_WorldSpace.y = m_WorldSpace.y - 130.0f * G_VARS.HEIGHT_SCALE;
 }
 
 void Scene::DisplayInteractText(){
-	DrawTextEx(G_VARS.FONT, "Press 'E' to interact.", worldSpace, 28, 1.0f, ORANGE);
+	DrawTextEx(G_VARS.FONT, G_VARS.INTERACT_TEXT.c_str(), m_WorldSpace, 28 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, ORANGE);
 }
 
 // Build our frame 
@@ -182,9 +183,9 @@ void Scene::Update(float& dT){
 						// Might check for id before mouseclick? 
 						// We just need some way to check if we need to woodcut or mine 
 						// Make sure to add a cooldown to tool swinging so we cant spam it
-						if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && m_Player->IsAxeEquipped() && static_cast<int>(structure->GetID()) == 0){
+						if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && m_Player->m_AxeEquipped && static_cast<int>(structure->GetID()) == 0){
 							// 10 is the max axeTier achievable...maybe a secret later could increase it or a quest?
-							structure->TakeDamage(m_Player->GetAxeTier() + 10.0f / 10.0f, m_Player->GetAxeTier());
+							structure->TakeDamage(m_Player->m_AxeTier + 10.0f / 10.0f, m_Player->m_AxeTier);
 							break;
 						} 
 						break;
@@ -230,6 +231,10 @@ void Scene::Update(float& dT){
 		for( auto& npc : m_Npcs){
 			if(npc && npc.get()->GetState()){
 				npc->Update(dT);
+				if(CheckCollisionBoxes(m_Player->GetCollider(), npc->GetInteractCollider())){
+					G_VARS.DISPLAY_TEXT = true;
+				}
+
 				if(CheckCollisionBoxes(m_Player->GetCollider(), npc->GetCollider())){
 					m_Player->GetPos() = m_Player->GetLastPos();
 					break;	
@@ -375,10 +380,10 @@ void Scene::Unload(){
 		m_LevelMusic = {};
 	}
 
-	worldSpace = {};
+	m_WorldSpace = {};
 	G_VARS.INVENTORY_OPEN = false;
 	G_VARS.IN_DIALOGUE = false;
-	G_VARS.INTERACT_TEXT = false;
+	G_VARS.DISPLAY_TEXT = false;
 	G_VARS.ITEM_SELECTED = false;
 	G_VARS.CHARACTER_PANEL = false;
 

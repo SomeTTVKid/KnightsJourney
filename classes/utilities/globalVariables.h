@@ -15,6 +15,7 @@ struct GlobalVariables{
 
 	enum class StructureIDs{
 		TREE_ID,
+		STONE_ID,
 		GRASS_ID,
 		BUILDING_ID,
 		ORE_ID
@@ -43,6 +44,7 @@ struct GlobalVariables{
 	bool INVENTORY_OPEN = false;
 	bool ITEM_SELECTED = false;
 	bool CHARACTER_PANEL = false;
+	bool DYSLEXIC = false;
 
 	// Skin States
 	bool UPDATE_SKIN = false;
@@ -60,9 +62,6 @@ struct GlobalVariables{
 	float WIDTH_SCALE = WIDTH / 1000.0f;
 	float HEIGHT_SCALE = HEIGHT / 1000.0f;
 
-	// Place-Holder Text Size
-	int INTERACT_TEXT = MeasureText("Press 'E' to interact.", 22);
-
 	// Id
 	int PLAYER_ID = 0;
 	int ENEMY_ID = 1;
@@ -79,7 +78,12 @@ struct GlobalVariables{
 
 	// Font
 	static inline Font FONT{};
-	float FONT_SPACING = 1.0f;
+	float DEFAULT_FONT_SPACING = 1.0f;
+	float FONT_SPACING = DEFAULT_FONT_SPACING;
+	float FONT_DYSLEXIC_SPACING = 2.5f;
+
+	// Text
+	std::string INTERACT_TEXT = "Press 'E' To Interact";
 
 	// Entity Sizes
 	Vector2 PLAYER_SIZE = { 1.0f, 1.0f};

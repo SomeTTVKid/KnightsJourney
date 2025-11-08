@@ -56,11 +56,10 @@ class Scene{
 		//
 		static inline Music m_LevelMusic;
 		//
-
+	protected:
+		Vector2 m_WorldSpace;
+		Vector2 m_MapOffset = { 2.0f, 2.0f };
 		Ray m_OpacityRay = { 0 };
 		RayCollision m_RayCollision = { 0 };
-	protected:
-		Vector2 worldSpace;
-		float DepthTimer{};
 
 };

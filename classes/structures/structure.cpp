@@ -46,7 +46,7 @@ void Structure::Draw(Camera3D& camera){
 	}
 }
 
-void Structure::TakeDamage(float damage, size_t& toolTier){
+void Structure::TakeDamage(float damage, int& toolTier){
 	if(toolTier >= m_Tier){
 		std::cout << "Tool Tier High Enough" << std::endl;
 		if(m_Health - damage <= 0){

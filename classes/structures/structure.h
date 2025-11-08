@@ -19,15 +19,21 @@ class Structure{
 						switch(m_ID){
 							case GlobalVariables::StructureIDs::TREE_ID:
 								// Length, Height, Width
-								m_ColliderMin = { m_Pos.x + m_Size.x / 3.0f, m_Pos.y, m_Pos.z - m_Size.x / 8.0f};
-								m_ColliderMax = { m_Pos.x + m_Size.x / 1.7f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f};
+								m_ColliderMin = { m_Pos.x + m_Size.x / 3.0f, m_Pos.y, m_Pos.z - m_Size.x / 8.0f };
+								m_ColliderMax = { m_Pos.x + m_Size.x / 1.7f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
 								m_Collider = { m_ColliderMin, m_ColliderMax };
 								break;
 							
 							case GlobalVariables::StructureIDs::BUILDING_ID: 
-								std::cout << "Building Collider Built" << std::endl;
-								m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f};
-								m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f};
+								m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
+								m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
+								m_Collider = { m_ColliderMin, m_ColliderMax };
+								break;
+
+							case GlobalVariables::StructureIDs::STONE_ID:
+								// Need to be longer so min and max x pos need to be adjusted
+								m_ColliderMin = { m_Pos.x + m_Size.x / 7.3f, m_Pos.y, m_Pos.z - m_Size.x / 2.0f };
+								m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 12.5f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
 								m_Collider = { m_ColliderMin, m_ColliderMax };
 								break;
 
@@ -52,7 +58,7 @@ class Structure{
 		Vector3& GetPos();
 		GlobalVariables::StructureIDs& GetID();
 		int& SetFrame();
-		void TakeDamage(float damage, size_t& toolTier);
+		void TakeDamage(float damage, int& toolTier);
 
 	protected:
 		Vector3 m_Pos;
@@ -62,7 +68,7 @@ class Structure{
 		Vector3 m_ColliderMax;
 		BoundingBox m_Collider{};
 		GlobalVariables::StructureIDs m_ID;
-		size_t m_Tier;
+		int m_Tier;
 		float m_Health;
 		bool m_HasCollider = true;
 		bool m_Active = true;

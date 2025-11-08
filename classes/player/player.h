@@ -34,8 +34,6 @@ class Player : public Entity{
 		float& GetSpeed();
 		float& GetSpellDamage();
 		size_t& GetInventoryMaxSize();
-		size_t& GetAxeTier();
-		bool& IsAxeEquipped();
 		//
 		Texture2D m_SpellTexture = LoadTexture("classes/projectiles/artwork/fireball_image.png");
 		//
@@ -44,6 +42,9 @@ class Player : public Entity{
 		//
 		static inline bool m_OnHalfHeart = false;
 		static inline bool m_OnHalfStar = false;
+		//
+		static inline bool m_AxeEquipped = false;
+		static inline int m_AxeTier = 1;
 		// 
 		static inline Sound m_InventoryOpen;
 		static inline Sound m_InventoryClose;
@@ -75,8 +76,6 @@ class Player : public Entity{
 		bool m_TookDamage = false;
 		bool m_Sprinting = false;
 		bool m_Walking = false;
-		bool m_AxeEquipped = false;
-		size_t m_AxeTier = 1;
 		float m_SpellCooldown{};
 		float m_CastTimer{};
 		float m_FlashTimer{};
@@ -84,6 +83,5 @@ class Player : public Entity{
 		float m_WalkSoundTimer{};
 		float m_WalkSoundMax {2.5f};
 		std::map<std::unique_ptr<Item>, int> m_Inventory;
-
 
 };

@@ -1,6 +1,9 @@
 #include "structure.h"
 #include "classes/utilities/globalVariables.h"
 
+// Put Stones inside of here
+
+// Grass
 class Grass01 : public Structure{
 	public:
 		Grass01(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::GRASS_ID)
@@ -15,4 +18,23 @@ class Grass01 : public Structure{
 		}
 
 		static inline Texture2D m_Grass01Tex;
+};
+
+
+// Stones
+class Stone01 : public Structure{
+	public:
+		Stone01(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::STONE_ID)
+			: Structure(pos, size, id){
+				m_Texture = m_Stone01Tex;
+				m_HasCollider = true;
+				m_HasAnimation = false;
+				m_MaxFrames = 1;
+
+			}
+		~Stone01(){
+			std::cout << "Stone01 Removed" << std::endl;
+		}
+
+		static inline Texture2D m_Stone01Tex;
 };
