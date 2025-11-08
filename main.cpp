@@ -10,6 +10,8 @@
 
 // valgrind --tool=callgrind ./KnightsJourney
 
+// TODO Move source rectangles inside of header file, no need to constantly recreate them
+
 // TODO Redo tree colliders to have two colliders
 // One collision collider and one interact collider
 // Use interact collider for raycasting to turn transparent && Woodcutting

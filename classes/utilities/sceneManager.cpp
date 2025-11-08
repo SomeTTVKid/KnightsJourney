@@ -163,6 +163,10 @@ void SceneManager::Update(float& dT){
 			}
 			G_VARS.WIDTH_SCALE = G_VARS.WIDTH / 1000.0f;
 			G_VARS.HEIGHT_SCALE = G_VARS.HEIGHT / 1000.0f;
+
+			G_VARS.WIDTH_SCALE = std::clamp(G_VARS.WIDTH_SCALE, G_VARS.BASE_WIDTH / 1000.0f, 1.0f);
+			G_VARS.HEIGHT_SCALE = std::clamp(G_VARS.HEIGHT_SCALE, G_VARS.BASE_HEIGHT / 1000.0f, 1.0f);
+			
 		}
 		std::cout << G_VARS.WIDTH_SCALE << std::endl;
 	}
@@ -378,8 +382,15 @@ void SceneManager::DrawUI(){
 // Action Bar 
 	if(!G_VARS.IN_DIALOGUE){
 		// Create a Rectangle
+		Rectangle ActionBarSource = {
+			0.0f,
+			0.0f,
+			(float)m_ActionBarTex.width,
+			(float)m_ActionBarTex.height
+		};
+
 		Rectangle ActionBar = {
-			G_VARS.WIDTH / 2.0f, 
+			G_VARS.WIDTH / 2.0f - 80 * G_VARS.WIDTH_SCALE / 2.0f, 
 			G_VARS.HEIGHT - 150 * G_VARS.HEIGHT_SCALE, 
 			80 * G_VARS.WIDTH_SCALE, 
 			95 * G_VARS.HEIGHT_SCALE
@@ -387,7 +398,7 @@ void SceneManager::DrawUI(){
 
 		DrawTexturePro(
 			m_ActionBarTex,
-			{0.0f, 0.0f, (float)m_ActionBarTex.width, (float)m_ActionBarTex.height},
+			ActionBarSource,
 			ActionBar,
 			{}, 0.0f, WHITE);
 
@@ -406,8 +417,9 @@ void SceneManager::DrawUI(){
 // Character Panel
 	if(G_VARS.CHARACTER_PANEL && !G_VARS.IN_DIALOGUE){
 		// Character Panel
+		// Change x position to be relative
 		Rectangle CharacterPanel = {
-			150 * G_VARS.WIDTH_SCALE,
+			G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE,
 			G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
 			200 * G_VARS.WIDTH_SCALE, 
 			300 * G_VARS.HEIGHT_SCALE
@@ -613,7 +625,7 @@ void SceneManager::DrawInventory(){
 	};
 
 	Rectangle InventoryDest = {
-		(float)G_VARS.WIDTH / 1.4f, 
+		(float)G_VARS.WIDTH / 1.46f, 
 		(float)G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
 		200 * G_VARS.WIDTH_SCALE,
 		300 * G_VARS.HEIGHT_SCALE
@@ -687,7 +699,8 @@ void SceneManager::DrawSelectedItem(){
 	};
 
 	Rectangle ItemCardDest = {
-		G_VARS.WIDTH / 2.8f,
+		// G_VARS.WIDTH / 5.3f * G_VARS.WIDTH_SCALE,
+		G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f),
 		G_VARS.HEIGHT / 1.8f,
 		350 * G_VARS.WIDTH_SCALE,
 		250 * G_VARS.HEIGHT_SCALE
