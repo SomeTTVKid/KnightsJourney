@@ -9,21 +9,18 @@
 #include "classes/items/manaPotion.h"
 
 // valgrind --tool=callgrind ./KnightsJourney
+// Potential TODO
+// Could also look into where exactly our raycast is postitioned in regards to the player size, y might be off
+
+// TODO Lower height of stone01 boundingBox
+
+// TODO Create campfire structure class, move all artwork out of main artwork file
 
 // TODO Add in a function that can briefly display text
 // PopupText(Text, Size, Position, TimeToDisplay)
 // Will be easier to reuse later down the line
 
 // TODO When doing quest system, create a pointer to the active quest to display it in sceneManager
-
-// TODO Redo tree colliders to have two colliders
-// One collision collider and one interact collider
-// Use interact collider for raycasting to turn transparent && Woodcutting
-// Give different trees different sized colliders, Spruce needs to be bigger so far
-
-// TODO Move mapoffset into base scene class
-
-// TODO Rename loader position and loader out position to be less vague
 
 // TODO Minimize the amount of times we draw static things
 // Wait, since the screen is cleared, can we even do this?
@@ -106,10 +103,10 @@ int main(){
 	ManaPotion::m_ManaPotionTex = LoadTexture("classes/items/artwork/manaPotion.png");
 
 	// SceneManager
-	SceneManager::m_ItemCardTex = LoadTexture("artwork/ItemCardBackground.png");
-	SceneManager::m_InventoryTex = LoadTexture("artwork/InventoryBackground.png");
-	SceneManager::m_DialogueTex = LoadTexture("artwork/DialogueBackground.png");
-	SceneManager::m_ActionBarTex = LoadTexture("artwork/ActionBarBackground.png");
+	SceneManager::m_ItemCardTex = LoadTexture("classes/utilities/artwork/ItemCardBackground.png");
+	SceneManager::m_InventoryTex = LoadTexture("classes/utilities/artwork/InventoryBackground.png");
+	SceneManager::m_DialogueTex = LoadTexture("classes/utilities/artwork/DialogueBackground.png");
+	SceneManager::m_ActionBarTex = LoadTexture("classes/utilities/artwork/ActionBarBackground.png");
 
 	// Scene
 	Scene::m_PickUpAudio = LoadSound("audio/item_pickup.wav");

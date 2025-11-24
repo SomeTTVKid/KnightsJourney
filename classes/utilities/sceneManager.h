@@ -48,6 +48,7 @@ class SceneManager{
 		static inline int m_CurrentSceneID = -1;
 		bool m_Transitioning = false; 
 		bool m_PendingPause = false;
+		bool m_UpdateUI = false;
 		// 0 = fade-out
 		// 1 = fade-in
 		int m_TransitionPhase = 0; 
@@ -58,11 +59,14 @@ class SceneManager{
 		float m_PauseTimerMax = 0.1f;
 		std::string frametime;
 		//
-		Texture2D m_Heart = LoadTexture("artwork/singleHeart.png");
-		Texture2D m_HalfHeart = LoadTexture("artwork/halfHeart.png");
-		Texture2D m_EmptyHeart = LoadTexture("artwork/emptyHeart.png");
-		Texture2D m_ManaStar = LoadTexture("artwork/manaStar.png");
-		Texture2D m_HalfManaStar = LoadTexture("artwork/halfManaStar.png");
-		Texture2D m_EmptyManaStar = LoadTexture("artwork/emptyManaStar.png");
+		// Might change this later down the line, no clue if performance loss from doing things this way
+		float m_CharacterPanelX = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE;
+		//
+		Texture2D m_Heart = LoadTexture("classes/utilities/artwork/singleHeart.png");
+		Texture2D m_HalfHeart = LoadTexture("classes/utilities/artwork/halfHeart.png");
+		Texture2D m_EmptyHeart = LoadTexture("classes/utilities/artwork/emptyHeart.png");
+		Texture2D m_ManaStar = LoadTexture("classes/utilities/artwork/manaStar.png");
+		Texture2D m_HalfManaStar = LoadTexture("classes/utilities/artwork/halfManaStar.png");
+		Texture2D m_EmptyManaStar = LoadTexture("classes/utilities/artwork/emptyManaStar.png");
 		//
 };

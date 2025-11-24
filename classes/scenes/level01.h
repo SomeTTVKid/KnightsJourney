@@ -36,11 +36,11 @@ class Level01 : public Scene{
 		Texture2D npc01Dialogue = LoadTexture("classes/npcs/artwork/npc01_talkingTest.png");
 		LevelLoader* toTown = nullptr;
 		Npc* BlackSmith = nullptr;
-		size_t treeCount = 17;
+		size_t treeCount = 16;
 		size_t goblinCount = 3;
 		Vector2 m_MapSize = { 10.0f, 8.0f };
 		Vector3 m_ToTownPos = { -m_MapSize.x / 2.0f, 1.0f, 0.0f };
-		Vector3 m_ToTownOut = { 3.9f, 1.0f, -0.5f };
+		Vector3 m_ToForestPos = { 3.9f, 1.0f, -0.5f };
 	// Negative X and Negative Z is TOP LEFT QUADRANT
 	// Positive X and Negative Z is TOP RIGHT QUADRANT
 	// Negative X and Positive Z is BOTTOM LEFT QUADRANT
@@ -67,7 +67,6 @@ class Level01 : public Scene{
 			{ 0.7f, 1.0f, 5.5f },
 			{ 2.6f, 1.0f, 5.0f },
 			{ 3.8f, 1.0f, 4.7f },
-			{ 3.9f, 1.0f, 4.5f },
 			{ 2.8f, 1.0f, 3.5f },
 			{ 3.5f, 1.0f, 1.8f }
 

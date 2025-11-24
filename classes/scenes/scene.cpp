@@ -110,9 +110,10 @@ void Scene::Update(float& dT){
 		Vector3 cameraOffset = { 0.0f, 10.0f, 10.0f }; 
 		m_Camera.position = Vector3Add(m_Player->GetPos(), cameraOffset);
 		m_Camera.target = m_Player->GetPos();
+		// Opacity RayCast
 		m_OpacityRay.position = m_Camera.position;
 		Vector3 m_RayTarget = Vector3Subtract(m_Camera.target, m_Camera.position);
-		m_RayTarget.x += 0.5;
+		m_RayTarget.x += 0.5f;
 		m_OpacityRay.direction = Vector3Normalize(m_RayTarget);
 	}else{
 		m_Camera.target = {0.0f, 0.0f, 0.0f};
@@ -134,8 +135,8 @@ void Scene::Update(float& dT){
 			if(entity && entity->GetState()){
 				entity->Update(dT);
 				// Turn objects transparent
-				m_RayCollision = GetRayCollisionBox(m_OpacityRay, entity->GetCollider());
-				if(m_RayCollision.hit){
+				m_StructureCollision = GetRayCollisionBox(m_OpacityRay, entity->GetCollider());
+				if(m_StructureCollision.hit){
 					entity->m_Color.a = 100;
 				}else{
 					if(entity->m_Color.a != 255){
@@ -163,13 +164,23 @@ void Scene::Update(float& dT){
 				structure->Update(dT);
 				// Turn objects transparent
 				if(structure->HasCollider()){
-					m_RayCollision = GetRayCollisionBox(m_OpacityRay, structure->GetCollider());
-					if(m_RayCollision.hit){
+					m_StructureCollision = GetRayCollisionBox(m_OpacityRay, structure->GetCollider());
+					m_LeavesCollision = GetRayCollisionBox(m_OpacityRay, structure->GetLeavesCollider());
+					if(m_StructureCollision.hit || m_LeavesCollision.hit){
 						structure->m_Color.a = 100;
 					}else{
 						if(structure->m_Color.a != 255){
 							structure->m_Color.a = 255;
 						}
+					}
+
+					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetInteractCollider())){
+						if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && m_Player->m_AxeEquipped && static_cast<int>(structure->GetID()) == 0){
+							// 10 is the max axeTier achievable...maybe a secret later could increase it or a quest?
+							if(structure->GetHealth() > 0){
+								structure->TakeDamage(m_Player->m_AxeTier + 10.0f / 10.0f, m_Player->m_AxeTier);
+							}
+						} 
 					}
 
 					// Collision Checks
@@ -183,15 +194,9 @@ void Scene::Update(float& dT){
 						// Might check for id before mouseclick? 
 						// We just need some way to check if we need to woodcut or mine 
 						// Make sure to add a cooldown to tool swinging so we cant spam it
-						if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && m_Player->m_AxeEquipped && static_cast<int>(structure->GetID()) == 0){
-							// 10 is the max axeTier achievable...maybe a secret later could increase it or a quest?
-							structure->TakeDamage(m_Player->m_AxeTier + 10.0f / 10.0f, m_Player->m_AxeTier);
-							break;
-						} 
 						break;
 					}
 				}
-				continue;
 			}
 		}
 	}
@@ -232,6 +237,7 @@ void Scene::Update(float& dT){
 			if(npc && npc.get()->GetState()){
 				npc->Update(dT);
 				if(CheckCollisionBoxes(m_Player->GetCollider(), npc->GetInteractCollider())){
+					SetInteractText();
 					G_VARS.DISPLAY_TEXT = true;
 				}
 

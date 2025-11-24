@@ -23,8 +23,8 @@ class MainMenu : public Scene{
 		void Unload();
 
 	private:
-		Texture2D backgroundTex = LoadTexture("artwork/mainMenuBackground.png");
-		Texture2D titleTex = LoadTexture("artwork/TitleText.png");
+		Texture2D backgroundTex = LoadTexture("classes/utilities/artwork/mainMenuBackground.png");
+		Texture2D titleTex = LoadTexture("classes/utilities/artwork/TitleText.png");
 		Rectangle START;
 		Rectangle LOAD;
 		Vector2 titleTextSize = { 300.0f * G_VARS.WIDTH_SCALE, 250.0f * G_VARS.HEIGHT_SCALE };

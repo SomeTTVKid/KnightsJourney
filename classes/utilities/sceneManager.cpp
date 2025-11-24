@@ -149,6 +149,7 @@ void SceneManager::Update(float& dT){
 	if(IsKeyPressed(KEY_F)){
 		if(G_VARS.IS_PAUSED != true){
 			G_VARS.FULLSCREEN = !G_VARS.FULLSCREEN;
+			m_UpdateUI = true;
 			if(G_VARS.FULLSCREEN){
 				G_VARS.WIDTH = G_VARS.FULLSCREEN_WIDTH;
 				G_VARS.HEIGHT = G_VARS.FULLSCREEN_HEIGHT;
@@ -164,11 +165,10 @@ void SceneManager::Update(float& dT){
 			G_VARS.WIDTH_SCALE = G_VARS.WIDTH / 1000.0f;
 			G_VARS.HEIGHT_SCALE = G_VARS.HEIGHT / 1000.0f;
 
-			G_VARS.WIDTH_SCALE = std::clamp(G_VARS.WIDTH_SCALE, G_VARS.BASE_WIDTH / 1000.0f, 1.0f);
-			G_VARS.HEIGHT_SCALE = std::clamp(G_VARS.HEIGHT_SCALE, G_VARS.BASE_HEIGHT / 1000.0f, 1.0f);
+			G_VARS.WIDTH_SCALE = std::clamp(G_VARS.WIDTH_SCALE, G_VARS.BASE_WIDTH / 1000.0f, 1.5f);
+			G_VARS.HEIGHT_SCALE = std::clamp(G_VARS.HEIGHT_SCALE, G_VARS.BASE_HEIGHT / 1000.0f, 1.5f);
 			
 		}
-		std::cout << G_VARS.WIDTH_SCALE << std::endl;
 	}
 	if(G_VARS.IN_DIALOGUE){
 		if(IsKeyPressed(KEY_ESCAPE)){
@@ -430,9 +430,18 @@ void SceneManager::DrawUI(){
 // Character Panel
 	if(G_VARS.CHARACTER_PANEL && !G_VARS.IN_DIALOGUE){
 		// Character Panel
-		// Fuck it this looks good enough and works
+		// This works for now on the laptop, check on desktop and change accordingly
+		if(m_UpdateUI){
+			if(G_VARS.FULLSCREEN){
+				m_CharacterPanelX = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE - 200 * G_VARS.WIDTH_SCALE / 2.3f;		
+			}else{
+				m_CharacterPanelX = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE;
+			}
+			m_UpdateUI = false;
+		}
+
 		Rectangle CharacterPanel = {
-			G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE,
+			m_CharacterPanelX,
 			G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
 			200 * G_VARS.WIDTH_SCALE, 
 			300 * G_VARS.HEIGHT_SCALE
@@ -440,7 +449,7 @@ void SceneManager::DrawUI(){
 
 		DrawRectangleRec(CharacterPanel, GRAY);
 
-		// Melee Weapon Slot
+		//Melee Weapon Slot
 		Rectangle MeleeSlot = {
 			CharacterPanel.x + 11 * G_VARS.WIDTH_SCALE,
 			CharacterPanel.y + 5,

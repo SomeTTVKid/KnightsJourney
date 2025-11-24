@@ -11,18 +11,16 @@
 // Will be able to create variance in sizes as well as have default ones for different types
 // Spruce could be bigger and could remove sizes from g_vars
 
+// TODO Maybe fine tune building colliders OR pass in size inside of derived class like trees
+// Try passing in colliderMin and colliderMax in constructor and assigning it by default?
+
 class Structure{
 	public:
 		Structure(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs& id) 	
 			: m_Pos(pos), m_Size(size), m_ID(id){
 					if(m_HasCollider){
 						switch(m_ID){
-							case GlobalVariables::StructureIDs::TREE_ID:
-								// Length, Height, Width
-								m_ColliderMin = { m_Pos.x + m_Size.x / 3.0f, m_Pos.y, m_Pos.z - m_Size.x / 8.0f };
-								m_ColliderMax = { m_Pos.x + m_Size.x / 1.7f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
-								m_Collider = { m_ColliderMin, m_ColliderMax };
-								break;
+							case GlobalVariables::StructureIDs::TREE_ID: break;
 							
 							case GlobalVariables::StructureIDs::BUILDING_ID: 
 								m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
@@ -30,12 +28,7 @@ class Structure{
 								m_Collider = { m_ColliderMin, m_ColliderMax };
 								break;
 
-							case GlobalVariables::StructureIDs::STONE_ID:
-								// Need to be longer so min and max x pos need to be adjusted
-								m_ColliderMin = { m_Pos.x + m_Size.x / 7.3f, m_Pos.y, m_Pos.z - m_Size.x / 2.0f };
-								m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 12.5f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
-								m_Collider = { m_ColliderMin, m_ColliderMax };
-								break;
+							case GlobalVariables::StructureIDs::STONE_ID: break;
 
 							case GlobalVariables::StructureIDs::GRASS_ID: break;
 
@@ -52,6 +45,8 @@ class Structure{
 		virtual void Update(float& dT);
 		virtual void Draw(Camera3D& camera);
 		BoundingBox& GetCollider();
+		BoundingBox& GetLeavesCollider();
+		BoundingBox& GetInteractCollider();
 		float& GetHealth();
 		bool& GetState();
 		bool& HasCollider();
@@ -64,9 +59,18 @@ class Structure{
 		Vector3 m_Pos;
 		Vector2& m_Size;
 		Texture2D m_Texture;
+		// Collision
 		Vector3 m_ColliderMin;
 		Vector3 m_ColliderMax;
 		BoundingBox m_Collider{};
+		// Leaves
+		Vector3 m_LeavesColliderMin;
+		Vector3 m_LeavesColliderMax;
+		BoundingBox m_LeavesCollider{};
+		// Interact
+		Vector3 m_InteractColliderMin;
+		Vector3 m_InteractColliderMax;
+		BoundingBox m_InteractCollider{};
 		GlobalVariables::StructureIDs m_ID;
 		int m_Tier;
 		float m_Health;

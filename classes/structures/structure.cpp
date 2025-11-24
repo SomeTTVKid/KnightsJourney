@@ -18,6 +18,7 @@ void Structure::Update(float& dT){
 			// Seperate any collider updates by id (use enum for clarity)
 			if(m_ID == GlobalVariables::StructureIDs::TREE_ID){
 				m_Collider.max.y = m_Pos.y + m_Size.y / 4.0f;
+				m_LeavesCollider = {};
 			}
 			m_UpdateCollider = false;
 		}
@@ -42,6 +43,8 @@ void Structure::Draw(Camera3D& camera){
 
 		if(G_VARS.DEBUG_MODE && m_HasCollider){
 			DrawBoundingBox( m_Collider, m_Color);
+			DrawBoundingBox( m_LeavesCollider, RED);
+			DrawBoundingBox( m_InteractCollider, GREEN);
 		}
 	}
 }
@@ -64,6 +67,14 @@ void Structure::TakeDamage(float damage, int& toolTier){
 
 BoundingBox& Structure::GetCollider(){
 	return m_Collider;
+}
+
+BoundingBox& Structure::GetLeavesCollider(){
+	return m_LeavesCollider;
+}
+
+BoundingBox& Structure::GetInteractCollider(){
+	return m_InteractCollider;
 }
 
 float& Structure::GetHealth(){

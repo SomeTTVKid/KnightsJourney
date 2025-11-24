@@ -21,6 +21,18 @@ class OakTree : public Structure{
 				m_Texture = m_OakTreeTex;
 				m_Tier = 1;
 				m_Health = m_BaseTreeHealth + m_Tier * 10.0f;
+				// Collision
+				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
+				m_ColliderMax = { pos.x + m_Size.x / 1.7f, pos.y + m_Size.y, pos.z + m_Size.x / 20.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
+				// Leaves
+				m_LeavesColliderMin = { pos.x, pos.y + m_Size.y / 2.5f, pos.z };
+				m_LeavesColliderMax = { pos.x + m_Size.x, m_ColliderMax.y + 1.0f, pos.z + m_Size.x / 20.0f };
+				m_LeavesCollider = { m_LeavesColliderMin, m_LeavesColliderMax };
+				// Interact
+				m_InteractColliderMin = { pos.x + 0.5f, pos.y, pos.z - 0.3f };
+				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, pos.y + 0.3f, pos.z + 0.5f };
+				m_InteractCollider = { m_InteractColliderMin, m_InteractColliderMax };
 			}
 		~OakTree(){
 			std::cout << "Oak Tree Removed" << std::endl;
@@ -36,6 +48,18 @@ class BirchTree : public Structure{
 				m_Texture = m_BirchTreeTex;
 				m_Tier = 2;
 				m_Health = m_BaseTreeHealth + m_Tier * 10.0f;
+				// Collision
+				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
+				m_ColliderMax = { pos.x + m_Size.x / 1.7f, pos.y + m_Size.y, pos.z + m_Size.x / 20.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
+				// Leaves
+				m_LeavesColliderMin = { pos.x, pos.y + m_Size.y / 1.8f, pos.z };
+				m_LeavesColliderMax = { pos.x + m_Size.x, m_ColliderMax.y + 1.0f, pos.z + m_Size.x / 20.0f };
+				m_LeavesCollider = { m_LeavesColliderMin, m_LeavesColliderMax };
+				// Interact
+				m_InteractColliderMin = { pos.x + 0.5f, pos.y, pos.z - 0.3f };
+				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, pos.y + 0.3f, pos.z + 0.5f };
+				m_InteractCollider = { m_InteractColliderMin, m_InteractColliderMax };
 			}
 		~BirchTree(){
 			std::cout << "Birch Tree Removed" << std::endl;
@@ -51,6 +75,18 @@ class SpruceTree : public Structure{
 				m_Texture = m_SpruceTreeTex;
 				m_Tier = 3;
 				m_Health = m_BaseTreeHealth + m_Tier * 10.0f;
+				// Collision
+				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
+				m_ColliderMax = { pos.x + m_Size.x / 1.45f, pos.y + m_Size.y, pos.z + m_Size.x / 20.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
+				// Leaves
+				m_LeavesColliderMin = { pos.x, pos.y + m_Size.y / 2.5f, pos.z };
+				m_LeavesColliderMax = { pos.x + m_Size.x, m_ColliderMax.y + 1.0f, pos.z + m_Size.x / 20.0f };
+				m_LeavesCollider = { m_LeavesColliderMin, m_LeavesColliderMax };
+				// Interact
+				m_InteractColliderMin = { pos.x + 0.5f, pos.y, pos.z - 0.3f };
+				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, pos.y + 0.3f, pos.z + 0.5f };
+				m_InteractCollider = { m_InteractColliderMin, m_InteractColliderMax };
 			}
 
 		~SpruceTree(){

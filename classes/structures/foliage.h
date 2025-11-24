@@ -30,6 +30,11 @@ class Stone01 : public Structure{
 				m_HasCollider = true;
 				m_HasAnimation = false;
 				m_MaxFrames = 1;
+				// Collider
+				// Needs to have less height
+				m_ColliderMin = { m_Pos.x + m_Size.x / 7.3f, m_Pos.y, m_Pos.z - m_Size.x / 2.0f };
+				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 12.5f, m_Pos.y + m_Size.y / 2.0f, m_Pos.z + m_Size.x / 20.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
 
 			}
 		~Stone01(){

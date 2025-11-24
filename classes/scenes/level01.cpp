@@ -44,7 +44,7 @@ void Level01::Load(){
 	Scene::m_Items.push_back(std::move(manaPot));
 
 	// Level Loaders
-	toTown = new LevelLoader(loaderTex, G_VARS.LEVEL_02, m_ToTownPos, m_ToTownOut, G_VARS.LOADER_SIZE);
+	toTown = new LevelLoader(loaderTex, G_VARS.LEVEL_02, m_ToTownPos, m_ToForestPos, G_VARS.LOADER_SIZE);
 	Scene::m_LevelLoaders.push_back(toTown);
 
 	// Level Loader Signs
