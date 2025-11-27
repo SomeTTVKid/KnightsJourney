@@ -164,10 +164,12 @@ void Scene::Update(float& dT){
 				structure->Update(dT);
 				// Turn objects transparent
 				if(structure->HasCollider()){
+					// Ray collision detection
 					m_StructureCollision = GetRayCollisionBox(m_OpacityRay, structure->GetCollider());
 					m_LeavesCollision = GetRayCollisionBox(m_OpacityRay, structure->GetLeavesCollider());
 					if(m_StructureCollision.hit || m_LeavesCollision.hit){
-						structure->m_Color.a = 100;
+						// Opacity level
+						structure->m_Color.a = 80;
 					}else{
 						if(structure->m_Color.a != 255){
 							structure->m_Color.a = 255;
@@ -175,6 +177,14 @@ void Scene::Update(float& dT){
 					}
 
 					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetInteractCollider())){
+						// WoodCutting
+						// TODO
+						// Change this once we add in mining
+						// Whole function overhaul as well :D
+						// Mess with resource health in regards to scaling with axeTier
+						// Might check for id before mouseclick? 
+						// We just need some way to check if we need to woodcut or mine 
+						// Make sure to add a cooldown to tool swinging so we cant spam it
 						if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && m_Player->m_AxeEquipped && static_cast<int>(structure->GetID()) == 0){
 							// 10 is the max axeTier achievable...maybe a secret later could increase it or a quest?
 							if(structure->GetHealth() > 0){
@@ -186,14 +196,6 @@ void Scene::Update(float& dT){
 					// Collision Checks
 					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetCollider())){
 						m_Player->GetPos() = m_Player->GetLastPos();
-						// WoodCutting
-						// TODO
-						// Change this once we add in mining
-						// Whole function overhaul as well :D
-						// Mess with resource health in regards to scaling with axeTier
-						// Might check for id before mouseclick? 
-						// We just need some way to check if we need to woodcut or mine 
-						// Make sure to add a cooldown to tool swinging so we cant spam it
 						break;
 					}
 				}
@@ -271,8 +273,16 @@ void Scene::Update(float& dT){
 				}
 
 				// Collision with structures
+				// TODO Remove this later :D once we get houses inside of structure class
 				for( auto& entity : m_Entities){
 					if(CheckCollisionBoxes(projectile->GetCollider(), entity->GetCollider())){
+						projectile->GetState() = false;
+						break;
+					}
+				}
+
+				for( auto& structure : m_Structures){
+					if(CheckCollisionBoxes(projectile->GetCollider(), structure->GetCollider())){
 						projectile->GetState() = false;
 						break;
 					}

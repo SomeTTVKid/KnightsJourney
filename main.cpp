@@ -12,13 +12,14 @@
 // Potential TODO
 // Could also look into where exactly our raycast is postitioned in regards to the player size, y might be off
 
-// TODO Lower height of stone01 boundingBox
-
 // TODO Create campfire structure class, move all artwork out of main artwork file
 
 // TODO Add in a function that can briefly display text
 // PopupText(Text, Size, Position, TimeToDisplay)
 // Will be easier to reuse later down the line
+
+// TODO Once we add in popup text function, make a call for it whenever the axe tier is too low for the current tree
+// If its not then call the function but with the health of the structure :D
 
 // TODO When doing quest system, create a pointer to the active quest to display it in sceneManager
 

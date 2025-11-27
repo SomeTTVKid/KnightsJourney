@@ -30,7 +30,9 @@ struct GlobalVariables{
 		{"'F' To Toggle Fullscreen"},
 		{"'~' To Toggle Debug-Mode"},
 		{"'Esc' To Pause Game AND Leave Dialogue"},
-		{"'M' To Print Player Coordinates"}
+		{"'M' To Print Player Coordinates"},
+		{"'2' To Equip Axe"},
+		{"'3' To Increase Axe Tier"}
 	};
 
 	// States
@@ -100,7 +102,6 @@ struct GlobalVariables{
 	Vector2 SIGN_SIZE = { 1.0f, 1.0f };
 	Vector2 LOADER_SIZE = { 1.0f, 0.85f };
 	Vector2 ROCK_SIZE = { 2.0f, 1.8f };
-	Vector2 FIREBALL_SIZE = { 0.65f, 0.65f };
 	Vector2 POTION_SIZE = { 0.5f, 0.5f };
 
 };

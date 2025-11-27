@@ -513,14 +513,12 @@ void SceneManager::DrawUI(){
 												Scene::m_Player->GetMaxMana(),
 												Scene::m_Player->GetManaRegen());
 
-		//DrawText(playerMana.c_str(), CharacterPanelStatX, CharacterPanelStatY + 25 * G_VARS.HEIGHT_SCALE, 14 * G_VARS.WIDTH_SCALE, WHITE);
 		DrawTextEx(G_VARS.FONT, playerMana.c_str(), {CharacterPanelStatX, CharacterPanelStatY + 25 * G_VARS.HEIGHT_SCALE}, 18 * G_VARS.WIDTH_SCALE, 1.0f, WHITE);
 
 		// Player Speed
 		std::string playerSpeed = std::format("Speed: {:.2f}", 
 												Scene::m_Player->GetSpeed());
 
-		//DrawText(playerSpeed.c_str(), CharacterPanelStatX, CharacterPanelStatY + 50 * G_VARS.HEIGHT_SCALE, 14 * G_VARS.WIDTH_SCALE, WHITE);
 		DrawTextEx(G_VARS.FONT, playerSpeed.c_str(), {CharacterPanelStatX, CharacterPanelStatY + 50 * G_VARS.HEIGHT_SCALE}, 18 * G_VARS.WIDTH_SCALE, 1.0f, WHITE);
 
 		// Player Defense
@@ -528,21 +526,18 @@ void SceneManager::DrawUI(){
 												Scene::m_Player->GetDefense(),
 												Scene::m_Player->GetDefense() + 100 / 100);
 
-		//DrawText(playerDefense.c_str(), CharacterPanelStatX, CharacterPanelStatY + 75 * G_VARS.HEIGHT_SCALE, 14 * G_VARS.WIDTH_SCALE, WHITE);
 		DrawTextEx(G_VARS.FONT, playerDefense.c_str(), {CharacterPanelStatX, CharacterPanelStatY + 75 * G_VARS.HEIGHT_SCALE}, 18 * G_VARS.WIDTH_SCALE, 1.0f, WHITE);
 		
 		// Player Damage
 		std::string playerDamage = std::format("Damage: {:.2f}", 
 												Scene::m_Player->GetDamage());
 
-		//DrawText(playerDamage.c_str(), CharacterPanelStatX, CharacterPanelStatY + 100 * G_VARS.HEIGHT_SCALE, 14 * G_VARS.WIDTH_SCALE, WHITE);
 		DrawTextEx(G_VARS.FONT, playerDamage.c_str(), {CharacterPanelStatX, CharacterPanelStatY + 100 * G_VARS.HEIGHT_SCALE}, 18 * G_VARS.WIDTH_SCALE, 1.0f, WHITE);
 
 		// Player Spell Damage
 		std::string spellDamage = std::format("Spell Damage: {:.2f}",
 												Scene::m_Player->GetSpellDamage());
 
-		//DrawText(spellDamage.c_str(), CharacterPanelStatX, CharacterPanelStatY + 125 * G_VARS.HEIGHT_SCALE, 14 * G_VARS.WIDTH_SCALE, WHITE);
 		DrawTextEx(G_VARS.FONT, spellDamage.c_str(), {CharacterPanelStatX, CharacterPanelStatY + 125 * G_VARS.HEIGHT_SCALE}, 18 * G_VARS.WIDTH_SCALE, 1.0f, WHITE);
 	}
 }
@@ -669,6 +664,9 @@ void SceneManager::DrawInventory(){
 
 			// I want to be able to mouse over items and draw the border around them...
 			// Shouldn't be too hard tbh
+			// Create a rectangle around the mouse in the 2d space
+			// Check for collision in update probably when inventory is open
+			// Set a state for drawing this item selected rectangle
 			DrawRectangleRec(item.get()->GetRect(), GRAY);
 
 			DrawTexturePro(
@@ -676,9 +674,10 @@ void SceneManager::DrawInventory(){
 				{0.0f, 0.0f, (float)item.get()->GetTexture().width, (float)item.get()->GetTexture().height}, 
 				item.get()->GetRect(), {}, 0.0f, WHITE);
 
-			// Fix Text Count Positioning
+			// TODO Fix Text Count Positioning
+			// Fixed for now, anything in double digits fucks it up again, either cap stack size or account for it
 			DrawText(std::to_string(itemCount).c_str(), 
-					item.get()->GetRect().x + item.get()->GetRect().width - 5 * G_VARS.WIDTH_SCALE, 
+					item.get()->GetRect().x + item.get()->GetRect().width - 8 * G_VARS.WIDTH_SCALE, 
 					item.get()->GetRect().y + item.get()->GetRect().height - 20 * G_VARS.HEIGHT_SCALE, 
 					15 * G_VARS.WIDTH_SCALE, WHITE);
 

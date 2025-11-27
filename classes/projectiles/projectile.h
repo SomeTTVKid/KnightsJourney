@@ -42,7 +42,7 @@ class Projectile{
 		Vector3 m_Position;
 		Vector2 m_MousePos;
 		Vector2 m_Direction;
-		Vector2 m_Size = G_VARS.FIREBALL_SIZE;
+		Vector2 m_Size{};
 		BoundingBox m_Collider;
 		Texture2D m_Texture;
 		Color m_Color = WHITE;
@@ -64,15 +64,16 @@ class Fireball : public Projectile{
 	public:
 		Fireball(Vector3 pos, Vector2 mousePos) 
 			: Projectile(pos, mousePos){
-			m_Texture = m_Fireball;
-			m_LifeTime = 2.0f; 
-			m_Speed = 2.5f; 
-			m_Damage = 2.0f;
-			m_Color = WHITE;
-			m_ManaCost = m_SpellCost;
-			m_CoolDown = 1.0f;
-			m_CastingSound = m_FireballSound;
-			m_HitSound = m_FireballExplosionSound;
+				m_Size = m_FireballSize;
+				m_Texture = m_Fireball;
+				m_LifeTime = 2.0f; 
+				m_Speed = 2.5f; 
+				m_Damage = 2.0f;
+				m_Color = WHITE;
+				m_ManaCost = m_SpellCost;
+				m_CoolDown = 1.0f;
+				m_CastingSound = m_FireballSound;
+				m_HitSound = m_FireballExplosionSound;
 		}
 		~Fireball(){}
 		
@@ -80,6 +81,7 @@ class Fireball : public Projectile{
 		static inline Sound m_FireballExplosionSound;
 		static inline Texture2D m_Fireball;
 
+		static inline Vector2 m_FireballSize = { 0.65f, 0.65f };
 		static inline float m_SpellCost = 1.0f;
 
 };
@@ -88,15 +90,16 @@ class FrostOrb : public Projectile{
 	public:
 		FrostOrb(Vector3 pos, Vector2 mousePos) 
 			: Projectile(pos, mousePos){
-			m_Texture = m_FrostOrb;
-			m_LifeTime = 3.5f; 
-			m_Speed = 1.2f; 
-			m_Damage = 2.5f;
-			m_Color = WHITE;
-			m_ManaCost = m_SpellCost;
-			m_CoolDown = 2.5f;
-			m_CastingSound = m_FrostOrbSound;
-			m_HitSound = m_FrostOrbHitSound;
+				m_Size = m_FrostOrbSize;
+				m_Texture = m_FrostOrb;
+				m_LifeTime = 3.5f; 
+				m_Speed = 1.2f; 
+				m_Damage = 2.5f;
+				m_Color = WHITE;
+				m_ManaCost = m_SpellCost;
+				m_CoolDown = 2.5f;
+				m_CastingSound = m_FrostOrbSound;
+				m_HitSound = m_FrostOrbHitSound;
 		}
 		~FrostOrb(){}
 		
@@ -104,6 +107,7 @@ class FrostOrb : public Projectile{
 		static inline Sound m_FrostOrbHitSound;
 		static inline Texture2D m_FrostOrb;
 
+		static inline Vector2 m_FrostOrbSize = { 0.75f, 0.75f };
 		static inline float m_SpellCost = 1.5f;
 
 };
@@ -112,6 +116,7 @@ class LightningBolt : public Projectile{
 	public:
 		LightningBolt(Vector3 pos, Vector2 mousePos) 
 			: Projectile(pos, mousePos){
+				m_Size = m_LightningBoltSize;
 				m_Texture = m_LightningBolt;
 				m_LifeTime = 1.0f;
 				m_Speed = 3.5f;
@@ -128,6 +133,7 @@ class LightningBolt : public Projectile{
 			static inline Sound m_LightningBoltZapSound;
 			static inline Texture2D m_LightningBolt;
 
+			static inline Vector2 m_LightningBoltSize = { 0.55f, 0.55f };
 			static inline float m_SpellCost = 0.5f;
 
 };
