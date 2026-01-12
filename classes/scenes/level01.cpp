@@ -31,6 +31,9 @@ void Level01::Load(){
 		std::vector<int> m_Dialogue = {0, 1, 2, 3};
 		auto BlackSmith = std::make_unique<Npc>(npc01Tex, npc01Dialogue, G_VARS.NPC_SIZE, BlackSmithPos, G_VARS.LEFT, true, G_VARS.NPC_ID, m_Dialogue);
 		Scene::m_Npcs.push_back(std::move(BlackSmith));
+		levelStates.BSInForest = true;
+	}else if(levelStates.BSInForest){
+		levelStates.BSInForest = false;
 	}
 
 	// TEST ITEMS
@@ -71,6 +74,27 @@ void Level01::Load(){
 }
 
 void Level01::Update(float& dT){
+	// INTERACTION
+	if(IsKeyPressed(KEY_E) && !Scene::m_Npcs.empty()){
+		for( auto& npc : Scene::m_Npcs){
+			if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), npc->GetInteractCollider())){
+				G_VARS.IN_DIALOGUE = true;
+				Scene::npcInDialogue = npc.get();
+			}
+		}
+	}
+
+	// UPDATE ACTIVE QUEST
+	if(G_VARS.IN_DIALOGUE){
+		if(Scene::npcInDialogue->ReturnDialogueCount() == Scene::npcInDialogue->ReturnDialogueSize() - 1 && levelStates.SpokeToBSInForest != true){
+			// TODO Change this down the line to a state or variable instead of hard coding?
+			// If we wanted we could just create a vector/array of strings and change the index?
+			SceneManager::GetInstance().SetActiveQuest() = "Talk to the BlackSmith in Town!";
+			levelStates.SpokeToBSInForest = true;
+
+		}
+	}
+
 	Scene::Update(dT);
 
 }

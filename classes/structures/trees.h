@@ -20,18 +20,19 @@ class OakTree : public Structure{
 			: Structure(pos, size, id){
 				m_Texture = m_OakTreeTex;
 				m_Tier = 1;
-				m_Health = m_BaseTreeHealth + m_Tier * 10.0f;
+				m_Health = m_BaseTreeHealth + (m_Tier * 10.0f);
+				m_MaxHealth = m_Health;
 				// Collision
 				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
-				m_ColliderMax = { pos.x + m_Size.x / 1.7f, pos.y + m_Size.y, pos.z + m_Size.x / 20.0f };
+				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 4.0f, m_ColliderMin.y + m_Size.y, m_ColliderMin.z + m_Size.x / 6.0f };
 				m_Collider = { m_ColliderMin, m_ColliderMax };
 				// Leaves
 				m_LeavesColliderMin = { pos.x, pos.y + m_Size.y / 2.5f, pos.z };
-				m_LeavesColliderMax = { pos.x + m_Size.x, m_ColliderMax.y + 1.0f, pos.z + m_Size.x / 20.0f };
+				m_LeavesColliderMax = { m_LeavesColliderMin.x + m_Size.x, m_LeavesColliderMin.y + m_Size.y / 1.25f, m_LeavesColliderMin.z + m_Size.x / 20.0f };
 				m_LeavesCollider = { m_LeavesColliderMin, m_LeavesColliderMax };
 				// Interact
 				m_InteractColliderMin = { pos.x + 0.5f, pos.y, pos.z - 0.3f };
-				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, pos.y + 0.3f, pos.z + 0.5f };
+				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, m_InteractColliderMin.y + 0.3f, m_InteractColliderMin.z + 0.5f };
 				m_InteractCollider = { m_InteractColliderMin, m_InteractColliderMax };
 			}
 		~OakTree(){
@@ -47,18 +48,21 @@ class BirchTree : public Structure{
 			: Structure(pos, size, id){
 				m_Texture = m_BirchTreeTex;
 				m_Tier = 2;
-				m_Health = m_BaseTreeHealth + m_Tier * 10.0f;
+				m_Health = m_BaseTreeHealth + (m_Tier * 10.0f);
+				m_MaxHealth = m_Health;
 				// Collision
 				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
-				m_ColliderMax = { pos.x + m_Size.x / 1.7f, pos.y + m_Size.y, pos.z + m_Size.x / 20.0f };
+				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 3.8f, m_ColliderMin.y + m_Size.y, m_ColliderMin.z + m_Size.x / 6.0f };
 				m_Collider = { m_ColliderMin, m_ColliderMax };
 				// Leaves
-				m_LeavesColliderMin = { pos.x, pos.y + m_Size.y / 1.8f, pos.z };
-				m_LeavesColliderMax = { pos.x + m_Size.x, m_ColliderMax.y + 1.0f, pos.z + m_Size.x / 20.0f };
+				m_LeavesColliderMin = { pos.x, pos.y + m_Size.y / 2.5f, pos.z };
+				m_LeavesColliderMax = { m_LeavesColliderMin.x + m_Size.x, m_LeavesColliderMin.y + m_Size.y / 1.25f, m_LeavesColliderMin.z + m_Size.x / 20.0f };
 				m_LeavesCollider = { m_LeavesColliderMin, m_LeavesColliderMax };
+				//
+				m_CurrentLeavesCollider = m_LeavesCollider;
 				// Interact
 				m_InteractColliderMin = { pos.x + 0.5f, pos.y, pos.z - 0.3f };
-				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, pos.y + 0.3f, pos.z + 0.5f };
+				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, m_InteractColliderMin.y + 0.3f, m_InteractColliderMin.z + 0.5f };
 				m_InteractCollider = { m_InteractColliderMin, m_InteractColliderMax };
 			}
 		~BirchTree(){
@@ -74,18 +78,19 @@ class SpruceTree : public Structure{
 			: Structure(pos, size, id){
 				m_Texture = m_SpruceTreeTex;
 				m_Tier = 3;
-				m_Health = m_BaseTreeHealth + m_Tier * 10.0f;
+				m_Health = m_BaseTreeHealth + (m_Tier * 10.0f);
+				m_MaxHealth = m_Health;
 				// Collision
 				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
-				m_ColliderMax = { pos.x + m_Size.x / 1.45f, pos.y + m_Size.y, pos.z + m_Size.x / 20.0f };
+				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 2.8f, m_ColliderMin.y + m_Size.y, m_ColliderMin.z + m_Size.x / 6.0f };
 				m_Collider = { m_ColliderMin, m_ColliderMax };
 				// Leaves
-				m_LeavesColliderMin = { pos.x, pos.y + m_Size.y / 2.5f, pos.z };
-				m_LeavesColliderMax = { pos.x + m_Size.x, m_ColliderMax.y + 1.0f, pos.z + m_Size.x / 20.0f };
+				m_LeavesColliderMin = { pos.x, pos.y + m_Size.y / 3.8f, pos.z };
+				m_LeavesColliderMax = { m_LeavesColliderMin.x + m_Size.x, m_LeavesColliderMin.y + m_Size.y, m_LeavesColliderMin.z + m_Size.x / 20.0f };
 				m_LeavesCollider = { m_LeavesColliderMin, m_LeavesColliderMax };
 				// Interact
 				m_InteractColliderMin = { pos.x + 0.5f, pos.y, pos.z - 0.3f };
-				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, pos.y + 0.3f, pos.z + 0.5f };
+				m_InteractColliderMax = { m_InteractColliderMin.x + 1.5f, m_InteractColliderMin.y + 0.3f, m_InteractColliderMin.z + 0.5f };
 				m_InteractCollider = { m_InteractColliderMin, m_InteractColliderMax };
 			}
 

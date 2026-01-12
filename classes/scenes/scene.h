@@ -26,6 +26,7 @@ class Scene{
 		void BuildFrame();
 		void SetInteractText();
 		void DisplayInteractText();
+		void Popup_text(float& dT);
 		//
 		static inline Camera3D m_Camera = {
 			{ 0.0f, 1.0f, 10.0f }, 	// Position
@@ -62,5 +63,12 @@ class Scene{
 		Ray m_OpacityRay = { 0 };
 		RayCollision m_StructureCollision = { 0 };
 		RayCollision m_LeavesCollision = { 0 };
+		//
+		std::string m_Text{};
+		float m_CurrentTime{};
+		float m_PopupTime = 1.5f;
+		unsigned char m_TextOpacity {255};
+		Vector2 m_TextPosition;
+		Vector3 m_EntityPosition;
 
 };

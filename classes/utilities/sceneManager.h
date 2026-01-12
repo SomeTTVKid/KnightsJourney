@@ -30,11 +30,18 @@ class SceneManager{
 		void DrawDialogue();
 		void DrawSelectedItem();
 		void DrawInventory();
+		void PopupText(float timeToDisplay, float& dT, std::string text, Vector3& position);
+		std::string& SetActiveQuest();
 		//
 		static inline Texture2D m_ItemCardTex; 
 		static inline Texture2D m_InventoryTex;
 		static inline Texture2D m_DialogueTex;
 		static inline Texture2D m_ActionBarTex;
+		//
+		bool m_Transitioning = false; 
+		// 0 = fade-out
+		// 1 = fade-in
+		int m_TransitionPhase = 0; 
 		
 	private:
 		SceneManager() = default;
@@ -46,18 +53,16 @@ class SceneManager{
 		int fullStars{};
 		int maxStars{};
 		static inline int m_CurrentSceneID = -1;
-		bool m_Transitioning = false; 
-		bool m_PendingPause = false;
-		bool m_UpdateUI = false;
-		// 0 = fade-out
-		// 1 = fade-in
-		int m_TransitionPhase = 0; 
 		float m_TransitionTimer = 0.0f;
 		float m_TransitionMaxTime = 0.6f; 
 		float m_Opacity = 0.0f; 
+		//
+		bool m_PendingPause = false;
 		float m_PauseTimer = 0.0f;
 		float m_PauseTimerMax = 0.1f;
+		bool m_UpdateUI = false;
 		std::string frametime;
+		std::string m_ActiveQuest {"Save the BlackSmith from the Goblins!"};
 		//
 		// Might change this later down the line, no clue if performance loss from doing things this way
 		float m_CharacterPanelX = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE;

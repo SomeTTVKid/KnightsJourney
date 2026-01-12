@@ -34,6 +34,15 @@ void BSInterior::Load(){
 }
 
 void BSInterior::Update(float& dT){
+	if(IsKeyPressed(KEY_E) && !Scene::m_Npcs.empty()){
+		for( auto& npc : Scene::m_Npcs){
+			if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), npc->GetInteractCollider())){
+				G_VARS.IN_DIALOGUE = true;
+				Scene::npcInDialogue = npc.get();
+			}
+		}
+	}
+
 	Scene::Update(dT);
 
 }

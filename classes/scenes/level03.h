@@ -20,6 +20,7 @@ class Level03 : public Scene{
 		Texture2D loaderTex = LoadTexture("artwork/levelLoader.png");
 		LevelLoader* toTown = nullptr;
 		size_t rockCount = 3;
+		size_t smallRockCount = 2;
 		size_t treeCount = 1;
 		Vector2 m_MapSize = { 5.0f, 15.0f };
 		Vector3 m_ToTownPos = { -0.8f, 1.0f, m_MapSize.y / 2.0f + 0.5f};
@@ -28,6 +29,10 @@ class Level03 : public Scene{
 			{ 1.1f, 1.0f, 6.5f },
 			{ -1.5f, 1.0f, 4.0f },
 			{ -0.3f, 1.0f, -0.1f }
+		};
+		std::vector<Vector3> smallRockPositions{
+			{ 0.0f, 1.0f, 1.0f },
+			{ 1.5f, 1.0f, 2.5f }
 		};
 		std::vector<Vector3> treePositions{
 			{ -2.3f, 1.0f, 6.1f }

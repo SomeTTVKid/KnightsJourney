@@ -7,7 +7,10 @@ class House01 : public Structure{
 			: Structure(pos, size, id){
 				m_Texture = m_House01Tex;
 				m_MaxFrames = 1;
-				m_ID = GlobalVariables::StructureIDs::BUILDING_ID;
+				// Collider
+				m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
+				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
 			}
 		~House01(){
 			std::cout << "House01 Removed" << std::endl;
@@ -23,7 +26,10 @@ class House02 : public Structure{
 			: Structure(pos, size, id){
 				m_Texture = m_House02Tex;
 				m_MaxFrames = 1;
-				m_ID = GlobalVariables::StructureIDs::BUILDING_ID;
+				// Collider
+				m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
+				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
 			}
 		~House02(){
 			std::cout << "House02 Removed" << std::endl;
@@ -39,7 +45,10 @@ class Shed : public Structure{
 			: Structure(pos, size, id){
 				m_Texture = m_ShedTex;
 				m_MaxFrames = 1;
-				m_ID = GlobalVariables::StructureIDs::BUILDING_ID;
+				// Collider
+				m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
+				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
 			}
 		~Shed(){
 			std::cout << "Shed Removed" << std::endl;
@@ -55,7 +64,10 @@ class Inn : public Structure{
 			: Structure(pos, size, id){
 				m_Texture = m_InnTex;
 				m_MaxFrames = 1;
-				m_ID = GlobalVariables::StructureIDs::BUILDING_ID;
+				// Collider
+				m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
+				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
 			}
 		~Inn(){
 			std::cout << "Inn Removed" << std::endl;

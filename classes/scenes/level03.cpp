@@ -11,7 +11,8 @@
 void Level03::Load(){
 	SpruceTree::m_SpruceTreeTex = LoadTexture("classes/structures/artwork/trees/spruceTree.png");
 	Stone01::m_Stone01Tex = LoadTexture("classes/structures/artwork/stones/stone01.png");
-
+	Stone02::m_Stone02Tex = LoadTexture("classes/structures/artwork/stones/stone02.png");
+ 
 	Scene::Load();
 
 	Scene::m_Player->GetWorldSize() = m_MapSize;
@@ -21,10 +22,13 @@ void Level03::Load(){
 	Scene::m_LevelLoaders.push_back(toTown);
 
 	for(size_t r = 0; r < rockCount; ++r){
-		// Entity* rock = new Entity(mossyRockTex, G_VARS.ROCK_SIZE, rockPositions[r], G_VARS.RIGHT, true, G_VARS.STRUCTURE_ID, 1);
-		// Scene::m_Entities.push_back(rock);
 		auto stone = std::make_unique<Stone01>(rockPositions[r], G_VARS.ROCK_SIZE);
 		Scene::m_Structures.push_back(std::move(stone));
+	}
+
+	for(size_t sr = 0; sr < smallRockCount; ++sr){
+		auto smallStone = std::make_unique<Stone02>(smallRockPositions[sr], G_VARS.SMALL_ROCK_SIZE);
+		Scene::m_Structures.push_back(std::move(smallStone));
 	}
 
 	for(size_t t = 0; t < treeCount; ++t){

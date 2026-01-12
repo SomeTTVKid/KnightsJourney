@@ -5,7 +5,9 @@
 #include "classes/utilities/sceneManager.h"
 #include "classes/utilities/globalVariables.h"
 #include "classes/utilities/levelLoader.h"
+#include "classes/scenes/levelStates.h"
 #include <algorithm>
+#include <format>
 
 void Scene::SetInteractText(){
 	G_VARS.DISPLAY_TEXT = true;
@@ -13,6 +15,20 @@ void Scene::SetInteractText(){
 	m_WorldSpace = GetWorldToScreen(Scene::m_Player->GetPos(), Scene::m_Camera);
 	m_WorldSpace.x = m_WorldSpace.x - interactTextSize.x / 3.0f;
 	m_WorldSpace.y = m_WorldSpace.y - 130.0f * G_VARS.HEIGHT_SCALE;
+}
+
+void Scene::Popup_text(float& dT){
+	m_TextPosition = GetWorldToScreen(m_EntityPosition, Scene::m_Camera);
+	m_CurrentTime += dT;
+	m_TextOpacity -= 119.5f * dT; 
+	m_TextOpacity = std::clamp(static_cast<float>(m_TextOpacity), 0.0f, 255.0f);
+	if(m_CurrentTime < m_PopupTime){
+		DrawTextEx(G_VARS.FONT, m_Text.c_str(), m_TextPosition, 38 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, {255, 255, 255, m_TextOpacity});
+	}else{
+		m_CurrentTime = 0.0f;
+		G_VARS.POPUP_TEXT = false;
+		m_TextOpacity = 255;
+	}
 }
 
 void Scene::DisplayInteractText(){
@@ -105,6 +121,16 @@ void Scene::Update(float& dT){
 		UpdateMusicStream(m_LevelMusic);
 	}
 
+	if(IsKeyPressed(KEY_E)){
+		for( auto& loader : Scene::m_LevelLoaders){
+			if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), loader->GetInteractCollider())){
+				m_Player->GetSpawnPoint() = loader->GetOutPos();
+				loader->MoveScene();
+				return;
+			}
+		}
+	}
+
 	// Setting Camera Position Out of Main Menu
 	if(SceneManager::GetInstance().GetSceneID() != 0){
 		Vector3 cameraOffset = { 0.0f, 10.0f, 10.0f }; 
@@ -164,9 +190,14 @@ void Scene::Update(float& dT){
 				structure->Update(dT);
 				// Turn objects transparent
 				if(structure->HasCollider()){
+					// Collision Checks
+					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetCollider())){
+						m_Player->GetPos() = m_Player->GetLastPos();
+					}
+
 					// Ray collision detection
 					m_StructureCollision = GetRayCollisionBox(m_OpacityRay, structure->GetCollider());
-					m_LeavesCollision = GetRayCollisionBox(m_OpacityRay, structure->GetLeavesCollider());
+					m_LeavesCollision = GetRayCollisionBox(m_OpacityRay, structure->GetCurrentLeavesCollider());
 					if(m_StructureCollision.hit || m_LeavesCollision.hit){
 						// Opacity level
 						structure->m_Color.a = 80;
@@ -176,27 +207,41 @@ void Scene::Update(float& dT){
 						}
 					}
 
-					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetInteractCollider())){
-						// WoodCutting
-						// TODO
-						// Change this once we add in mining
-						// Whole function overhaul as well :D
-						// Mess with resource health in regards to scaling with axeTier
-						// Might check for id before mouseclick? 
-						// We just need some way to check if we need to woodcut or mine 
-						// Make sure to add a cooldown to tool swinging so we cant spam it
-						if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && m_Player->m_AxeEquipped && static_cast<int>(structure->GetID()) == 0){
-							// 10 is the max axeTier achievable...maybe a secret later could increase it or a quest?
-							if(structure->GetHealth() > 0){
-								structure->TakeDamage(m_Player->m_AxeTier + 10.0f / 10.0f, m_Player->m_AxeTier);
+					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetInteractCollider()) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+						if(m_Player->m_ToolSwung != true){
+							// Woodcutting Section
+							if(m_Player->m_AxeEquipped && static_cast<int>(structure->GetID()) == 0){
+								if(structure->IsDepleted() != true && structure->GetHealth() > 0 && m_Player->m_AxeTier >= structure->GetTier()){
+									// 10 is the max axeTier achievable...maybe a secret later could increase it or a quest
+									// TODO combine all of this into a function perhaps?
+									// Would look a lot cleaner than what we have right now
+									structure->TakeDamage(m_Player->m_AxeTier + 10.0f / 10.0f);
+									m_Player->m_ToolSwung = true;
+									// Need to get around only being able to display one thing at a time
+									// Need to somehow add this function call inside of each entity/structure's draw call
+									// Somehow draw text in the 3d space
+									if(G_VARS.POPUP_TEXT){
+										m_CurrentTime = 0.0f;
+										m_TextOpacity = 255;
+										G_VARS.POPUP_TEXT = false;
+									}
+									// Still need to find a way to display multiple text on the screen using this system!
+									// What if the entity subclass had a text variable, and instead of global flag for showing text, it was on taking damage
+									// Since even skill is just damaging the strucure?
+									m_Text = std::format("{:.2f}/{:.2f}", structure->GetHealth(), structure->GetMaxHealth());
+								}
+								else if(m_Player->m_AxeTier < structure->GetTier()){
+									m_Text = "Axe tier is not high enough.";
+								}
+								else{
+									m_Text = "This resource is depleted!";
+								}
+								m_EntityPosition = structure->GetPos();
+								G_VARS.POPUP_TEXT = true;
+								break;
 							}
+							// TODO Mining Section 
 						} 
-					}
-
-					// Collision Checks
-					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetCollider())){
-						m_Player->GetPos() = m_Player->GetLastPos();
-						break;
 					}
 				}
 			}
@@ -268,6 +313,16 @@ void Scene::Update(float& dT){
 						enemy->TakeDamage(projectile->GetDamage());
 						enemy->GetPos().x += projectile->GetVector().x * 10.0f * dT;
 						enemy->GetPos().z += projectile->GetVector().y * 10.0f * dT;
+						// TODO Centralize this inside of our popup text function
+						// That way we arent repeating this over and over hopefully
+						if(G_VARS.POPUP_TEXT){
+							m_CurrentTime = 0.0f;
+							m_TextOpacity = 255;
+							G_VARS.POPUP_TEXT = false;
+						}
+						m_Text = std::format("{:.2f}", projectile->GetDamage());
+						m_EntityPosition = enemy->GetPos();
+						G_VARS.POPUP_TEXT = true;
 						break;
 					}
 				}
@@ -402,6 +457,7 @@ void Scene::Unload(){
 	G_VARS.DISPLAY_TEXT = false;
 	G_VARS.ITEM_SELECTED = false;
 	G_VARS.CHARACTER_PANEL = false;
+	m_Player->m_AxeEquipped = false;
 
     m_Entities.clear(); 
 	m_DrawList.clear();

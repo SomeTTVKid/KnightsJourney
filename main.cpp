@@ -12,28 +12,37 @@
 // Potential TODO
 // Could also look into where exactly our raycast is postitioned in regards to the player size, y might be off
 
+// TODO NEXT
+
+// TODO Add npc interaction into each scene individually so we can force certain interactions
+// Maybe add in an extra button press to accept a 'quest' so that you cant spam through and miss instructions
+// Dunno if we really need this tbh, with ActiveQuest in now
+
+// TODO Figure out how to make a local state for popup text function so that we can have multiple of them on the screen at once
+// The real issue here is this needs to be called within an area that we are already calling Mode3D
+// We also need to make sure that the text doesnt get updated with say another ones data I.E
+// If we attack one tree and its health it 20/40 and then quickly attack another and its health is 10/40
+// We need to properly display both health values in the text without the second one updating the first
+
+// TODO Remove public member variables from player class and add in getters/setters
+
+// TODO Fix our structure ids for trees and mine-able stone at least
+// should be using that id later to give resources
+
+// TODO Make size a default parameter inside of structure params, make it {1.0f, 1.0f};
+
+// TODO Fix all collider creations to use colliderMin inside of colliderMax, refactor how we calculate our sizes
+// Probably need to fix this with entity class once we refactor it whenever that will be
+
 // TODO Create campfire structure class, move all artwork out of main artwork file
 
-// TODO Add in a function that can briefly display text
-// PopupText(Text, Size, Position, TimeToDisplay)
-// Will be easier to reuse later down the line
-
-// TODO Once we add in popup text function, make a call for it whenever the axe tier is too low for the current tree
-// If its not then call the function but with the health of the structure :D
+// TODO Cleanup artwork folder
+// Add artwork folders to the classes
 
 // TODO When doing quest system, create a pointer to the active quest to display it in sceneManager
 
 // TODO Minimize the amount of times we draw static things
 // Wait, since the screen is cleared, can we even do this?
-
-// TODO In update replenish resource health slowly
-// When a resource health is below or equal to 0
-// Set a state in structure called m_Replenishing
-// Check when attacking if the structures state is true or false
-// Only allow attacking if false
-// In update check if state is true
-// If so add back health * dT and clamp at maxHealthValue
-// Reset texture
 
 // TODO Create player textures
 // Resize player && || Trees for better sizes
@@ -45,9 +54,6 @@
 // Weapon should have a facing direction based off of mouse on right or left
 // Weapon should swing
 // On swing we should create the hitbox where the weapon is...BE GENEROUS
-
-// TODO Cleanup artwork folder
-// Add artwork folders to the classes
 
 // TODO Break up entity class so enemys can be prefabs and same with npcs
 

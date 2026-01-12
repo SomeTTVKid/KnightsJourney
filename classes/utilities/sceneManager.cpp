@@ -25,6 +25,10 @@ int& SceneManager::GetSceneID(){
 	return m_CurrentSceneID;
 }
 
+std::string& SceneManager::SetActiveQuest(){
+	return m_ActiveQuest;
+}
+
 // Sorting and being effecient is hard but this works
 void SceneManager::DepthBuffer(std::vector<DrawableVariant>& drawList) {
     // Create a temporary vector to store z-positions and indices.
@@ -170,6 +174,7 @@ void SceneManager::Update(float& dT){
 			
 		}
 	}
+	 
 	if(G_VARS.IN_DIALOGUE){
 		if(IsKeyPressed(KEY_ESCAPE)){
 			G_VARS.IN_DIALOGUE = false;
@@ -187,17 +192,20 @@ void SceneManager::Update(float& dT){
 				G_VARS.IS_PAUSED = false;
 			}
 		}
-	}else{
-		if(IsKeyPressed(KEY_ESCAPE)){
-			G_VARS.RUNNING = false;
-		}
 	}
+	// TODO Either remove this entirely or add it back in at a later date
+	// }else{
+	// 	if(IsKeyPressed(KEY_ESCAPE)){
+	// 		G_VARS.RUNNING = false;
+	// 	}
+	// }
 
 	// DEBUG MODE
 	if(IsKeyPressed(KEY_GRAVE)){
 		G_VARS.DEBUG_MODE = !G_VARS.DEBUG_MODE;
 	}
 
+	// TODO Remove this at some point
 	if(IsKeyPressed(KEY_UP)){
 		G_VARS.VOLUME += 0.1f;
 		SetMusicVolume(Scene::m_LevelMusic, G_VARS.VOLUME);
@@ -254,6 +262,11 @@ void SceneManager::Draw(){
 		// Draw Interact Text
 		if(G_VARS.DISPLAY_TEXT){
 			m_CurrentScene->DisplayInteractText();
+		}
+
+		if(G_VARS.POPUP_TEXT){
+			float dT = GetFrameTime();
+			m_CurrentScene->Popup_text(dT);
 		}
 
 		// Draw Everything NOT on MAIN MENU
@@ -394,9 +407,10 @@ void SceneManager::DrawUI(){
 		85 * G_VARS.HEIGHT_SCALE
 	};
 
+	// TODO Make this a variable that we can acccess and change to update current quest objective
 	DrawTextEx(
 		G_VARS.FONT, 
-		"Save the Blacksmith from the goblins!", 
+		m_ActiveQuest.c_str(), 
 		{ActiveQuest.x + 10 * G_VARS.WIDTH_SCALE, ActiveQuest.y + 5 * G_VARS.HEIGHT_SCALE},
 		25 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, WHITE);
 

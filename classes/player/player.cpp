@@ -22,21 +22,19 @@ void Player::Update(float& dT){
 			}
 		}
 
-		// INTERACTION
+		// // INTERACTION
+		// TODO make sure to change this later so it account for other npcs...
+		// How could we account for more npcs...functionality would have to move to scene class to handle this i imagine OR 
+		// Probably move the resolution for dialogue into individual levels instead
+		// So here we would just set the flag for dialogue and the npcInDialogue
+		// Then in the level we could check the actual npc? perchance
+		// Maybe move this entire check into scene.cpp
+ 
 		if(IsKeyPressed(KEY_E)){
-			for( auto& loader : Scene::m_LevelLoaders){
-				if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), loader->GetInteractCollider())){
-					Scene::m_Player->GetSpawnPoint() = loader->GetOutPos();
-					loader->MoveScene();
-					return;
-				}
-			}
-
 			for( auto& npc : Scene::m_Npcs){
 				if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), npc->GetInteractCollider())){
 					G_VARS.IN_DIALOGUE = true;
 					Scene::npcInDialogue = npc.get();
-					levelStates.SpokeToBSInForest = true;
 					return;
 				}
 			}
@@ -92,18 +90,21 @@ void Player::Update(float& dT){
 		}
 
 		// MELEE ATTACK
+		// TODO Add in cooldown here
+		// Make sure to make state, timer and maxTime
 		if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsKeyPressed(KEY_G)){
 			for( auto& enemy : Scene::m_Enemies){
 				if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), enemy->GetCollider())){
 					if(CheckCollisionBoxes(GetCollider(), enemy->GetCollider())){
 						enemy->TakeDamage(m_Damage);
+						// TODO either move this to scene update or make sure to call scene popup text here later
 					}
 				}
 			}
 		}
 
 		// WIZARD TIME!!!
-		if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
+		if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && !G_VARS.IN_DIALOGUE){
 			if(m_Casted != true){
 				Vector2 mousePos = GetMousePosition();
 
@@ -136,11 +137,18 @@ void Player::Update(float& dT){
 		}
 
 		// TEMP stat changes
+		// LMAO might need to rebind tick_speed to another key
+		// Also cap player movement speed unless we truly dont care about it?
 		if(IsKeyPressed(KEY_UP)){
 			m_ManaRegen += 0.1f;
 			m_HealthRegen += 0.1f;
 			m_Defense += 0.1f;
 			m_SprintSpeed += 0.1f;
+		}
+
+		// Messing with tick speed 
+		if(IsKeyPressed(KEY_LEFT)){
+			G_VARS.TICK_SPEED += 0.1f;
 		}
 
 		// TEMP skin change
@@ -174,6 +182,7 @@ void Player::Update(float& dT){
 
 		Entity::Update(dT);
 
+		// Temp updating of skin
 		if(G_VARS.UPDATE_SKIN){
 			UnloadTexture(m_Idle);
 			UnloadTexture(m_Running);
@@ -200,6 +209,15 @@ void Player::Update(float& dT){
 			}
 		}
 
+		// TOOL COOLDOWN
+		if(m_ToolSwung){
+			m_SwingCooldown += dT;
+			if(m_SwingCooldown >= m_MaxSwingCooldown){
+				m_ToolSwung = false;
+				m_SwingCooldown = 0.0f;
+			}
+		}
+
 		// DAMAGE VISUALS
 		if(m_TookDamage){
 			m_FlashTimer += dT;
@@ -221,6 +239,7 @@ void Player::Update(float& dT){
 
 		// MOVEMENT
 		if(G_VARS.IN_DIALOGUE == false){
+			// Sprinting
 			if(IsKeyDown(KEY_LEFT_SHIFT)){
 				m_CurrentSpeed = m_BaseSpeed * m_SprintSpeed;
 				m_Texture = m_Running;
@@ -230,6 +249,8 @@ void Player::Update(float& dT){
 				m_Texture = m_Idle;
 				m_Sprinting = false;
 			}
+
+			// Movement
 			if(IsKeyDown(KEY_W)){
 				m_Pos.z -= m_CurrentSpeed * dT;
 				m_Walking = true;
@@ -249,6 +270,7 @@ void Player::Update(float& dT){
 				m_Walking = true;
 			}
 
+			// Moving Audio Section
 			if(m_Sprinting){
 				m_Walking = false;
 				if(!IsSoundPlaying(m_RunningSound)){

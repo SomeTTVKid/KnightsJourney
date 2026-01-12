@@ -45,6 +45,8 @@ class Player : public Entity{
 		//
 		static inline bool m_AxeEquipped = false;
 		static inline int m_AxeTier = 1;
+		//
+		static inline bool m_ToolSwung = false;
 		// 
 		static inline Sound m_InventoryOpen;
 		static inline Sound m_InventoryClose;
@@ -70,7 +72,7 @@ class Player : public Entity{
 		float m_SpellCost{};
 		float m_Defense{};
 		size_t m_MaxInventorySize = 12;
-		//
+		// Spell settings
 		int m_SelectedSpell = 0;
 		bool m_Casted = false;
 		bool m_TookDamage = false;
@@ -78,10 +80,16 @@ class Player : public Entity{
 		bool m_Walking = false;
 		float m_SpellCooldown{};
 		float m_CastTimer{};
+		// Tool Cooldown
+		float m_SwingCooldown{};
+		float m_MaxSwingCooldown { 1.0f };
+		// Taking damage
 		float m_FlashTimer{};
 		float m_FlashMaxTime {0.4f};
+		//
 		float m_WalkSoundTimer{};
 		float m_WalkSoundMax {2.5f};
+		//
 		std::map<std::unique_ptr<Item>, int> m_Inventory;
 
 };

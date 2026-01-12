@@ -47,6 +47,7 @@ struct GlobalVariables{
 	bool ITEM_SELECTED = false;
 	bool CHARACTER_PANEL = false;
 	bool DYSLEXIC = false;
+	bool POPUP_TEXT = false;
 
 	// Skin States
 	bool UPDATE_SKIN = false;
@@ -78,6 +79,9 @@ struct GlobalVariables{
 	// Audio
 	float VOLUME = 0.1f;
 
+	// Game Speed
+	float TICK_SPEED = 1.0f;
+
 	// Font
 	static inline Font FONT{};
 	float DEFAULT_FONT_SPACING = 1.0f;
@@ -88,6 +92,9 @@ struct GlobalVariables{
 	std::string INTERACT_TEXT = "Press 'E' To Interact";
 
 	// Entity Sizes
+	// TODO At some point remove these variables and only use prefabs
+	// Ez, pass size in param by default instead of by reference?
+	// Then we could always pass whatever we want whenever
 	Vector2 PLAYER_SIZE = { 1.0f, 1.0f};
 	Vector2 KNIGHT_SIZE = { 0.95f, 0.95f };
 	Vector2 GOBLIN_SIZE = { 0.8f, 0.8f };
@@ -102,6 +109,7 @@ struct GlobalVariables{
 	Vector2 SIGN_SIZE = { 1.0f, 1.0f };
 	Vector2 LOADER_SIZE = { 1.0f, 0.85f };
 	Vector2 ROCK_SIZE = { 2.0f, 1.8f };
+	Vector2 SMALL_ROCK_SIZE = { 0.65f, 0.65f };
 	Vector2 POTION_SIZE = { 0.5f, 0.5f };
 
 };

@@ -19,8 +19,11 @@ class Npc : public Entity{
 		Texture2D& GetDialogueTexture();
 		BoundingBox& GetInteractCollider();
 		std::string& GetDialogue();
+		bool& GetState();
 		size_t ProgressDialogue();
 		size_t StepBackDialogue();
+		size_t& ReturnDialogueCount();
+		size_t ReturnDialogueSize();
 	private:
 		Texture2D m_DialogueTexture;
 		Vector3 minRange = { m_Pos.x - m_Size.x / 2.0f , m_Pos.y, m_Pos.z - m_Size.x / 2.0f};

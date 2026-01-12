@@ -5,6 +5,9 @@
 #include "classes/utilities/globalVariables.h"
 
 // KEEP IN MIND: Future spells must have static member variable to access mana cost...sorry future me :P
+// TODO Change the sizes to remove the need of another static inlined variable?
+// Maybe when we instantiate we can add some sort of spell size modifier to the spell
+// Starts off at 0 and player can increase in slight increments
 
 class Projectile{
 	public:

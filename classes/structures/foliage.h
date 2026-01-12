@@ -21,7 +21,7 @@ class Grass01 : public Structure{
 };
 
 
-// Stones
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~STONE PREFABS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class Stone01 : public Structure{
 	public:
 		Stone01(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::STONE_ID)
@@ -31,9 +31,8 @@ class Stone01 : public Structure{
 				m_HasAnimation = false;
 				m_MaxFrames = 1;
 				// Collider
-				// Needs to have less height
 				m_ColliderMin = { m_Pos.x + m_Size.x / 7.3f, m_Pos.y, m_Pos.z - m_Size.x / 2.0f };
-				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 12.5f, m_Pos.y + m_Size.y / 2.0f, m_Pos.z + m_Size.x / 20.0f };
+				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 1.25f, m_ColliderMin.y + m_Size.y / 2.0f, m_ColliderMin.z + m_Size.x / 2.0f };
 				m_Collider = { m_ColliderMin, m_ColliderMax };
 
 			}
@@ -42,4 +41,25 @@ class Stone01 : public Structure{
 		}
 
 		static inline Texture2D m_Stone01Tex;
+};
+
+class Stone02 : public Structure{
+	public:
+		Stone02(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::STONE_ID)
+			: Structure(pos, size, id){
+				m_Texture = m_Stone02Tex;
+				m_HasCollider = true;
+				m_HasAnimation = false;
+				m_MaxFrames = 1;
+				// Collider
+				m_ColliderMin = { m_Pos.x - m_Size.x / 3.0f, m_Pos.y, m_Pos.z - m_Size.x / 2.0f };
+				m_ColliderMax = { m_ColliderMin.x + m_Size.x + m_Size.x / 1.6f, m_ColliderMin.y + m_Size.y, m_ColliderMin.z + m_Size.x / 2.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
+			}
+
+		~Stone02(){
+			std::cout << "Stone02 Removed" << std::endl;
+		}
+
+		static inline Texture2D m_Stone02Tex;
 };

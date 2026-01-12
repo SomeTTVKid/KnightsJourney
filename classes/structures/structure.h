@@ -18,42 +18,23 @@ class Structure{
 	public:
 		Structure(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs& id) 	
 			: m_Pos(pos), m_Size(size), m_ID(id){
-					if(m_HasCollider){
-						switch(m_ID){
-							case GlobalVariables::StructureIDs::TREE_ID: break;
-							
-							case GlobalVariables::StructureIDs::BUILDING_ID: 
-								m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
-								m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
-								m_Collider = { m_ColliderMin, m_ColliderMax };
-								break;
 
-							case GlobalVariables::StructureIDs::STONE_ID: break;
-
-							case GlobalVariables::StructureIDs::GRASS_ID: break;
-
-							case GlobalVariables::StructureIDs::ORE_ID: break;
-
-							default: std::cout << "Error in Structure Constructor" << std::endl; break;
-						}
-						// Vector3 colliderMin = { m_Pos.x + m_Size.x / 4.0f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f};
-						// Vector3 colliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f};
-						// m_Collider = { colliderMin, colliderMax };
-					}
 				}
 		virtual ~Structure(){}
 		virtual void Update(float& dT);
 		virtual void Draw(Camera3D& camera);
 		BoundingBox& GetCollider();
-		BoundingBox& GetLeavesCollider();
+		BoundingBox& GetCurrentLeavesCollider();
 		BoundingBox& GetInteractCollider();
 		float& GetHealth();
+		float& GetMaxHealth();
 		bool& GetState();
 		bool& HasCollider();
+		bool& IsDepleted();
 		Vector3& GetPos();
 		GlobalVariables::StructureIDs& GetID();
-		int& SetFrame();
-		void TakeDamage(float damage, int& toolTier);
+		void TakeDamage(float damage);
+		int& GetTier();
 
 	protected:
 		Vector3 m_Pos;
@@ -67,6 +48,10 @@ class Structure{
 		Vector3 m_LeavesColliderMin;
 		Vector3 m_LeavesColliderMax;
 		BoundingBox m_LeavesCollider{};
+		// Current Leaves Collider
+		BoundingBox m_CurrentLeavesCollider{};
+		// Empty Leaves Collider
+		BoundingBox m_EmptyLeavesCollider{};
 		// Interact
 		Vector3 m_InteractColliderMin;
 		Vector3 m_InteractColliderMax;
@@ -74,10 +59,20 @@ class Structure{
 		GlobalVariables::StructureIDs m_ID;
 		int m_Tier;
 		float m_Health;
+		float m_MaxHealth;
 		bool m_HasCollider = true;
 		bool m_Active = true;
+		bool m_Depleted = false;
 		bool m_HasAnimation = false;
 		bool m_UpdateCollider = false;
+		// Temp Text Display
+		bool m_InteractedWith = false;
+		std::string m_Text{};
+		float m_CurrentTime{};
+		float m_PopupTime = 1.5f;
+		unsigned char m_TextOpacity {255};
+		Vector2 m_TextPosition;
+		//
 		int m_CurrentFrame{};
 		int m_MaxFrames = 2;
 		float m_UpdateTime = 1.0 / 4.0;
