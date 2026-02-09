@@ -18,6 +18,9 @@ class Player : public Entity{
 		void Update(float& dT) override;
 		void TakeDamage(float damage);
 		void AddToInventory(std::unique_ptr<Item> item);
+		void RemoveFromInventory(Item* item);
+		// void UseItem(std::unique_ptr<Item> item);
+		void UseItem(Item* item);
 		const std::map<std::unique_ptr<Item>, int>& GetInventory() const;
 		Vector2& GetWorldSize();
 		Vector3& GetLastPos();
@@ -91,5 +94,6 @@ class Player : public Entity{
 		float m_WalkSoundMax {2.5f};
 		//
 		std::map<std::unique_ptr<Item>, int> m_Inventory;
+		std::vector<std::unique_ptr<Item>> m_Equipment;
 
 };

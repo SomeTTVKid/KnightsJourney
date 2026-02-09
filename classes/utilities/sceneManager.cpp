@@ -29,6 +29,10 @@ std::string& SceneManager::SetActiveQuest(){
 	return m_ActiveQuest;
 }
 
+Scene* SceneManager::GetCurrentScene(){
+	return m_CurrentScene;
+}
+
 // Sorting and being effecient is hard but this works
 void SceneManager::DepthBuffer(std::vector<DrawableVariant>& drawList) {
     // Create a temporary vector to store z-positions and indices.
@@ -731,6 +735,26 @@ void SceneManager::DrawSelectedItem(){
 		{0.0f, 0.0f, (float)m_ItemCardTex.width, (float)m_ItemCardTex.height}, 
 		ItemCardDest, 
 		{}, 0.0f, WHITE);
+
+	// TODO, we might need member variables for this
+	// So we would set the member variable here AND draw the rectangle
+	// Then if we fullscreen it, we would update the member variable size
+	// Probably need a check so we arent CONSTANTLY setting the member variable 
+	// How do we check this in scene however? 
+	// Use Item Button
+	DrawRectanglePro(
+		{ItemCardDest.x + 30 * G_VARS.WIDTH_SCALE, ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 75 * G_VARS.WIDTH_SCALE, 60 * G_VARS.HEIGHT_SCALE},
+		{}, 0.0f, GREEN);
+
+	// std::cout << ItemCardDest.x + ItemCardDest.width - 120 * G_VARS.WIDTH_SCALE << " " <<
+	// 			ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE << " " <<
+	// 			75 * G_VARS.WIDTH_SCALE << " " <<
+	// 			60 * G_VARS.HEIGHT_SCALE << std::endl;
+
+	// Discard Item Button
+	DrawRectanglePro(
+		{ItemCardDest.x + ItemCardDest.width - 120 * G_VARS.WIDTH_SCALE, ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 75 * G_VARS.WIDTH_SCALE, 60 * G_VARS.HEIGHT_SCALE},
+		{}, 0.0f, RED);
 
 	// Item Name
 	Vector2 nameTextSize = MeasureTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemName().c_str(), 16 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 1.0f);

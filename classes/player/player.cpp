@@ -7,6 +7,7 @@
 #include "classes/utilities/levelLoader.h"
 #include "classes/projectiles/projectile.h"
 #include <memory>
+#include <format>
 
 void Player::Update(float& dT){
 	// KEYBINDS
@@ -19,24 +20,6 @@ void Player::Update(float& dT){
 			}else{
 				Scene::m_Camera.fovy = 35.0f;   
 				Scene::m_Camera.projection = CAMERA_PERSPECTIVE;
-			}
-		}
-
-		// // INTERACTION
-		// TODO make sure to change this later so it account for other npcs...
-		// How could we account for more npcs...functionality would have to move to scene class to handle this i imagine OR 
-		// Probably move the resolution for dialogue into individual levels instead
-		// So here we would just set the flag for dialogue and the npcInDialogue
-		// Then in the level we could check the actual npc? perchance
-		// Maybe move this entire check into scene.cpp
- 
-		if(IsKeyPressed(KEY_E)){
-			for( auto& npc : Scene::m_Npcs){
-				if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), npc->GetInteractCollider())){
-					G_VARS.IN_DIALOGUE = true;
-					Scene::npcInDialogue = npc.get();
-					return;
-				}
 			}
 		}
 
@@ -86,54 +69,59 @@ void Player::Update(float& dT){
 			std::cout << "Npcs Size: " << Scene::m_Npcs.size() << std::endl;
 			std::cout << "Projectiles Size: " << Scene::m_Projectiles.size() << std::endl;
 			std::cout << "Items Size: " << Scene::m_Items.size() << std::endl;
+			std::cout << "Equipment Size " << m_Equipment.size() << std::endl;
 
 		}
 
 		// MELEE ATTACK
-		// TODO Add in cooldown here
-		// Make sure to make state, timer and maxTime
-		if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsKeyPressed(KEY_G)){
+		if((IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsMouseButtonDown(MOUSE_LEFT_BUTTON)) && !m_ToolSwung){
+			// Just reuse our tool swung state cause why not :D
 			for( auto& enemy : Scene::m_Enemies){
 				if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), enemy->GetCollider())){
 					if(CheckCollisionBoxes(GetCollider(), enemy->GetCollider())){
 						enemy->TakeDamage(m_Damage);
-						// TODO either move this to scene update or make sure to call scene popup text here later
+						// Update text AND position
+						if(G_VARS.POPUP_TEXT){
+							SceneManager::GetInstance().GetCurrentScene()->ResetPopupText();
+						}
+						std::string m_Text = std::format("{:.2f}", m_Damage);
+						SceneManager::GetInstance().GetCurrentScene()->SetPopupInfo(m_Text, enemy->GetPos());
+						G_VARS.POPUP_TEXT = true;
+						
 					}
 				}
 			}
+			m_ToolSwung = true;
 		}
 
 		// WIZARD TIME!!!
-		if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && !G_VARS.IN_DIALOGUE){
-			if(m_Casted != true){
-				Vector2 mousePos = GetMousePosition();
+		if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && !G_VARS.IN_DIALOGUE && m_Casted != true){
+			Vector2 mousePos = GetMousePosition();
 
-				// Add future spells to here for mana checks
-				switch(m_SelectedSpell){
-					case 0: m_SpellCost = Fireball::m_SpellCost; break;
-					case 1: m_SpellCost = FrostOrb::m_SpellCost; break;
-					case 2: m_SpellCost = LightningBolt::m_SpellCost; break;
-				}
-
-				if(m_Mana - m_SpellCost >= 0.00f){
-					std::unique_ptr<Projectile> m_CurrentSpell;
-
-					// Add future spells to here for creating them
-					switch(m_SelectedSpell){
-						case 0: m_CurrentSpell = std::make_unique<Fireball>(GetPos(), mousePos); break;
-						case 1: m_CurrentSpell = std::make_unique<FrostOrb>(GetPos(), mousePos); break;
-						case 2: m_CurrentSpell = std::make_unique<LightningBolt>(GetPos(), mousePos); break;
-					}
-
-					m_Mana -= m_CurrentSpell->ManaCost();
-					m_SpellCooldown = m_CurrentSpell->SpellCooldown();
-					PlaySound(m_CurrentSpell->m_CastingSound);
-					Scene::m_Projectiles.push_back(std::move(m_CurrentSpell));
-					m_Casted = true;
-
-				}
+			// Add future spells to here for mana checks
+			switch(m_SelectedSpell){
+				case 0: m_SpellCost = Fireball::m_SpellCost; break;
+				case 1: m_SpellCost = FrostOrb::m_SpellCost; break;
+				case 2: m_SpellCost = LightningBolt::m_SpellCost; break;
 			}
-			
+
+			if(m_Mana - m_SpellCost >= 0.00f){
+				std::unique_ptr<Projectile> m_CurrentSpell;
+
+				// Add future spells to here for creating them
+				switch(m_SelectedSpell){
+					case 0: m_CurrentSpell = std::make_unique<Fireball>(GetPos(), mousePos); break;
+					case 1: m_CurrentSpell = std::make_unique<FrostOrb>(GetPos(), mousePos); break;
+					case 2: m_CurrentSpell = std::make_unique<LightningBolt>(GetPos(), mousePos); break;
+				}
+
+				m_Mana -= m_CurrentSpell->ManaCost();
+				m_SpellCooldown = m_CurrentSpell->SpellCooldown();
+				PlaySound(m_CurrentSpell->m_CastingSound);
+				Scene::m_Projectiles.push_back(std::move(m_CurrentSpell));
+				m_Casted = true;
+
+			}
 		}
 
 		// TEMP stat changes
@@ -198,7 +186,6 @@ void Player::Update(float& dT){
 			}
 			G_VARS.UPDATE_SKIN = false;
 		}
-
 
 		// SPELL COOLDOWN
 		if(m_Casted){
@@ -329,6 +316,59 @@ void Player::AddToInventory(std::unique_ptr<Item> item){
    
     }
 }
+
+void Player::RemoveFromInventory(Item* item){
+	for(auto currentItem = m_Inventory.begin(); currentItem != m_Inventory.end(); ++currentItem){
+		if(currentItem->first.get() == item){
+			if(currentItem->second > 1){
+				currentItem->second -= 1;
+			}else{
+				Scene::m_SelectedItem = nullptr;
+				m_Inventory.erase(currentItem);
+				G_VARS.ITEM_SELECTED = false;
+				break;
+			}
+
+		}
+	}
+	
+}
+
+void Player::UseItem(Item* item){
+	if(!item) return;
+	switch(item->GetID()){
+		case Item::ItemID::HEALTH_POTION: 
+			if(m_Health + item->GetRestoreAmount() <= m_MaxHealth){
+				std::cout << m_Health << "/" << m_MaxHealth << std::endl;
+				m_Health += item->GetRestoreAmount();
+				RemoveFromInventory(item);
+			}else if(m_Health + item->GetRestoreAmount() >= m_MaxHealth && m_Health < m_MaxHealth){
+				std::cout << m_Health << "/" << m_MaxHealth << std::endl;
+				m_Health = m_MaxHealth;
+				RemoveFromInventory(item);
+			}
+			break;
+		case Item::ItemID::MANA_POTION: 
+			if(m_Mana + item->GetRestoreAmount() < m_MaxMana){
+				m_Mana += item->GetRestoreAmount();
+				RemoveFromInventory(item);
+			}else if(m_Mana + item->GetRestoreAmount() >= m_MaxMana && m_Mana < m_MaxMana){
+				m_Mana = m_MaxMana;
+				RemoveFromInventory(item);
+			}
+			break;
+		// TODO Make sure to move the item if its not a consumable to our equipment vector 
+		case Item::ItemID::WEAPON: 
+			// TODO Fix this so that we can push item to our equipment slot AND still remove items from the inventory
+			//m_Equipment.push_back(item); break;
+		case Item::ItemID::HELMET: break;
+		case Item::ItemID::CHEST: break;
+		case Item::ItemID::LEGS: break;
+		default: std::cout << "Defaulted" << std::endl; break;
+	}
+	
+}
+
 
 void Player::TakeDamage(float damage){
 	if(m_Health - damage <= 0.0f){

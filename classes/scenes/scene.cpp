@@ -31,6 +31,18 @@ void Scene::Popup_text(float& dT){
 	}
 }
 
+void Scene::ResetPopupText(){
+	m_CurrentTime = 0.0f;
+	m_TextOpacity = 255;
+	G_VARS.POPUP_TEXT = false;
+}
+
+void Scene::SetPopupInfo(std::string text, Vector3 enemyPos){
+	m_Text = text,
+	m_EntityPosition = enemyPos;
+	
+}
+
 void Scene::DisplayInteractText(){
 	DrawTextEx(G_VARS.FONT, G_VARS.INTERACT_TEXT.c_str(), m_WorldSpace, 28 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, ORANGE);
 }
@@ -129,6 +141,14 @@ void Scene::Update(float& dT){
 				return;
 			}
 		}
+
+		for( auto& npc : Scene::m_Npcs){
+			if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), npc->GetInteractCollider())){
+				G_VARS.IN_DIALOGUE = true;
+				Scene::npcInDialogue = npc.get();
+				return;
+			}
+		}
 	}
 
 	// Setting Camera Position Out of Main Menu
@@ -207,7 +227,7 @@ void Scene::Update(float& dT){
 						}
 					}
 
-					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetInteractCollider()) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+					if(CheckCollisionBoxes(m_Player->GetCollider(), structure->GetInteractCollider()) && (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonDown(MOUSE_BUTTON_LEFT))){
 						if(m_Player->m_ToolSwung != true){
 							// Woodcutting Section
 							if(m_Player->m_AxeEquipped && static_cast<int>(structure->GetID()) == 0){
@@ -220,14 +240,13 @@ void Scene::Update(float& dT){
 									// Need to get around only being able to display one thing at a time
 									// Need to somehow add this function call inside of each entity/structure's draw call
 									// Somehow draw text in the 3d space
-									if(G_VARS.POPUP_TEXT){
-										m_CurrentTime = 0.0f;
-										m_TextOpacity = 255;
-										G_VARS.POPUP_TEXT = false;
-									}
 									// Still need to find a way to display multiple text on the screen using this system!
 									// What if the entity subclass had a text variable, and instead of global flag for showing text, it was on taking damage
 									// Since even skill is just damaging the strucure?
+									if(G_VARS.POPUP_TEXT){
+										ResetPopupText();
+									}
+
 									m_Text = std::format("{:.2f}/{:.2f}", structure->GetHealth(), structure->GetMaxHealth());
 								}
 								else if(m_Player->m_AxeTier < structure->GetTier()){
@@ -313,12 +332,8 @@ void Scene::Update(float& dT){
 						enemy->TakeDamage(projectile->GetDamage());
 						enemy->GetPos().x += projectile->GetVector().x * 10.0f * dT;
 						enemy->GetPos().z += projectile->GetVector().y * 10.0f * dT;
-						// TODO Centralize this inside of our popup text function
-						// That way we arent repeating this over and over hopefully
 						if(G_VARS.POPUP_TEXT){
-							m_CurrentTime = 0.0f;
-							m_TextOpacity = 255;
-							G_VARS.POPUP_TEXT = false;
+							ResetPopupText();
 						}
 						m_Text = std::format("{:.2f}", projectile->GetDamage());
 						m_EntityPosition = enemy->GetPos();
@@ -328,7 +343,7 @@ void Scene::Update(float& dT){
 				}
 
 				// Collision with structures
-				// TODO Remove this later :D once we get houses inside of structure class
+				// TODO Remove this later :D once we get signs into structure class
 				for( auto& entity : m_Entities){
 					if(CheckCollisionBoxes(projectile->GetCollider(), entity->GetCollider())){
 						projectile->GetState() = false;
@@ -381,17 +396,36 @@ void Scene::Update(float& dT){
 	// Inventory Interaction
 	if(G_VARS.INVENTORY_OPEN && !m_Player->GetInventory().empty()){
 		if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+			// TEMP
+			Rectangle UseBtn = {
+				284, 372, 60, 36
+			};
+
+			Rectangle DltBtn = {
+				444, 372, 60, 36
+			};
+
 			// Check for collisionPointRec here
 			Vector2 mousePos = GetMousePosition();
 			for( auto& [item, itemCount] : m_Player->GetInventory()){
 				// TODO Make sure to check for buttons later before breaking
 				// So that we dont clear selectedItem pointer before interacting!
-				if (CheckCollisionPointRec(mousePos, item.get()->GetRect())) {
+				if(CheckCollisionPointRec(mousePos, item.get()->GetRect())) {
 					G_VARS.ITEM_SELECTED = true;
 					m_SelectedItem = item.get(); 
 					break;
+				}else if(CheckCollisionPointRec(mousePos, UseBtn)){
+					// TODO Fix this as well because its broken too :D
+					m_Player->UseItem(m_SelectedItem);
+					break;
+				}else if(CheckCollisionPointRec(mousePos, DltBtn)){
+					if(m_SelectedItem){
+						m_Player->RemoveFromInventory(m_SelectedItem);
+					}
+					break;
+				}else{
+					m_SelectedItem = nullptr;
 				}
-				m_SelectedItem = nullptr;
 			}
 		}
 	}

@@ -7,6 +7,8 @@
 // KEEP IN MIND: Future spells must have static member variable to access mana cost...sorry future me :P
 // TODO Change the sizes to remove the need of another static inlined variable?
 // Maybe when we instantiate we can add some sort of spell size modifier to the spell
+// Somehow would have to know the player member variables...which we are importing player into this class?
+// And we have a local pointer to player obj...viable then
 // Starts off at 0 and player can increase in slight increments
 
 class Projectile{
@@ -67,7 +69,7 @@ class Fireball : public Projectile{
 	public:
 		Fireball(Vector3 pos, Vector2 mousePos) 
 			: Projectile(pos, mousePos){
-				m_Size = m_FireballSize;
+				m_Size = { 0.65f, 0.65f };
 				m_Texture = m_Fireball;
 				m_LifeTime = 2.0f; 
 				m_Speed = 2.5f; 
@@ -84,7 +86,6 @@ class Fireball : public Projectile{
 		static inline Sound m_FireballExplosionSound;
 		static inline Texture2D m_Fireball;
 
-		static inline Vector2 m_FireballSize = { 0.65f, 0.65f };
 		static inline float m_SpellCost = 1.0f;
 
 };
@@ -93,7 +94,7 @@ class FrostOrb : public Projectile{
 	public:
 		FrostOrb(Vector3 pos, Vector2 mousePos) 
 			: Projectile(pos, mousePos){
-				m_Size = m_FrostOrbSize;
+				m_Size = { 0.75f, 0.75f };
 				m_Texture = m_FrostOrb;
 				m_LifeTime = 3.5f; 
 				m_Speed = 1.2f; 
@@ -110,7 +111,6 @@ class FrostOrb : public Projectile{
 		static inline Sound m_FrostOrbHitSound;
 		static inline Texture2D m_FrostOrb;
 
-		static inline Vector2 m_FrostOrbSize = { 0.75f, 0.75f };
 		static inline float m_SpellCost = 1.5f;
 
 };
@@ -119,7 +119,7 @@ class LightningBolt : public Projectile{
 	public:
 		LightningBolt(Vector3 pos, Vector2 mousePos) 
 			: Projectile(pos, mousePos){
-				m_Size = m_LightningBoltSize;
+				m_Size = { 0.55f, 0.55f };
 				m_Texture = m_LightningBolt;
 				m_LifeTime = 1.0f;
 				m_Speed = 3.5f;
@@ -136,7 +136,6 @@ class LightningBolt : public Projectile{
 			static inline Sound m_LightningBoltZapSound;
 			static inline Texture2D m_LightningBolt;
 
-			static inline Vector2 m_LightningBoltSize = { 0.55f, 0.55f };
 			static inline float m_SpellCost = 0.5f;
 
 };

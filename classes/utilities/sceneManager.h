@@ -32,6 +32,7 @@ class SceneManager{
 		void DrawInventory();
 		void PopupText(float timeToDisplay, float& dT, std::string text, Vector3& position);
 		std::string& SetActiveQuest();
+		Scene* GetCurrentScene();
 		//
 		static inline Texture2D m_ItemCardTex; 
 		static inline Texture2D m_InventoryTex;

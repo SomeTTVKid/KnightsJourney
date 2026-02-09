@@ -14,6 +14,10 @@
 
 // TODO NEXT
 
+// Update SceneManager & Scene to account for fullscreen use/dlt button positions
+
+// TODO Move our signs into the structure class
+
 // TODO Add npc interaction into each scene individually so we can force certain interactions
 // Maybe add in an extra button press to accept a 'quest' so that you cant spam through and miss instructions
 // Dunno if we really need this tbh, with ActiveQuest in now
@@ -89,6 +93,9 @@ int main(){
 
 // These are 'Permanent' member variables that are used through the game lifetime
 // Create a function/manager class to load in all of these textures{
+// Weapons
+	WoodenSword::m_WoodenSword = LoadTexture("classes/weapons/artwork/woodSword.png");
+
 // Spells
 	// Fireball
 	Fireball::m_Fireball = LoadTexture("classes/projectiles/artwork/fireball_animated.png");
@@ -133,6 +140,7 @@ int main(){
 //}
 	// Player Variables
 	Texture2D playerTex = LoadTexture("classes/player/artwork/player_idle.png");
+	// Texture2D playerTex = LoadTexture("classes/player/artwork/Phin_Player_W.png");
 	Vector3 playerPos = { 0.0f, 1.0f, 4.9f };
 
 	// Player Instantiation

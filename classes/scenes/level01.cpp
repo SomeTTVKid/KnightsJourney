@@ -39,6 +39,7 @@ void Level01::Load(){
 	// TEST ITEMS
 	Vector3 healthPotPos = {-0.2f, 1.0f, 4.2f};
 	Vector3 manaPotPos = {-2.5f, 1.0f, 0.0f};
+	Vector3 woodenSwordPos = {-0.2f, 1.0f, 4.5f};
 
 	auto healthPot = std::make_unique<HealthPotion>(true, healthPotPos);
 	Scene::m_Items.push_back(std::move(healthPot));
@@ -46,6 +47,9 @@ void Level01::Load(){
 	auto manaPot = std::make_unique<ManaPotion>(true, manaPotPos);
 	Scene::m_Items.push_back(std::move(manaPot));
 
+	auto woodSword = std::make_unique<WoodenSword>(woodenSwordPos);
+	Scene::m_Items.push_back(std::move(woodSword));
+	
 	// Level Loaders
 	toTown = new LevelLoader(loaderTex, G_VARS.LEVEL_02, m_ToTownPos, m_ToForestPos, G_VARS.LOADER_SIZE);
 	Scene::m_LevelLoaders.push_back(toTown);
@@ -74,19 +78,10 @@ void Level01::Load(){
 }
 
 void Level01::Update(float& dT){
-	// INTERACTION
-	if(IsKeyPressed(KEY_E) && !Scene::m_Npcs.empty()){
-		for( auto& npc : Scene::m_Npcs){
-			if(CheckCollisionBoxes(Scene::m_Player->GetCollider(), npc->GetInteractCollider())){
-				G_VARS.IN_DIALOGUE = true;
-				Scene::npcInDialogue = npc.get();
-			}
-		}
-	}
 
 	// UPDATE ACTIVE QUEST
-	if(G_VARS.IN_DIALOGUE){
-		if(Scene::npcInDialogue->ReturnDialogueCount() == Scene::npcInDialogue->ReturnDialogueSize() - 1 && levelStates.SpokeToBSInForest != true){
+	if(G_VARS.IN_DIALOGUE && levelStates.SpokeToBSInForest != true){
+		if(Scene::npcInDialogue->ReturnDialogueCount() == Scene::npcInDialogue->ReturnDialogueSize() - 1){
 			// TODO Change this down the line to a state or variable instead of hard coding?
 			// If we wanted we could just create a vector/array of strings and change the index?
 			SceneManager::GetInstance().SetActiveQuest() = "Talk to the BlackSmith in Town!";

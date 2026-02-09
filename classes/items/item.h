@@ -101,3 +101,31 @@ class Item{
 		std::string m_ItemDescription;
 
 };
+
+class Weapon : public Item{
+	public:
+		Weapon(Vector3& pos, bool animated = false, int maxFrames = 1)
+			: Item(true, pos){}
+		virtual ~Weapon(){
+			std::cout << "Weapon Destroyed!" << std::endl;
+		}
+
+
+};
+
+class WoodenSword : public Weapon{
+	public:
+		WoodenSword(Vector3& pos) : Weapon(pos){
+			m_Texture = m_WoodenSword;
+			m_Damage = 1.0f;
+			m_ID = ItemID::WEAPON;
+			m_ItemName = "Wooden Sword";
+			m_ItemDescription = "Deals 1 point of damage.";
+		};
+		~WoodenSword(){
+			std::cout << "Wooden Sword Destroyed!" << std::endl;
+		};
+
+		static inline Texture2D m_WoodenSword;
+
+};

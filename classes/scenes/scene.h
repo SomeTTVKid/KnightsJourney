@@ -27,6 +27,8 @@ class Scene{
 		void SetInteractText();
 		void DisplayInteractText();
 		void Popup_text(float& dT);
+		void ResetPopupText();
+		void SetPopupInfo(std::string text, Vector3 enemyPos);
 		//
 		static inline Camera3D m_Camera = {
 			{ 0.0f, 1.0f, 10.0f }, 	// Position
