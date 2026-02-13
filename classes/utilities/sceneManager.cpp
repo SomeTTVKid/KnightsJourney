@@ -477,6 +477,21 @@ void SceneManager::DrawUI(){
 
 		DrawRectangleRec(MeleeSlot, DARKGRAY);
 
+		if(Scene::m_Player->GetMeleeWeapon()){
+			// std::cout << "Weapon in melee slot" << std::endl;
+			// Access the weapon from player inventory here
+			// Need to add a function to return the weapon texture as reference
+			// Probably need to split the player inventory up into multiple vectors?? or arrays?
+			// Max size of 1
+			// Then draw the weapon texture to our weapon slot
+			DrawTexturePro(
+				Scene::m_Player->GetMeleeWeapon()->GetTexture(),
+				{0, 0, (float)Scene::m_Player->GetMeleeWeapon()->GetTexture().width, (float)Scene::m_Player->GetMeleeWeapon()->GetTexture().height},
+				MeleeSlot,
+				{}, 0.0f, WHITE
+			);
+		}
+
 		// Wand Weapon Slot
 		Rectangle WandSlot = {
 			MeleeSlot.x + MeleeSlot.width + 2,
@@ -673,7 +688,7 @@ void SceneManager::DrawInventory(){
 	//
 	for( auto& [item, itemCount] : Scene::m_Player->GetInventory()){
 		if(item != nullptr){
-			item.get()->SetRect() = {
+			item->SetRect() = {
 				(float)posX, 
 				(float)posY,
 				itemWidth,
@@ -685,19 +700,19 @@ void SceneManager::DrawInventory(){
 			// Create a rectangle around the mouse in the 2d space
 			// Check for collision in update probably when inventory is open
 			// Set a state for drawing this item selected rectangle
-			DrawRectangleRec(item.get()->GetRect(), GRAY);
+			DrawRectangleRec(item->GetRect(), GRAY);
 
 			DrawTexturePro(
-				item.get()->GetTexture(), 
-				{0.0f, 0.0f, (float)item.get()->GetTexture().width, (float)item.get()->GetTexture().height}, 
-				item.get()->GetRect(), {}, 0.0f, WHITE);
+				item->GetTexture(), 
+				{0.0f, 0.0f, (float)item->GetTexture().width, (float)item->GetTexture().height}, 
+				item->GetRect(), {}, 0.0f, WHITE);
 
 			// TODO Fix Text Count Positioning
 			// Fixed for now, anything in double digits fucks it up again, either cap stack size or account for it
-			DrawText(std::to_string(itemCount).c_str(), 
-					item.get()->GetRect().x + item.get()->GetRect().width - 8 * G_VARS.WIDTH_SCALE, 
-					item.get()->GetRect().y + item.get()->GetRect().height - 20 * G_VARS.HEIGHT_SCALE, 
-					15 * G_VARS.WIDTH_SCALE, WHITE);
+			    DrawText(std::to_string(itemCount).c_str(), 
+				    item->GetRect().x + item->GetRect().width - 8 * G_VARS.WIDTH_SCALE, 
+				    item->GetRect().y + item->GetRect().height - 20 * G_VARS.HEIGHT_SCALE, 
+				    15 * G_VARS.WIDTH_SCALE, WHITE);
 
 			if(rowCount >= 3){
 				posX = InventoryDest.x + 20 * G_VARS.WIDTH_SCALE;
@@ -723,7 +738,6 @@ void SceneManager::DrawInventory(){
 void SceneManager::DrawSelectedItem(){
 	// Item Card
 	Rectangle ItemCardDest = {
-		// G_VARS.WIDTH / 5.3f * G_VARS.WIDTH_SCALE,
 		G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f),
 		G_VARS.HEIGHT / 1.8f,
 		350 * G_VARS.WIDTH_SCALE,
@@ -743,17 +757,16 @@ void SceneManager::DrawSelectedItem(){
 	// How do we check this in scene however? 
 	// Use Item Button
 	DrawRectanglePro(
-		{ItemCardDest.x + 30 * G_VARS.WIDTH_SCALE, ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 75 * G_VARS.WIDTH_SCALE, 60 * G_VARS.HEIGHT_SCALE},
+		{ItemCardDest.x + 30 * G_VARS.WIDTH_SCALE, 
+		ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 
+		75 * G_VARS.WIDTH_SCALE, 60 * G_VARS.HEIGHT_SCALE},
 		{}, 0.0f, GREEN);
-
-	// std::cout << ItemCardDest.x + ItemCardDest.width - 120 * G_VARS.WIDTH_SCALE << " " <<
-	// 			ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE << " " <<
-	// 			75 * G_VARS.WIDTH_SCALE << " " <<
-	// 			60 * G_VARS.HEIGHT_SCALE << std::endl;
 
 	// Discard Item Button
 	DrawRectanglePro(
-		{ItemCardDest.x + ItemCardDest.width - 120 * G_VARS.WIDTH_SCALE, ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 75 * G_VARS.WIDTH_SCALE, 60 * G_VARS.HEIGHT_SCALE},
+		{ItemCardDest.x + ItemCardDest.width - 120 * G_VARS.WIDTH_SCALE, 
+		ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 
+		75 * G_VARS.WIDTH_SCALE, 60 * G_VARS.HEIGHT_SCALE},
 		{}, 0.0f, RED);
 
 	// Item Name

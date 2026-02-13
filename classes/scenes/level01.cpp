@@ -41,14 +41,14 @@ void Level01::Load(){
 	Vector3 manaPotPos = {-2.5f, 1.0f, 0.0f};
 	Vector3 woodenSwordPos = {-0.2f, 1.0f, 4.5f};
 
-	auto healthPot = std::make_unique<HealthPotion>(true, healthPotPos);
-	Scene::m_Items.push_back(std::move(healthPot));
+	auto healthPot = std::make_shared<HealthPotion>(true, healthPotPos);
+	Scene::m_Items.push_back(healthPot);
 
-	auto manaPot = std::make_unique<ManaPotion>(true, manaPotPos);
-	Scene::m_Items.push_back(std::move(manaPot));
+	auto manaPot = std::make_shared<ManaPotion>(true, manaPotPos);
+	Scene::m_Items.push_back(manaPot);
 
-	auto woodSword = std::make_unique<WoodenSword>(woodenSwordPos);
-	Scene::m_Items.push_back(std::move(woodSword));
+	auto woodSword = std::make_shared<WoodenSword>(woodenSwordPos);
+	Scene::m_Items.push_back(woodSword);
 	
 	// Level Loaders
 	toTown = new LevelLoader(loaderTex, G_VARS.LEVEL_02, m_ToTownPos, m_ToForestPos, G_VARS.LOADER_SIZE);

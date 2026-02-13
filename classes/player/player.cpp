@@ -69,7 +69,8 @@ void Player::Update(float& dT){
 			std::cout << "Npcs Size: " << Scene::m_Npcs.size() << std::endl;
 			std::cout << "Projectiles Size: " << Scene::m_Projectiles.size() << std::endl;
 			std::cout << "Items Size: " << Scene::m_Items.size() << std::endl;
-			std::cout << "Equipment Size " << m_Equipment.size() << std::endl;
+				//std::cout << "Equipment Size " << m_Equipment.size() << std::endl;
+				std::cout << "Melee Weapon " << (m_MeleeSlot ? "present" : "none") << std::endl;
 
 		}
 
@@ -286,11 +287,19 @@ float& Player::GetDamage(){
 	return m_Damage;
 }
 
-const std::map<std::unique_ptr<Item>, int>& Player::GetInventory() const{
+const std::map<std::shared_ptr<Item>, int>& Player::GetInventory() const{
 	return m_Inventory;
 }
 
-void Player::AddToInventory(std::unique_ptr<Item> item){
+Item* Player::GetMeleeWeapon() const{
+	return m_MeleeSlot ? m_MeleeSlot.get() : nullptr;
+}
+
+const std::shared_ptr<Item>& Player::GetMeleeSlot() const{
+	return m_MeleeSlot;
+}
+
+void Player::AddToInventory(std::shared_ptr<Item> item){
     bool found = false;
     for(auto& items : m_Inventory){
         auto invItem = items.first.get();
@@ -302,24 +311,24 @@ void Player::AddToInventory(std::unique_ptr<Item> item){
 		// Then we want to do another search to find the item
 		// Check the count all over again
 		// Probably not too good but i think it will work
-        if(item->GetID() == invItem->GetID()){
+		std::cout << item->IsStackable() << std::endl;
+		if(item->GetID() == invItem->GetID() && item->IsStackable() == true){
             ++itemCount; 
 
             found = true;
-			item = nullptr;
             break; 
         }
     }
 
     if(!found){
-        m_Inventory.insert(std::make_pair(std::move(item), 1));
+		m_Inventory.insert(std::make_pair(item, 1));
    
     }
 }
 
-void Player::RemoveFromInventory(Item* item){
+void Player::RemoveFromInventory(std::shared_ptr<Item> item){
 	for(auto currentItem = m_Inventory.begin(); currentItem != m_Inventory.end(); ++currentItem){
-		if(currentItem->first.get() == item){
+		if(currentItem->first.get() == item.get()){
 			if(currentItem->second > 1){
 				currentItem->second -= 1;
 			}else{
@@ -328,22 +337,19 @@ void Player::RemoveFromInventory(Item* item){
 				G_VARS.ITEM_SELECTED = false;
 				break;
 			}
-
 		}
 	}
-	
 }
 
-void Player::UseItem(Item* item){
-	if(!item) return;
+
+// TODO Add audio queues to using or equipping items :D
+void Player::UseConsumable(std::shared_ptr<Item> item){
 	switch(item->GetID()){
 		case Item::ItemID::HEALTH_POTION: 
 			if(m_Health + item->GetRestoreAmount() <= m_MaxHealth){
-				std::cout << m_Health << "/" << m_MaxHealth << std::endl;
 				m_Health += item->GetRestoreAmount();
 				RemoveFromInventory(item);
 			}else if(m_Health + item->GetRestoreAmount() >= m_MaxHealth && m_Health < m_MaxHealth){
-				std::cout << m_Health << "/" << m_MaxHealth << std::endl;
 				m_Health = m_MaxHealth;
 				RemoveFromInventory(item);
 			}
@@ -353,22 +359,48 @@ void Player::UseItem(Item* item){
 				m_Mana += item->GetRestoreAmount();
 				RemoveFromInventory(item);
 			}else if(m_Mana + item->GetRestoreAmount() >= m_MaxMana && m_Mana < m_MaxMana){
-				m_Mana = m_MaxMana;
 				RemoveFromInventory(item);
 			}
 			break;
-		// TODO Make sure to move the item if its not a consumable to our equipment vector 
-		case Item::ItemID::WEAPON: 
-			// TODO Fix this so that we can push item to our equipment slot AND still remove items from the inventory
-			//m_Equipment.push_back(item); break;
-		case Item::ItemID::HELMET: break;
-		case Item::ItemID::CHEST: break;
-		case Item::ItemID::LEGS: break;
+		default : std::cout << "Error in use consumable function in player.cpp" << std::endl;
+	}
+}
+
+void Player::EquipEquipment(std::shared_ptr<Item> item){
+	switch(item->GetID()){
+		case Item::ItemID::WEAPON : 
+			if(m_MeleeSlot){
+				std::cout << "Weapon already equipped" << std::endl;
+				break;
+			}else{
+				m_MeleeSlot = item;
+				m_Damage += m_MeleeSlot->GetDamageAmount();
+				RemoveFromInventory(item);
+			}
+			break;
+		case Item::ItemID::HELMET :
+			break;
+		case Item::ItemID::CHEST :
+			break;
+		case Item::ItemID::LEGS : 
+			break;
+		default : std::cout << "Error in equip equipment function in player.cpp" << std::endl;
+	}
+}
+
+void Player::UseItem(std::shared_ptr<Item> item){
+	if(!item){
+		std::cout << "Error in UseItem function with item being null" << std::endl;
+		return;
+	}
+
+	switch(item->GetItemTag()){
+		case Item::ItemTag::CONSUMABLE : UseConsumable(item); break;
+		case Item::ItemTag::EQUIPMENT : EquipEquipment(item); break;
 		default: std::cout << "Defaulted" << std::endl; break;
 	}
 	
 }
-
 
 void Player::TakeDamage(float damage){
 	if(m_Health - damage <= 0.0f){

@@ -14,9 +14,10 @@
             "windows": {
                 "command": "C:/raylib/w64devkit/bin/mingw32-make.exe",
                 "args": [
+                    "clean",
+                    "all",
                     "RAYLIB_PATH=C:/raylib/raylib",
                     "PROJECT_NAME=${workspaceFolderBasename}",
-                    "OBJS=*.cpp",
                     "BUILD_MODE=DEBUG"
                 ]
             },
@@ -29,7 +30,7 @@
             },
             "linux": {
                 "args": [
-					"-B",
+                    "-B",
                     "PROJECT_NAME=${workspaceFolderBasename}",
                     "DESTDIR=/home/linuxbrew/.linuxbrew",
                     "RAYLIB_LIBTYPE=SHARED",
@@ -41,6 +42,11 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared"
             },
             "problemMatcher": [
                 "$gcc"

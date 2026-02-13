@@ -42,7 +42,8 @@ class Scene{
 		static void SetPlayer(Player* Player);
 		//
 		static inline Npc* npcInDialogue = nullptr;
-		static inline Item* m_SelectedItem = nullptr;
+		static inline std::shared_ptr<Item> m_SelectedItem = nullptr;
+		// static inline std::unique_ptr<Item> m_SelectedItem = nullptr;
 		//
 		static inline std::vector<DrawableVariant> m_DrawList;
 		static inline std::vector<Entity*> m_Entities;
@@ -50,7 +51,7 @@ class Scene{
 		static inline std::vector<std::unique_ptr<Npc>> m_Npcs;
 		static inline std::vector<std::unique_ptr<Projectile>> m_Projectiles;
 		static inline std::vector<std::unique_ptr<Enemy>> m_Enemies;
-		static inline std::vector<std::unique_ptr<Item>> m_Items;
+		static inline std::vector<std::shared_ptr<Item>> m_Items;
 		static inline std::vector<std::unique_ptr<Structure>> m_Structures;
 		//
 		static inline Sound m_PickUpAudio;

@@ -62,6 +62,11 @@ class Item{
 			std::cout << "Item deleted from memory" << std::endl;
 		}
 
+		enum class ItemTag{
+			CONSUMABLE,
+			EQUIPMENT
+		};
+
 		enum class ItemID{
 			HEALTH_POTION,
 			MANA_POTION,
@@ -83,12 +88,16 @@ class Item{
 		virtual float& GetDefenseAmount();
 		virtual float& GetDamageAmount();
 		virtual const ItemID& GetID() const;
+		virtual const ItemTag& GetItemTag() const;
 		virtual std::string& GetItemName();
 		virtual std::string& GetItemDescription();
+
+		bool& IsStackable();
 
 	protected:
 		bool m_IsInWorldSpace;
 		bool m_Active = false;
+		bool m_IsStackable = false;
 		Vector3 m_WorldPos;
 		Texture2D m_Texture;
 		BoundingBox m_Collider;
@@ -97,6 +106,7 @@ class Item{
 		float m_DefenseAmount{};
 		float m_Damage{};
 		ItemID m_ID;
+		ItemTag m_TAG;
 		std::string m_ItemName;
 		std::string m_ItemDescription;
 
@@ -119,6 +129,7 @@ class WoodenSword : public Weapon{
 			m_Texture = m_WoodenSword;
 			m_Damage = 1.0f;
 			m_ID = ItemID::WEAPON;
+			m_TAG = ItemTag::EQUIPMENT;
 			m_ItemName = "Wooden Sword";
 			m_ItemDescription = "Deals 1 point of damage.";
 		};

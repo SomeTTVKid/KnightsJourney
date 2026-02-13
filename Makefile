@@ -187,7 +187,9 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         # Libraries for Windows desktop compilation
         LDLIBS = -lraylib -lopengl32 -lgdi32 -lwinmm
         # Build as GUI app (no console window)
-        LDFLAGS += -Wl,--subsystem,windows
+        # TODO Uncomment this line to remove the console
+        #LDFLAGS += -Wl,--subsystem,windows
+        LDFLAGS += -Wl,--subsystem,console
         # Required for physac examples
         #LDLIBS += -static -lpthread
     endif
@@ -312,7 +314,8 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
         # NOTE: WinMM library required to set high-res timer resolution
         LDLIBS = -lraylib -lopengl32 -lgdi32 -lwinmm
         # Build as GUI app (no console window)
-        LDFLAGS += -Wl,--subsystem,windows
+        # TODO Uncomment this line so we can not have a console for others
+        # LDFLAGS += -Wl,--subsystem,windows
         # Required for physac examples
         #LDLIBS += -static -lpthread
     endif

@@ -9,10 +9,14 @@ class ManaPotion : public Item{
 				m_RestorationAmount = 0.5f;
 				m_WorldPos = worldPos;
 				m_ID = ItemID::MANA_POTION;
+				m_TAG = ItemTag::CONSUMABLE;
 				m_ItemName = "Low-Quality Mana Potion";
 				m_ItemDescription = "Restores 0.5 Units of Mana.";
+				m_IsStackable = true;
 			}
-		~ManaPotion(){}
+		~ManaPotion(){
+			std::cout << "Mana Potion Destroyed!" << std::endl;
+		}
 
 		static inline Texture2D m_ManaPotionTex;
 		void Draw(Camera3D& camera) override;

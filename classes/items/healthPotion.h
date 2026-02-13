@@ -9,10 +9,14 @@ class HealthPotion : public Item{
 				m_RestorationAmount = 2.5f;
 				m_WorldPos = worldPos;
 				m_ID = ItemID::HEALTH_POTION;
+				m_TAG = ItemTag::CONSUMABLE;
 				m_ItemName = "Low-Quality Health Potion";
 				m_ItemDescription = "Restores 2.5 Health Points.";
+				m_IsStackable = true;
 			}
-		~HealthPotion(){}
+		~HealthPotion(){
+			std::cout << "Health Potion Destroyed!" << std::endl;
+		}
 
 		static inline Texture2D m_HealthPotionTex;
 		void Draw(Camera3D& camera) override;

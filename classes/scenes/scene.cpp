@@ -373,23 +373,23 @@ void Scene::Update(float& dT){
 	// Items
 	if(!m_Items.empty()){
 		for( auto& item : m_Items){
-			if(item && item.get()->GetState()){
-				if(CheckCollisionBoxes(m_Player->GetCollider(), item->GetCollider())){
-					SetInteractText();
-					if(IsKeyPressed(KEY_E) && m_Player->GetInventory().size() < m_Player->GetInventoryMaxSize()){
-						item->GetState() = false;
-						m_Player->AddToInventory(std::move(item));
-						auto itemToRemove = std::find(m_Items.begin(), m_Items.end(), item);
-						m_Items.erase(itemToRemove);
-						PlaySound(m_PickUpAudio);
-						break;
-					}else{
-						// Add a drawtext function call here with a timer 
-						// Will say 'Inventory Full'
-						break;
-					} 
+			if(item && item->GetState()){
+					if(CheckCollisionBoxes(m_Player->GetCollider(), item->GetCollider())){
+						SetInteractText();
+						if(IsKeyPressed(KEY_E) && m_Player->GetInventory().size() < m_Player->GetInventoryMaxSize()){
+							item->GetState() = false;
+							m_Player->AddToInventory(item);
+							auto itemToRemove = std::find(m_Items.begin(), m_Items.end(), item);
+							m_Items.erase(itemToRemove);
+							PlaySound(m_PickUpAudio);
+							break;
+						}else{
+							// Add a drawtext function call here with a timer 
+							// Will say 'Inventory Full'
+							break;
+						} 
+					}
 				}
-			}
 		}
 	}
 
@@ -398,11 +398,17 @@ void Scene::Update(float& dT){
 		if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
 			// TEMP
 			Rectangle UseBtn = {
-				284, 372, 60, 36
+				G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f) + 30 * G_VARS.WIDTH_SCALE, 
+				G_VARS.HEIGHT / 1.8f + 250 * (G_VARS.HEIGHT_SCALE / 2.0f) - 60 * G_VARS.HEIGHT_SCALE, 
+				75 * G_VARS.WIDTH_SCALE, 
+				60 * G_VARS.HEIGHT_SCALE
 			};
 
 			Rectangle DltBtn = {
-				444, 372, 60, 36
+				G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f) + 350 * G_VARS.WIDTH_SCALE - 120 * G_VARS.WIDTH_SCALE, 
+				G_VARS.HEIGHT / 1.8f + 250 * G_VARS.HEIGHT_SCALE / 2.0f - 60 * G_VARS.HEIGHT_SCALE,
+				75 * G_VARS.WIDTH_SCALE, 
+				60 * G_VARS.HEIGHT_SCALE
 			};
 
 			// Check for collisionPointRec here
@@ -410,12 +416,13 @@ void Scene::Update(float& dT){
 			for( auto& [item, itemCount] : m_Player->GetInventory()){
 				// TODO Make sure to check for buttons later before breaking
 				// So that we dont clear selectedItem pointer before interacting!
-				if(CheckCollisionPointRec(mousePos, item.get()->GetRect())) {
+				if(CheckCollisionPointRec(mousePos, item->GetRect())) {
 					G_VARS.ITEM_SELECTED = true;
-					m_SelectedItem = item.get(); 
+					m_SelectedItem = item; 
+					// TODO Maybe remove this break call and seperate the checks for the buttons?
 					break;
 				}else if(CheckCollisionPointRec(mousePos, UseBtn)){
-					// TODO Fix this as well because its broken too :D
+					// Use the currently selected item (may be null)
 					m_Player->UseItem(m_SelectedItem);
 					break;
 				}else if(CheckCollisionPointRec(mousePos, DltBtn)){

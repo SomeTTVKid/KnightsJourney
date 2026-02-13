@@ -14,8 +14,6 @@
 
 // TODO NEXT
 
-// Update SceneManager & Scene to account for fullscreen use/dlt button positions
-
 // TODO Move our signs into the structure class
 
 // TODO Add npc interaction into each scene individually so we can force certain interactions
@@ -129,6 +127,7 @@ int main(){
 	LevelLoader::m_TransitionSound = LoadSound("audio/levelExit.wav");
 
 	// Player 
+	// TODO add new sounds for using/equipping items
 	Player::m_InventoryOpen = LoadSound("audio/inventory_open.wav");
 	Player::m_InventoryClose = LoadSound("audio/inventory_close.wav");
 	Player::m_WalkingSound = LoadSound("audio/walking.wav");

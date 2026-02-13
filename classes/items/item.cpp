@@ -24,6 +24,10 @@ void Item::Draw(Camera3D& camera){
 	}
 }
 
+bool& Item::IsStackable(){
+	return m_IsStackable;
+}
+
 // Gettings/Setters
 bool& Item::GetState(){
 	return m_Active;
@@ -71,4 +75,8 @@ float& Item::GetDamageAmount(){
 
 const Item::ItemID& Item::GetID() const{
 	return m_ID;
+}
+
+const Item::ItemTag& Item::GetItemTag() const{
+	return m_TAG;
 }
