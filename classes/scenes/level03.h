@@ -17,7 +17,7 @@ class Level03 : public Scene{
 		void Unload();
 
 	private:
-		Texture2D loaderTex = LoadTexture("artwork/levelLoader.png");
+		Texture2D loaderTex = LoadTexture("classes/utilities/artwork/levelLoaders/levelLoader.png");
 		LevelLoader* toTown = nullptr;
 		size_t rockCount = 3;
 		size_t smallRockCount = 2;

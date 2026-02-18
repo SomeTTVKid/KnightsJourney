@@ -28,7 +28,7 @@ class Scene{
 		void DisplayInteractText();
 		void Popup_text(float& dT);
 		void ResetPopupText();
-		void SetPopupInfo(std::string text, Vector3 enemyPos);
+		void SetPopupInfo(std::string text, Vector3 enemyPos, unsigned char red, unsigned char green, unsigned char blue);
 		//
 		static inline Camera3D m_Camera = {
 			{ 0.0f, 1.0f, 10.0f }, 	// Position
@@ -70,6 +70,9 @@ class Scene{
 		std::string m_Text{};
 		float m_CurrentTime{};
 		float m_PopupTime = 1.5f;
+		unsigned char m_Red {255};
+		unsigned char m_Green {255};
+		unsigned char m_Blue {255};
 		unsigned char m_TextOpacity {255};
 		Vector2 m_TextPosition;
 		Vector3 m_EntityPosition;

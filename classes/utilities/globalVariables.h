@@ -18,7 +18,9 @@ struct GlobalVariables{
 		STONE_ID,
 		GRASS_ID,
 		BUILDING_ID,
-		ORE_ID
+		ORE_ID,
+		SIGN_ID,
+		CAMPFIRE_ID
 	};
 
 	std::vector<std::string> KEYBINDS{

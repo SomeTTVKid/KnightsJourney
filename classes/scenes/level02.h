@@ -29,8 +29,7 @@ class Level02 : public Scene{
 		void Unload();
 
 	private:
-		Texture2D signTex = LoadTexture("artwork/sign.png");
-		Texture2D loaderTex = LoadTexture("artwork/levelLoader.png");
+		Texture2D loaderTex = LoadTexture("classes/utilities/artwork/levelLoaders/levelLoader.png");
 		LevelLoader* toForest = nullptr;
 		LevelLoader* toWoods = nullptr;
 		LevelLoader* toBlackSmith = nullptr;

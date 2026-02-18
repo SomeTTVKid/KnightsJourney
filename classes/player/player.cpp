@@ -86,7 +86,7 @@ void Player::Update(float& dT){
 							SceneManager::GetInstance().GetCurrentScene()->ResetPopupText();
 						}
 						std::string m_Text = std::format("{:.2f}", m_Damage);
-						SceneManager::GetInstance().GetCurrentScene()->SetPopupInfo(m_Text, enemy->GetPos());
+						SceneManager::GetInstance().GetCurrentScene()->SetPopupInfo(m_Text, enemy->GetPos(), 255, 0, 0);
 						G_VARS.POPUP_TEXT = true;
 						
 					}
@@ -295,11 +295,24 @@ Item* Player::GetMeleeWeapon() const{
 	return m_MeleeSlot ? m_MeleeSlot.get() : nullptr;
 }
 
-const std::shared_ptr<Item>& Player::GetMeleeSlot() const{
-	return m_MeleeSlot;
+Item* Player::GetWandWeapon() const{
+	return m_WandSlot ? m_WandSlot.get() : nullptr;
 }
 
-void Player::AddToInventory(std::shared_ptr<Item> item){
+Item* Player::GetNecklaceSlot() const{
+	return m_NecklaceSlot ? m_NecklaceSlot.get() : nullptr;
+}
+
+Item* Player::GetRing01Slot() const{
+	return m_Ring01Slot ? m_Ring01Slot.get() : nullptr;
+}
+
+Item* Player::GetRing02Slot() const{
+	return m_Ring02Slot ? m_Ring02Slot.get() : nullptr;
+}
+
+void Player::AddToInventory(std::shared_ptr<Item>& item){
+	std::cout << "Item usecount before doing inventory checks " << item.use_count() << std::endl;
     bool found = false;
     for(auto& items : m_Inventory){
         auto invItem = items.first.get();
@@ -311,7 +324,6 @@ void Player::AddToInventory(std::shared_ptr<Item> item){
 		// Then we want to do another search to find the item
 		// Check the count all over again
 		// Probably not too good but i think it will work
-		std::cout << item->IsStackable() << std::endl;
 		if(item->GetID() == invItem->GetID() && item->IsStackable() == true){
             ++itemCount; 
 
@@ -321,19 +333,23 @@ void Player::AddToInventory(std::shared_ptr<Item> item){
     }
 
     if(!found){
-		m_Inventory.insert(std::make_pair(item, 1));
+		std::cout << "Item usecount before adding NEW item to inventory " << item.use_count() << std::endl;
+		m_Inventory.insert(std::make_pair(std::move(item), 1));
+		std::cout << "Item usecount AFTER adding NEW item to inventory " << item.use_count() << std::endl;
    
     }
 }
 
-void Player::RemoveFromInventory(std::shared_ptr<Item> item){
+void Player::RemoveFromInventory(std::shared_ptr<Item>& item){
 	for(auto currentItem = m_Inventory.begin(); currentItem != m_Inventory.end(); ++currentItem){
 		if(currentItem->first.get() == item.get()){
 			if(currentItem->second > 1){
 				currentItem->second -= 1;
 			}else{
+				std::cout << "Item usecount in delete function before deletion " << item.use_count() << std::endl;
 				Scene::m_SelectedItem = nullptr;
 				m_Inventory.erase(currentItem);
+				std::cout << "Item usecount in delete AFTER deletion " << item.use_count() << std::endl;
 				G_VARS.ITEM_SELECTED = false;
 				break;
 			}
@@ -343,7 +359,7 @@ void Player::RemoveFromInventory(std::shared_ptr<Item> item){
 
 
 // TODO Add audio queues to using or equipping items :D
-void Player::UseConsumable(std::shared_ptr<Item> item){
+void Player::UseConsumable(std::shared_ptr<Item>& item){
 	switch(item->GetID()){
 		case Item::ItemID::HEALTH_POTION: 
 			if(m_Health + item->GetRestoreAmount() <= m_MaxHealth){
@@ -366,11 +382,13 @@ void Player::UseConsumable(std::shared_ptr<Item> item){
 	}
 }
 
-void Player::EquipEquipment(std::shared_ptr<Item> item){
+void Player::EquipEquipment(std::shared_ptr<Item>& item){
 	switch(item->GetID()){
 		case Item::ItemID::WEAPON : 
 			if(m_MeleeSlot){
-				std::cout << "Weapon already equipped" << std::endl;
+				Vector3 tempPos = {m_Pos.x - 2.0f, m_Pos.y + 1.8f, m_Pos.z};
+				SceneManager::GetInstance().GetCurrentScene()->SetPopupInfo("Melee Weapon Already Equipped.", tempPos, 0, 255, 255);
+				G_VARS.POPUP_TEXT = true;
 				break;
 			}else{
 				m_MeleeSlot = item;
@@ -388,7 +406,7 @@ void Player::EquipEquipment(std::shared_ptr<Item> item){
 	}
 }
 
-void Player::UseItem(std::shared_ptr<Item> item){
+void Player::UseItem(std::shared_ptr<Item>& item){
 	if(!item){
 		std::cout << "Error in UseItem function with item being null" << std::endl;
 		return;

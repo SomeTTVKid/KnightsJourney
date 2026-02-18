@@ -17,14 +17,18 @@ class Player : public Entity{
 		void checkWorldBounds();
 		void Update(float& dT) override;
 		void TakeDamage(float damage);
-		void AddToInventory(std::shared_ptr<Item> item);
-		void RemoveFromInventory(std::shared_ptr<Item> item);
-		void UseItem(std::shared_ptr<Item> item);
-		void UseConsumable(std::shared_ptr<Item> item);
-		void EquipEquipment(std::shared_ptr<Item> item);
+		void AddToInventory(std::shared_ptr<Item>& item);
+		void RemoveFromInventory(std::shared_ptr<Item>& item);
+		void UseItem(std::shared_ptr<Item>& item);
+		void UseConsumable(std::shared_ptr<Item>& item);
+		void EquipEquipment(std::shared_ptr<Item>& item);
 		const std::map<std::shared_ptr<Item>, int>& GetInventory() const;
+		// Getters for equipment
 		Item* GetMeleeWeapon() const;
-		const std::shared_ptr<Item>& GetMeleeSlot() const;
+		Item* GetWandWeapon() const;
+		Item* GetNecklaceSlot() const;
+		Item* GetRing01Slot() const;
+		Item* GetRing02Slot() const;
 		Vector2& GetWorldSize();
 		Vector3& GetLastPos();
 		Vector3& GetSpawnPoint();
@@ -92,15 +96,15 @@ class Player : public Entity{
 		// Taking damage
 		float m_FlashTimer{};
 		float m_FlashMaxTime {0.4f};
-		//
+		// Walk audio
 		float m_WalkSoundTimer{};
 		float m_WalkSoundMax {2.5f};
 		//
 		std::map<std::shared_ptr<Item>, int> m_Inventory{};
 		std::shared_ptr<Item> m_MeleeSlot = nullptr;
 		std::shared_ptr<Item> m_WandSlot = nullptr;
-		std::shared_ptr<Item> m_HelmetSlot = nullptr;
-		std::shared_ptr<Item> m_ChestSlot = nullptr;
-		std::shared_ptr<Item> m_LegSlot = nullptr;
+		std::shared_ptr<Item> m_NecklaceSlot = nullptr;
+		std::shared_ptr<Item> m_Ring01Slot = nullptr;
+		std::shared_ptr<Item> m_Ring02Slot = nullptr;
 
 };

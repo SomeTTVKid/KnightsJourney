@@ -33,6 +33,80 @@ Scene* SceneManager::GetCurrentScene(){
 	return m_CurrentScene;
 }
 
+Rectangle& SceneManager::GetMeleeSlotRec(){
+	return m_MeleeSlot;
+}
+
+Rectangle& SceneManager::GetWandSlotRec(){
+	return m_WandSlot;
+}
+
+Rectangle& SceneManager::GetNecklaceSlotRec(){
+	return m_NecklaceSlot;
+}
+
+Rectangle& SceneManager::GetRing01SlotRec(){
+	return m_Ring01Slot;
+}
+
+Rectangle& SceneManager::GetRing02SlotRec(){
+	return m_Ring02Slot;
+}
+
+void SceneManager::DrawCharacterPanelRectangles(){
+		DrawRectangleRec(m_CharacterPanel, GRAY);
+		DrawRectangleRec(m_MeleeSlot, DARKGRAY);
+		DrawRectangleRec(m_WandSlot, DARKGRAY);
+		DrawRectangleRec(m_NecklaceSlot, DARKGRAY);
+		DrawRectangleRec(m_Ring01Slot, DARKGRAY);
+		DrawRectangleRec(m_Ring02Slot, DARKGRAY);
+}
+
+void SceneManager::ScaleUI(){
+	// Character Panel
+	if(G_VARS.FULLSCREEN){
+		m_CharacterPanel.x = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE - 150 * G_VARS.WIDTH_SCALE / 2.3f;
+	}else{
+		m_CharacterPanel.x = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE;
+	}
+	
+	m_CharacterPanel.y = G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE;
+	m_CharacterPanel.width = 200 * G_VARS.WIDTH_SCALE;
+	m_CharacterPanel.height = 300 * G_VARS.HEIGHT_SCALE;	
+	
+	// Melee Weapon Slot
+	m_MeleeSlot.x = m_CharacterPanel.x + 11 * G_VARS.WIDTH_SCALE;
+	m_MeleeSlot.y = m_CharacterPanel.y + 5;
+	m_MeleeSlot.width = m_CharacterPanel.width / 5;
+	m_MeleeSlot.height = 135 * G_VARS.HEIGHT_SCALE;
+
+	// Wand Slot
+	m_WandSlot.x = m_MeleeSlot.x + m_MeleeSlot.width + 2;
+	m_WandSlot.y = m_CharacterPanel.y + 5;
+	m_WandSlot.width = m_CharacterPanel.width / 5;
+	m_WandSlot.height = 135 * G_VARS.HEIGHT_SCALE;
+
+	// Necklace Slot
+	m_NecklaceSlot.x = m_WandSlot.x + m_WandSlot.width + 2;
+	m_NecklaceSlot.y = m_CharacterPanel.y + 5;
+	m_NecklaceSlot.width = m_CharacterPanel.width / 5;
+	m_NecklaceSlot.height = 135 * G_VARS.HEIGHT_SCALE;
+
+	// Ring01 Slot
+	m_Ring01Slot.x = m_NecklaceSlot.x + m_NecklaceSlot.width + 2;
+	m_Ring01Slot.y = m_CharacterPanel.y + 5;
+	m_Ring01Slot.width = m_CharacterPanel.width / 4;
+	m_Ring01Slot.height = 66 * G_VARS.HEIGHT_SCALE;
+
+	// Ring02 Slot
+	m_Ring02Slot.x = m_NecklaceSlot.x + m_NecklaceSlot.width + 2;
+	m_Ring02Slot.y = m_Ring01Slot.y + m_Ring01Slot.height + 2;
+	m_Ring02Slot.width = m_CharacterPanel.width / 4;
+	m_Ring02Slot.height = 66 * G_VARS.HEIGHT_SCALE;
+
+	m_UpdateUI = false;
+}
+
 // Sorting and being effecient is hard but this works
 void SceneManager::DepthBuffer(std::vector<DrawableVariant>& drawList) {
     // Create a temporary vector to store z-positions and indices.
@@ -280,6 +354,7 @@ void SceneManager::Draw(){
 		}
 
 	// Alive and Paused
+	// TODO Revamp how quickly death screen comes up so we can close all UI features :D
 	}else if(G_VARS.IS_PAUSED){
 		G_VARS.INVENTORY_OPEN = false;
 		DrawPauseScreen();
@@ -327,6 +402,11 @@ void SceneManager::DrawUI(){
 	}
 
 // Player Resources
+
+	// TODO Move these into the header file as well, ideally we should have most of this in the header
+	// That way we only call draw and then using update ui variable to change sizes :D
+	// Move these draw calls to the top of this function 
+
 	// Heart Positions
 	Vector2 heartPosition = {10 * G_VARS.WIDTH_SCALE, 15 * G_VARS.HEIGHT_SCALE};
 	Vector2 maxHeartPosition = {10 * G_VARS.WIDTH_SCALE, 15 * G_VARS.HEIGHT_SCALE};
@@ -401,7 +481,7 @@ void SceneManager::DrawUI(){
 	}
 
 // MiniMap
-	DrawRectangle(G_VARS.WIDTH - 200 * G_VARS.WIDTH_SCALE, 0, 200 * G_VARS.WIDTH_SCALE, 150 * G_VARS.HEIGHT_SCALE, YELLOW);
+	DrawRectangle(G_VARS.WIDTH - 200 * G_VARS.WIDTH_SCALE, 0, 200 * G_VARS.WIDTH_SCALE, 150 * G_VARS.HEIGHT_SCALE, {253, 249, 0, 100});
 
 // Current Active Quest
 	Rectangle ActiveQuest = {
@@ -420,6 +500,8 @@ void SceneManager::DrawUI(){
 
 // Action Bar 
 	if(!G_VARS.IN_DIALOGUE){
+		// TODO Also move this into header and only call draw call in here
+		// Connect it to update ui call
 		Rectangle ActionBar = {
 			G_VARS.WIDTH / 2.0f - 80 * G_VARS.WIDTH_SCALE / 2.0f, 
 			G_VARS.HEIGHT - 150 * G_VARS.HEIGHT_SCALE, 
@@ -433,6 +515,8 @@ void SceneManager::DrawUI(){
 			ActionBar,
 			{}, 0.0f, WHITE);
 
+		// TODO Also move this into header and only call draw call in here
+		// Connect it to update ui call
 		Vector2 spellTexDimension = {50 * G_VARS.WIDTH_SCALE, 75 * G_VARS.HEIGHT_SCALE};
 
 		DrawTexturePro(
@@ -448,91 +532,30 @@ void SceneManager::DrawUI(){
 // Character Panel
 	if(G_VARS.CHARACTER_PANEL && !G_VARS.IN_DIALOGUE){
 		// Character Panel
-		// This works for now on the laptop, check on desktop and change accordingly
 		if(m_UpdateUI){
-			if(G_VARS.FULLSCREEN){
-				m_CharacterPanelX = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE - 200 * G_VARS.WIDTH_SCALE / 2.3f;		
-			}else{
-				m_CharacterPanelX = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE;
-			}
-			m_UpdateUI = false;
+			ScaleUI();
 		}
 
-		Rectangle CharacterPanel = {
-			m_CharacterPanelX,
-			G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
-			200 * G_VARS.WIDTH_SCALE, 
-			300 * G_VARS.HEIGHT_SCALE
-		};
-
-		DrawRectangleRec(CharacterPanel, GRAY);
-
-		//Melee Weapon Slot
-		Rectangle MeleeSlot = {
-			CharacterPanel.x + 11 * G_VARS.WIDTH_SCALE,
-			CharacterPanel.y + 5,
-			CharacterPanel.width / 5,
-			135 * G_VARS.HEIGHT_SCALE
-		};
-
-		DrawRectangleRec(MeleeSlot, DARKGRAY);
+		DrawCharacterPanelRectangles();
 
 		if(Scene::m_Player->GetMeleeWeapon()){
-			// std::cout << "Weapon in melee slot" << std::endl;
-			// Access the weapon from player inventory here
-			// Need to add a function to return the weapon texture as reference
-			// Probably need to split the player inventory up into multiple vectors?? or arrays?
-			// Max size of 1
-			// Then draw the weapon texture to our weapon slot
+			// Probably want to change this so it doesnt run every single frame
 			DrawTexturePro(
 				Scene::m_Player->GetMeleeWeapon()->GetTexture(),
 				{0, 0, (float)Scene::m_Player->GetMeleeWeapon()->GetTexture().width, (float)Scene::m_Player->GetMeleeWeapon()->GetTexture().height},
-				MeleeSlot,
+				m_MeleeSlot,
 				{}, 0.0f, WHITE
 			);
 		}
 
-		// Wand Weapon Slot
-		Rectangle WandSlot = {
-			MeleeSlot.x + MeleeSlot.width + 2,
-			CharacterPanel.y + 5,
-			CharacterPanel.width / 5,
-			135 * G_VARS.HEIGHT_SCALE
-		};
 
-		DrawRectangleRec(WandSlot, DARKGRAY);
+		// TODO Also move this into header and only call draw call in here
+		// Connect it to update ui call
+		float CharacterPanelStatY = m_CharacterPanel.y + m_CharacterPanel.height / 2.0f;
+		float CharacterPanelStatX = m_CharacterPanel.x + 2;
 
-		// Necklace Slot
-		Rectangle NecklaceSlot = {
-			WandSlot.x + WandSlot.width + 2,
-			CharacterPanel.y + 5,
-			CharacterPanel.width / 5,
-			135 * G_VARS.HEIGHT_SCALE
-		};
-
-		DrawRectangleRec(NecklaceSlot, DARKGRAY);
-
-		// Ring Slots
-		Rectangle RingSlot1 = {
-			NecklaceSlot.x + NecklaceSlot.width + 2,
-			CharacterPanel.y + 5,
-			CharacterPanel.width / 4,
-			66 * G_VARS.HEIGHT_SCALE
-		};
-
-		Rectangle RingSlot2 = {
-			NecklaceSlot.x + NecklaceSlot.width + 2,
-			RingSlot1.y + RingSlot1.height + 2,
-			CharacterPanel.width / 4,
-			66 * G_VARS.HEIGHT_SCALE
-		};
-
-		DrawRectangleRec(RingSlot1, DARKGRAY);
-		DrawRectangleRec(RingSlot2, DARKGRAY);
-
-		float CharacterPanelStatY = CharacterPanel.y + CharacterPanel.height / 2.0f;
-		float CharacterPanelStatX = CharacterPanel.x + 2;
-
+		// TODO For these strings, set a base value and make functions for each section to update their values
+	
 		// Player Health 
 		std::string playerHealth = std::format("Health: {:.2f}/{:.2f} Regen: {:.2f}",
 		                                        Scene::m_Player->GetHealth(),
@@ -588,16 +611,26 @@ void SceneManager::DrawDeadScreen(){
 }
 
 void SceneManager::DrawPauseScreen(){
+	// Load textures for pause screen in main menu
+	// Never unload them
+	// Draw them here in the pause screen
+	// Maybe we should move all those textures into this class as static member variables?
+	// Could also move the artwork into this class as well then :D cleaning up that main artwork folder some more
+	// (quitGameButton, settingsButton, levelLoader)
+	// Create a new texture for a new button (continueButton)
 	DrawRectangle(0, 0, (float)G_VARS.WIDTH, (float)G_VARS.HEIGHT, { 0, 0, 0, 2 });
 
 	for( size_t i = 0; i < G_VARS.KEYBINDS.size(); ++i){
 		DrawText(G_VARS.KEYBINDS[i].c_str(), 0, i * 15, 15, WHITE); 
 	}
 
+	// TODO Remove this once we have buttons in place
 	if(IsKeyPressed(KEY_ENTER)){
 		G_VARS.RUNNING = false;
 
 	}
+
+	//DrawTextureEx()
 }
 
 void SceneManager::DrawDialogue(){
@@ -666,6 +699,8 @@ void SceneManager::DrawDialogue(){
 
 // Inventory Screen
 void SceneManager::DrawInventory(){
+	// TODO Move this into header like rest of shit
+	// Connect to update ui call
 	Rectangle InventoryDest = {
 		(float)G_VARS.WIDTH / 1.46f, 
 		(float)G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
@@ -736,6 +771,9 @@ void SceneManager::DrawInventory(){
 }
 
 void SceneManager::DrawSelectedItem(){
+
+	// TODO Move this into header AS WELL :DDDD
+
 	// Item Card
 	Rectangle ItemCardDest = {
 		G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f),
@@ -750,11 +788,7 @@ void SceneManager::DrawSelectedItem(){
 		ItemCardDest, 
 		{}, 0.0f, WHITE);
 
-	// TODO, we might need member variables for this
-	// So we would set the member variable here AND draw the rectangle
-	// Then if we fullscreen it, we would update the member variable size
-	// Probably need a check so we arent CONSTANTLY setting the member variable 
-	// How do we check this in scene however? 
+	// TODO Create two more rectangles inside of the header file for these buttons
 	// Use Item Button
 	DrawRectanglePro(
 		{ItemCardDest.x + 30 * G_VARS.WIDTH_SCALE, 
@@ -780,6 +814,8 @@ void SceneManager::DrawSelectedItem(){
 	float itemHeight = 100 * G_VARS.HEIGHT_SCALE;
 	float posX = ItemCardDest.x + ItemCardDest.width / 2.0f - itemWidth / 2.0f;
 	float posY = ItemCardDest.y + 35 * G_VARS.HEIGHT_SCALE;
+
+	// TODO Move this into header AS WELL :DDDD
 
 	Rectangle dest = {
 		posX,

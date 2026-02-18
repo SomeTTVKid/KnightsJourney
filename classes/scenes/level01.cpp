@@ -13,8 +13,10 @@
 
 void Level01::Load(){
 	OakTree::m_OakTreeTex = LoadTexture("classes/structures/artwork/trees/oakTree.png");
+	Sign01::m_Sign01Tex = LoadTexture("classes/structures/artwork/signs/sign.png");
+	Campfire01::m_Campfire01Tex = LoadTexture("classes/structures/artwork/campfires/campfire.png");
 	
-	Scene::m_LevelEnterAudio = LoadSound("audio/levelExit.wav");
+	Scene::m_LevelEnterAudio = LoadSound("audio/levelChange/levelExit.wav");
 
 	Scene::Load();
 
@@ -42,25 +44,25 @@ void Level01::Load(){
 	Vector3 woodenSwordPos = {-0.2f, 1.0f, 4.5f};
 
 	auto healthPot = std::make_shared<HealthPotion>(true, healthPotPos);
-	Scene::m_Items.push_back(healthPot);
+	Scene::m_Items.push_back(std::move(healthPot));
 
 	auto manaPot = std::make_shared<ManaPotion>(true, manaPotPos);
-	Scene::m_Items.push_back(manaPot);
+	Scene::m_Items.push_back(std::move(manaPot));
 
 	auto woodSword = std::make_shared<WoodenSword>(woodenSwordPos);
-	Scene::m_Items.push_back(woodSword);
+	Scene::m_Items.push_back(std::move(woodSword));
 	
 	// Level Loaders
 	toTown = new LevelLoader(loaderTex, G_VARS.LEVEL_02, m_ToTownPos, m_ToForestPos, G_VARS.LOADER_SIZE);
 	Scene::m_LevelLoaders.push_back(toTown);
 
 	// Level Loader Signs
-	Entity* toTownSign = new Entity(signTex, G_VARS.SIGN_SIZE, m_ToTownPos, G_VARS.LEFT, true, G_VARS.STRUCTURE_ID, 1);
-	Scene::m_Entities.push_back(toTownSign);
+	auto toTownSign = std::make_unique<Sign01>(m_ToTownPos, G_VARS.SIGN_SIZE, -1.0f);
+	Scene::m_Structures.push_back(std::move(toTownSign));
 
 	// Campfire
-	Entity* campfire = new Entity(campfireTex, G_VARS.CAMPFIRE_SIZE, {2.4f, 1.0f, 0.4f}, G_VARS.RIGHT, true, G_VARS.STRUCTURE_ID);
-	Scene::m_Entities.push_back(campfire);
+	auto campfire = std::make_unique<Campfire01>(m_CampfirePos, G_VARS.CAMPFIRE_SIZE);
+	Scene::m_Structures.push_back(std::move(campfire));
 
 	// Trees
 	for( size_t t = 0; t < treeCount; ++t){
@@ -113,9 +115,9 @@ void Level01::Unload(){
 	UnloadTexture(goblinTex);
 	UnloadTexture(eKnightTex);
 	UnloadTexture(OakTree::m_OakTreeTex);
-	UnloadTexture(signTex);
+	UnloadTexture(Sign01::m_Sign01Tex);
 	UnloadTexture(loaderTex);
-	UnloadTexture(campfireTex);
+	UnloadTexture(Campfire01::m_Campfire01Tex);
 	UnloadTexture(npc01Tex);
 	UnloadTexture(npc01Dialogue);
 

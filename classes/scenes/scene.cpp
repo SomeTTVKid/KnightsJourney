@@ -23,7 +23,7 @@ void Scene::Popup_text(float& dT){
 	m_TextOpacity -= 119.5f * dT; 
 	m_TextOpacity = std::clamp(static_cast<float>(m_TextOpacity), 0.0f, 255.0f);
 	if(m_CurrentTime < m_PopupTime){
-		DrawTextEx(G_VARS.FONT, m_Text.c_str(), m_TextPosition, 38 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, {255, 255, 255, m_TextOpacity});
+		DrawTextEx(G_VARS.FONT, m_Text.c_str(), m_TextPosition, 38 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, {m_Red, m_Green, m_Blue, m_TextOpacity});
 	}else{
 		m_CurrentTime = 0.0f;
 		G_VARS.POPUP_TEXT = false;
@@ -32,14 +32,18 @@ void Scene::Popup_text(float& dT){
 }
 
 void Scene::ResetPopupText(){
+	m_EntityPosition = {};
 	m_CurrentTime = 0.0f;
 	m_TextOpacity = 255;
 	G_VARS.POPUP_TEXT = false;
 }
 
-void Scene::SetPopupInfo(std::string text, Vector3 enemyPos){
+void Scene::SetPopupInfo(std::string text, Vector3 enemyPos, unsigned char red, unsigned char green, unsigned char blue){
 	m_Text = text,
 	m_EntityPosition = enemyPos;
+	m_Red = red;
+	m_Green = green;
+	m_Blue = blue;
 	
 }
 
@@ -255,7 +259,7 @@ void Scene::Update(float& dT){
 								else{
 									m_Text = "This resource is depleted!";
 								}
-								m_EntityPosition = structure->GetPos();
+								SetPopupInfo(m_Text, structure->GetPos(), 0, 255, 255);
 								G_VARS.POPUP_TEXT = true;
 								break;
 							}
@@ -336,7 +340,7 @@ void Scene::Update(float& dT){
 							ResetPopupText();
 						}
 						m_Text = std::format("{:.2f}", projectile->GetDamage());
-						m_EntityPosition = enemy->GetPos();
+						SetPopupInfo(m_Text, enemy->GetPos(), 255, 0, 0);
 						G_VARS.POPUP_TEXT = true;
 						break;
 					}
@@ -435,6 +439,34 @@ void Scene::Update(float& dT){
 				}
 			}
 		}
+	}
+
+	if(G_VARS.CHARACTER_PANEL){
+		// TODO Implement interactions here while also checking if items are in correct slots....
+		if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+			// Create a function that takes an item
+			// Make the function draw an ui interface for interacting
+			// We want two buttons to show
+			// Unequip
+			// Inspect
+			// Inspect will set our scene m_SelectedItem ptr to the item
+			// Unequip will just move the ptr from the slot to the inventory
+			// Want border to show around slot we have clicked on just like selecting item in inventory
+
+			Vector2 mousePos = GetMousePosition();
+			if(CheckCollisionPointRec(mousePos, SceneManager::GetInstance().GetMeleeSlotRec()) && m_Player->GetMeleeWeapon()){
+				std::cout << "Clicked on melee weapon slot" << std::endl;
+			}else if(CheckCollisionPointRec(mousePos, SceneManager::GetInstance().GetWandSlotRec()) && m_Player->GetWandWeapon()){
+				std::cout << "Clicked on wand slot" << std::endl;
+			}else if(CheckCollisionPointRec(mousePos, SceneManager::GetInstance().GetNecklaceSlotRec()) && m_Player->GetNecklaceSlot()){
+				std::cout << "Clicked on necklace slot" << std::endl;
+			}else if(CheckCollisionPointRec(mousePos, SceneManager::GetInstance().GetRing01SlotRec()) && m_Player->GetRing01Slot()){
+				std::cout << "Clicked on ring01 slot" << std::endl;
+			}else if(CheckCollisionPointRec(mousePos, SceneManager::GetInstance().GetRing02SlotRec()) && m_Player->GetRing02Slot()){
+				std::cout << "Clicked on ring02 slot" << std::endl;
+			}
+		}
+		
 	}
 
 	// Regeneration

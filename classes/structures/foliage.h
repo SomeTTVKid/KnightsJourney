@@ -1,9 +1,7 @@
 #include "structure.h"
 #include "classes/utilities/globalVariables.h"
 
-// Put Stones inside of here
-
-// Grass
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GRASS PREFABS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class Grass01 : public Structure{
 	public:
 		Grass01(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::GRASS_ID)
@@ -62,4 +60,52 @@ class Stone02 : public Structure{
 		}
 
 		static inline Texture2D m_Stone02Tex;
+};
+
+
+// Signs
+class Sign01 : public Structure{
+	public:
+		Sign01(Vector3 pos, Vector2& size, float facing = 1.0f, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::SIGN_ID)
+			// TODO Add in param for facing direction in constuctor!!!!
+			: Structure(pos, size, id){
+				m_Texture = m_Sign01Tex;
+				m_HasCollider = true;
+				m_HasAnimation = false;
+				m_MaxFrames = 1;
+				m_Facing = facing;
+				// Collider
+				m_ColliderMin = { m_Pos.x + m_Size.x / 3.0f, m_Pos.y, m_Pos.z - m_Size.x / 2.5f };
+				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 3.0f, m_ColliderMin.y + m_Size.y / 2.0f, m_ColliderMin.z + m_Size.x / 2.5f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
+		}
+
+		~Sign01(){
+			std::cout << "Sign01 Removed" << std::endl;
+		}
+
+		static inline Texture2D m_Sign01Tex;
+};
+
+// TODO Add a collider to this
+// Campfires
+class Campfire01 : public Structure{
+	public:
+		Campfire01(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::CAMPFIRE_ID)
+			: Structure(pos, size, id){
+				m_Texture = m_Campfire01Tex;
+				m_HasCollider = true;
+				m_HasAnimation = true;
+				m_MaxFrames = 4;
+				// Collider
+				m_ColliderMin = { m_Pos.x + m_Size.x / 3.5f, m_Pos.y, m_Pos.z - m_Size.x / 3.0f };
+				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 2.0f, m_ColliderMin.y + m_Size.y, m_ColliderMin.z + m_Size.x / 4.0f };
+				m_Collider = { m_ColliderMin, m_ColliderMax };
+		}
+
+		~Campfire01(){
+			std::cout << "Campfire01 Removed" << std::endl;
+		}
+
+		static inline Texture2D m_Campfire01Tex;
 };

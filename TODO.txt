@@ -21,24 +21,6 @@
 // Might as well create a simple stat boost system with 3 choices
 // Also will need to hook armor and weapons into this system
 
-// TODO create a function for items called useConsumable
-// Switch case inside this function on the ID of the item
-// If health, do health checks and increase player health
-// If mana, do above for mana
-// Do a check of the item count to see if item.second - 1 <= 0
-// if it is, remove the item from inventory
-// Delete the item pointer once its out of inventory
-// If not just decrement item.second
-// Take into account armor and the such
-// Might need a function to update player stats? like offensive stats
-
-// TODO Work on interacting with the inventory
-// Think about how we can draw weapons
-
-// TODO Create a floating damage number system 
-// When dealing or taking damage, temporarily draw the number above the entity that took damage
-// Reuse code for doing interact text :D
-
 // TODO Fix knockback ignoring collision checks lol, 
 // Certainly something weird happening here...might need to fix how we resolve collisions
 // Maybe a shunt mechanic is finally called for

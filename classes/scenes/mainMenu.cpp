@@ -3,13 +3,13 @@
 #include "classes/utilities/globalVariables.h"
 
 void MainMenu::Load(){
-	Scene::m_LevelMusic = LoadMusicStream("audio/mainMenu.mp3");
+	Scene::m_LevelMusic = LoadMusicStream("audio/music/mainMenu.mp3");
 	m_BackgroundTex = LoadTexture("classes/utilities/artwork/mainMenuBackground.png");
 	m_TitleTex = LoadTexture("classes/utilities/artwork/TitleText.png");
-	m_NewGameButtonTex = LoadTexture("artwork/newGameButton.png");
-	m_LoadGameButtonTex = LoadTexture("artwork/loadGameButton.png");
-	m_SettingsButtonTex = LoadTexture("artwork/settingsButton.png");
-	m_QuitGameButtonTex = LoadTexture("artwork/quitGameButton.png");
+	m_NewGameButtonTex = LoadTexture("classes/utilities/artwork/buttons/newGameButton.png");
+	m_LoadGameButtonTex = LoadTexture("classes/utilities/artwork/buttons/loadGameButton.png");
+	m_SettingsButtonTex = LoadTexture("classes/utilities/artwork/buttons/settingsButton.png");
+	m_QuitGameButtonTex = LoadTexture("classes/utilities/artwork/buttons/quitGameButton.png");
 
 	Scene::Load();
 

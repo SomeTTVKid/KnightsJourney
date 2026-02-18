@@ -31,8 +31,16 @@ class SceneManager{
 		void DrawSelectedItem();
 		void DrawInventory();
 		void PopupText(float timeToDisplay, float& dT, std::string text, Vector3& position);
+		void ScaleUI();
+		void DrawCharacterPanelRectangles();
 		std::string& SetActiveQuest();
 		Scene* GetCurrentScene();
+		// Equipment slots
+		Rectangle& GetMeleeSlotRec();
+		Rectangle& GetWandSlotRec();
+		Rectangle& GetNecklaceSlotRec();
+		Rectangle& GetRing01SlotRec();
+		Rectangle& GetRing02SlotRec();
 		//
 		static inline Texture2D m_ItemCardTex; 
 		static inline Texture2D m_InventoryTex;
@@ -65,14 +73,61 @@ class SceneManager{
 		std::string frametime;
 		std::string m_ActiveQuest {"Save the BlackSmith from the Goblins!"};
 		//
-		// Might change this later down the line, no clue if performance loss from doing things this way
-		float m_CharacterPanelX = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE;
+
+	// Character Panel Rectangles
+		// Character Panel
+		Rectangle m_CharacterPanel{
+			G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE,
+			G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
+			200 * G_VARS.WIDTH_SCALE, 
+			300 * G_VARS.HEIGHT_SCALE
+		};
+
+		// Melee Weapon Slot
+		Rectangle m_MeleeSlot{
+			m_CharacterPanel.x + 11 * G_VARS.WIDTH_SCALE,
+			m_CharacterPanel.y + 5,
+			m_CharacterPanel.width / 5,
+			135 * G_VARS.HEIGHT_SCALE
+		};
+
+		// Wand Slot
+		Rectangle m_WandSlot{
+			m_MeleeSlot.x + m_MeleeSlot.width + 2,
+			m_CharacterPanel.y + 5,
+			m_CharacterPanel.width / 5,
+			135 * G_VARS.HEIGHT_SCALE
+		};
+
+		// Necklace Slot
+		Rectangle m_NecklaceSlot{
+			m_WandSlot.x + m_WandSlot.width + 2,
+			m_CharacterPanel.y + 5,
+			m_CharacterPanel.width / 5,
+			135 * G_VARS.HEIGHT_SCALE
+		};
+
+		// Ring01 Slot
+		Rectangle m_Ring01Slot{
+			m_NecklaceSlot.x + m_NecklaceSlot.width + 2,
+			m_CharacterPanel.y + 5,
+			m_CharacterPanel.width / 4,
+			66 * G_VARS.HEIGHT_SCALE
+		};
+
+		// Ring02 Slot
+		Rectangle m_Ring02Slot{
+			m_NecklaceSlot.x + m_NecklaceSlot.width + 2,
+			m_Ring01Slot.y + m_Ring01Slot.height + 2,
+			m_CharacterPanel.width / 4,
+			66 * G_VARS.HEIGHT_SCALE
+		};
 		//
-		Texture2D m_Heart = LoadTexture("classes/utilities/artwork/singleHeart.png");
-		Texture2D m_HalfHeart = LoadTexture("classes/utilities/artwork/halfHeart.png");
-		Texture2D m_EmptyHeart = LoadTexture("classes/utilities/artwork/emptyHeart.png");
-		Texture2D m_ManaStar = LoadTexture("classes/utilities/artwork/manaStar.png");
-		Texture2D m_HalfManaStar = LoadTexture("classes/utilities/artwork/halfManaStar.png");
-		Texture2D m_EmptyManaStar = LoadTexture("classes/utilities/artwork/emptyManaStar.png");
+		Texture2D m_Heart = LoadTexture("classes/utilities/artwork/ui/singleHeart.png");
+		Texture2D m_HalfHeart = LoadTexture("classes/utilities/artwork/ui/halfHeart.png");
+		Texture2D m_EmptyHeart = LoadTexture("classes/utilities/artwork/ui/emptyHeart.png");
+		Texture2D m_ManaStar = LoadTexture("classes/utilities/artwork/ui/manaStar.png");
+		Texture2D m_HalfManaStar = LoadTexture("classes/utilities/artwork/ui/halfManaStar.png");
+		Texture2D m_EmptyManaStar = LoadTexture("classes/utilities/artwork/ui/emptyManaStar.png");
 		//
 };

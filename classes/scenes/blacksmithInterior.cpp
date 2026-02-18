@@ -8,8 +8,8 @@
 #include "classes/utilities/levelLoader.h"
 
 void BSInterior::Load(){
-	Scene::m_LevelEnterAudio = LoadSound("audio/door_opening.wav");
-	Scene::m_LevelExitAudio = LoadSound("audio/door_closing.wav");
+	Scene::m_LevelEnterAudio = LoadSound("audio/levelChange/door_opening.wav");
+	Scene::m_LevelExitAudio = LoadSound("audio/levelChange/door_closing.wav");
 
 	Scene::Load();
 

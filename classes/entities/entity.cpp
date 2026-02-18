@@ -46,8 +46,8 @@ void Entity::Draw(Camera3D& camera){
 		DrawBillboardPro(camera, m_Texture, source, m_Pos, up, m_Size, {}, 0.0f, m_Color);
 
 		if(this->m_HasCollider){
-			Vector3 colliderMin = { m_Pos.x + m_Size.x / 4.0f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f};
-			Vector3 colliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f};
+			Vector3 colliderMin = { m_Pos.x + m_Size.x / 4.0f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
+			Vector3 colliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
 			m_Collider = { colliderMin, colliderMax };
 			if(G_VARS.DEBUG_MODE){
 				DrawBoundingBox( m_Collider, m_Color);

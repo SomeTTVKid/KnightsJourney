@@ -15,7 +15,7 @@ class BSInterior : public Scene{
 		void Unload();
 
 	private:
-		Texture2D loaderTex = LoadTexture("artwork/levelLoader.png");
+		Texture2D loaderTex = LoadTexture("classes/utilities/artwork/levelLoaders/levelLoader.png");
 		Texture2D npcTex = LoadTexture("classes/npcs/artwork/npc01_idle.png");
 		Texture2D npcDialogueTex = LoadTexture("classes/npcs/artwork/npc01_talkingTest.png");
 		LevelLoader* toTown = nullptr;

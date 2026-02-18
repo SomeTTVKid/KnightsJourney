@@ -10,13 +10,14 @@
 void Level02::Load(){
 	BirchTree::m_BirchTreeTex = LoadTexture("classes/structures/artwork/trees/birchTree.png");
 	Grass01::m_Grass01Tex = LoadTexture("classes/structures/artwork/grass/grass01.png");
+	Sign01::m_Sign01Tex = LoadTexture("classes/structures/artwork/signs/sign.png");
 
 	House01::m_House01Tex = LoadTexture("classes/structures/artwork/houses/house01.png");
 	House02::m_House02Tex = LoadTexture("classes/structures/artwork/houses/house02.png");
 	Shed::m_ShedTex = LoadTexture("classes/structures/artwork/houses/shed.png");
 	Inn::m_InnTex = LoadTexture("classes/structures/artwork/houses/inn.png");
 
-	Scene::m_LevelEnterAudio = LoadSound("audio/levelExit.wav");
+	Scene::m_LevelEnterAudio = LoadSound("audio/levelChange/levelExit.wav");
 
 	Scene::Load();
 
@@ -35,8 +36,8 @@ void Level02::Load(){
 	Scene::m_LevelLoaders.push_back(toBlackSmith);
 
 	// Level Loader Signs
-	Entity* toForestSign = new Entity(signTex, G_VARS.SIGN_SIZE, m_ToForestPos, G_VARS.RIGHT, true, G_VARS.STRUCTURE_ID, 1);
-	Scene::m_Entities.push_back(toForestSign);
+	auto toForestSign = std::make_unique<Sign01>(m_ToForestPos, G_VARS.SIGN_SIZE);
+	Scene::m_Structures.push_back(std::move(toForestSign));
 
 	// Houses
 	auto house02 = std::make_unique<House02>(housePositions[0], G_VARS.HOUSE_SIZE);
@@ -89,7 +90,7 @@ void Level02::Unload(){
 	UnloadTexture(House02::m_House02Tex);
 	UnloadTexture(Inn::m_InnTex);
 	UnloadTexture(Shed::m_ShedTex);
-	UnloadTexture(signTex);
+	UnloadTexture(Sign01::m_Sign01Tex);
 	UnloadTexture(loaderTex);
 
 	for(size_t i = 0; i < 20; ++i){

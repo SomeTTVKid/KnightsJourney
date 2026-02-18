@@ -2,6 +2,7 @@
 #include "scene.h"
 #include "raylib.h"
 #include "classes/utilities/levelLoader.h"
+#include "classes/structures/foliage.h"
 #include <vector>
 #include <any>
 
@@ -29,9 +30,7 @@ class Level01 : public Scene{
 	private:
 		Texture2D eKnightTex = LoadTexture("classes/enemies/artwork/enemy_idle.png");
 		Texture2D goblinTex = LoadTexture("classes/enemies/artwork/goblin_idle.png");
-		Texture2D signTex = LoadTexture("artwork/sign.png");
-		Texture2D loaderTex = LoadTexture("artwork/levelLoader.png");
-		Texture2D campfireTex = LoadTexture("artwork/campfire.png");
+		Texture2D loaderTex = LoadTexture("classes/utilities/artwork/levelLoaders/levelLoader.png");
 		Texture2D npc01Tex = LoadTexture("classes/npcs/artwork/npc01_idle.png");
 		Texture2D npc01Dialogue = LoadTexture("classes/npcs/artwork/npc01_talkingTest.png");
 		LevelLoader* toTown = nullptr;
@@ -41,6 +40,7 @@ class Level01 : public Scene{
 		Vector2 m_MapSize = { 10.0f, 8.0f };
 		Vector3 m_ToTownPos = { -m_MapSize.x / 2.0f, 1.0f, 0.0f };
 		Vector3 m_ToForestPos = { 3.9f, 1.0f, -0.5f };
+		Vector3 m_CampfirePos = { 2.4f, 1.0f, 0.4f };
 	// Negative X and Negative Z is TOP LEFT QUADRANT
 	// Positive X and Negative Z is TOP RIGHT QUADRANT
 	// Negative X and Positive Z is BOTTOM LEFT QUADRANT
