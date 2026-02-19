@@ -36,31 +36,31 @@ void Level02::Load(){
 	Scene::m_LevelLoaders.push_back(toBlackSmith);
 
 	// Level Loader Signs
-	auto toForestSign = std::make_unique<Sign01>(m_ToForestPos, G_VARS.SIGN_SIZE);
+	auto toForestSign = std::make_unique<Sign01>(m_ToForestPos);
 	Scene::m_Structures.push_back(std::move(toForestSign));
 
 	// Houses
-	auto house02 = std::make_unique<House02>(housePositions[0], G_VARS.HOUSE_SIZE);
+	auto house02 = std::make_unique<House02>(housePositions[0]);
 	Scene::m_Structures.push_back(std::move(house02));
 
-	auto house01 = std::make_unique<House01>(housePositions[1], G_VARS.HOUSE_SIZE);
+	auto house01 = std::make_unique<House01>(housePositions[1]);
 	Scene::m_Structures.push_back(std::move(house01));
 
-	auto shed = std::make_unique<Shed>(housePositions[2], G_VARS.THIN_BUILDING_SIZE);
+	auto shed = std::make_unique<Shed>(housePositions[2]);
 	Scene::m_Structures.push_back(std::move(shed));
 
-	auto inn = std::make_unique<Inn>(housePositions[3], G_VARS.TALL_BUILDING_SIZE);
+	auto inn = std::make_unique<Inn>(housePositions[3]);
 	Scene::m_Structures.push_back(std::move(inn));
 
 	// Trees
 	for(size_t t = 0; t < treeCount; ++t){
-		auto tree = std::make_unique<BirchTree>(treePositions[t], G_VARS.TREE_SIZE);
+		auto tree = std::make_unique<BirchTree>(treePositions[t]);
 		Scene::m_Structures.push_back(std::move(tree));
 	}
 
 	// Grass
 	for(size_t g = 0; g < grassCount; ++g){
-		auto grass = std::make_unique<Grass01>(grassPositions[g], G_VARS.GRASS01_SIZE);
+		auto grass = std::make_unique<Grass01>(grassPositions[g]);
 		Scene::m_Structures.push_back(std::move(grass));
 	}
 

@@ -22,17 +22,17 @@ void Level03::Load(){
 	Scene::m_LevelLoaders.push_back(toTown);
 
 	for(size_t r = 0; r < rockCount; ++r){
-		auto stone = std::make_unique<Stone01>(rockPositions[r], G_VARS.ROCK_SIZE);
+		auto stone = std::make_unique<Stone01>(rockPositions[r]);
 		Scene::m_Structures.push_back(std::move(stone));
 	}
 
 	for(size_t sr = 0; sr < smallRockCount; ++sr){
-		auto smallStone = std::make_unique<Stone02>(smallRockPositions[sr], G_VARS.SMALL_ROCK_SIZE);
+		auto smallStone = std::make_unique<Stone02>(smallRockPositions[sr]);
 		Scene::m_Structures.push_back(std::move(smallStone));
 	}
 
 	for(size_t t = 0; t < treeCount; ++t){
-		auto tree = std::make_unique<SpruceTree>(treePositions[t], G_VARS.TREE_SIZE);
+		auto tree = std::make_unique<SpruceTree>(treePositions[t]);
 		Scene::m_Structures.push_back(std::move(tree));
 	}
 

@@ -16,12 +16,13 @@
 
 class OakTree : public Structure{
 	public:
-		OakTree(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::TREE_ID)	
-			: Structure(pos, size, id){
+		OakTree(Vector3 pos, Vector2 size = { 2.5f, 3.5f }, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::TREE_ID)	
+			: Structure(pos, id){
 				m_Texture = m_OakTreeTex;
 				m_Tier = 1;
 				m_Health = m_BaseTreeHealth + (m_Tier * 10.0f);
 				m_MaxHealth = m_Health;
+				m_Size = size;
 				// Collision
 				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
 				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 4.0f, m_ColliderMin.y + m_Size.y, m_ColliderMin.z + m_Size.x / 6.0f };
@@ -44,12 +45,13 @@ class OakTree : public Structure{
 
 class BirchTree : public Structure{
 	public:
-		BirchTree(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::TREE_ID)
-			: Structure(pos, size, id){
+		BirchTree(Vector3 pos, Vector2 size = { 2.5f, 3.5f }, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::TREE_ID)
+			: Structure(pos, id){
 				m_Texture = m_BirchTreeTex;
 				m_Tier = 2;
 				m_Health = m_BaseTreeHealth + (m_Tier * 10.0f);
 				m_MaxHealth = m_Health;
+				m_Size = size;
 				// Collision
 				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
 				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 3.8f, m_ColliderMin.y + m_Size.y, m_ColliderMin.z + m_Size.x / 6.0f };
@@ -74,12 +76,13 @@ class BirchTree : public Structure{
 
 class SpruceTree : public Structure{
 	public:
-		SpruceTree(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::TREE_ID)
-			: Structure(pos, size, id){
+		SpruceTree(Vector3 pos, Vector2 size = { 2.5f, 3.5f }, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::TREE_ID)
+			: Structure(pos, id){
 				m_Texture = m_SpruceTreeTex;
 				m_Tier = 3;
 				m_Health = m_BaseTreeHealth + (m_Tier * 10.0f);
 				m_MaxHealth = m_Health;
+				m_Size = size;
 				// Collision
 				m_ColliderMin = { pos.x + m_Size.x / 3.0f, pos.y, pos.z - m_Size.x / 8.0f };
 				m_ColliderMax = { m_ColliderMin.x + m_Size.x / 2.8f, m_ColliderMin.y + m_Size.y, m_ColliderMin.z + m_Size.x / 6.0f };

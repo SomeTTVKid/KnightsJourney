@@ -52,9 +52,10 @@ class Item{
 					// Set bounding box
 					m_Active = true;
 					// We will have to redo this halfsize variable later
+					// TODO Think about this later...
 					float Half_Size = G_VARS.POTION_SIZE.x / 2.0f;
-					Vector3 colliderMin = { m_WorldPos.x - Half_Size, m_WorldPos.y, m_WorldPos.z - G_VARS.POTION_SIZE.x};
-					Vector3 colliderMax = { m_WorldPos.x + G_VARS.POTION_SIZE.x + Half_Size, m_WorldPos.y + G_VARS.POTION_SIZE.y, m_WorldPos.z + G_VARS.POTION_SIZE.x};
+					Vector3 colliderMin = { m_WorldPos.x - Half_Size, m_WorldPos.y, m_WorldPos.z - Half_Size };
+					Vector3 colliderMax = { colliderMin.x + G_VARS.POTION_SIZE.x + G_VARS.POTION_SIZE.x, colliderMin.y + G_VARS.POTION_SIZE.y, colliderMin.z + G_VARS.POTION_SIZE.x };
 					m_Collider = { colliderMin, colliderMax };
 				}
 			}

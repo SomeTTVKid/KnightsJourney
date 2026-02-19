@@ -16,8 +16,8 @@
 
 class Structure{
 	public:
-		Structure(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs& id) 	
-			: m_Pos(pos), m_Size(size), m_ID(id){
+		Structure(Vector3 pos, GlobalVariables::StructureIDs& id) 	
+			: m_Pos(pos), m_ID(id){
 
 				}
 		virtual ~Structure(){}
@@ -38,7 +38,7 @@ class Structure{
 
 	protected:
 		Vector3 m_Pos;
-		Vector2& m_Size;
+		Vector2 m_Size;
 		Texture2D m_Texture;
 		// Collision
 		Vector3 m_ColliderMin;

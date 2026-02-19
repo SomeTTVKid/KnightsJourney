@@ -3,10 +3,11 @@
 
 class House01 : public Structure{
 	public:
-		House01(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::BUILDING_ID)
-			: Structure(pos, size, id){
+		House01(Vector3 pos, Vector2 size = { 3.5f, 2.3f }, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::BUILDING_ID)
+			: Structure(pos, id){
 				m_Texture = m_House01Tex;
 				m_MaxFrames = 1;
+				m_Size = size;
 				// Collider
 				m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
 				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
@@ -22,10 +23,11 @@ class House01 : public Structure{
 
 class House02 : public Structure{
 	public:
-		House02(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::BUILDING_ID)
-			: Structure(pos, size, id){
+		House02(Vector3 pos, Vector2 size = { 3.5f, 2.3f }, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::BUILDING_ID)
+			: Structure(pos, id){
 				m_Texture = m_House02Tex;
 				m_MaxFrames = 1;
+				m_Size = size;
 				// Collider
 				m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
 				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
@@ -41,10 +43,11 @@ class House02 : public Structure{
 
 class Shed : public Structure{
 	public:
-		Shed(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::BUILDING_ID)
-			: Structure(pos, size, id){
+		Shed(Vector3 pos, Vector2 size = { 2.5f, 2.3f }, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::BUILDING_ID)
+			: Structure(pos, id){
 				m_Texture = m_ShedTex;
 				m_MaxFrames = 1;
+				m_Size = size;
 				// Collider
 				m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
 				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };
@@ -60,10 +63,11 @@ class Shed : public Structure{
 
 class Inn : public Structure{
 	public:
-		Inn(Vector3 pos, Vector2& size, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::BUILDING_ID)
-			: Structure(pos, size, id){
+		Inn(Vector3 pos, Vector2 size = { 3.5f, 2.9f }, GlobalVariables::StructureIDs id = GlobalVariables::StructureIDs::BUILDING_ID)
+			: Structure(pos, id){
 				m_Texture = m_InnTex;
 				m_MaxFrames = 1;
+				m_Size = size;
 				// Collider
 				m_ColliderMin = { m_Pos.x + m_Size.x / 4.5f, m_Pos.y, m_Pos.z - m_Size.x / 6.0f };
 				m_ColliderMax = { m_Pos.x + m_Size.x - m_Size.x / 4.0f, m_Pos.y + m_Size.y, m_Pos.z + m_Size.x / 20.0f };

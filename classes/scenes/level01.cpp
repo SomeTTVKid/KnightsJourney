@@ -57,16 +57,16 @@ void Level01::Load(){
 	Scene::m_LevelLoaders.push_back(toTown);
 
 	// Level Loader Signs
-	auto toTownSign = std::make_unique<Sign01>(m_ToTownPos, G_VARS.SIGN_SIZE, -1.0f);
+	auto toTownSign = std::make_unique<Sign01>(m_ToTownPos, -1.0f);
 	Scene::m_Structures.push_back(std::move(toTownSign));
 
 	// Campfire
-	auto campfire = std::make_unique<Campfire01>(m_CampfirePos, G_VARS.CAMPFIRE_SIZE);
+	auto campfire = std::make_unique<Campfire01>(m_CampfirePos);
 	Scene::m_Structures.push_back(std::move(campfire));
 
 	// Trees
 	for( size_t t = 0; t < treeCount; ++t){
-		auto tree = std::make_unique<OakTree>(treePositions[t], G_VARS.TREE_SIZE);
+		auto tree = std::make_unique<OakTree>(treePositions[t]);
 		Scene::m_Structures.push_back(std::move(tree));
 	};
 

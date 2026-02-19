@@ -102,16 +102,7 @@ struct GlobalVariables{
 	Vector2 GOBLIN_SIZE = { 0.8f, 0.8f };
 	Vector2 CHICKEN_SIZE = { 0.5f, 0.5f };
 	Vector2 NPC_SIZE = { 0.95f, 0.95f };
-	Vector2 TREE_SIZE = { 2.5f, 3.5f };
-	Vector2 GRASS01_SIZE = { 0.5f, 0.5f };
-	Vector2 HOUSE_SIZE = { 3.5f, 2.3f };
-	Vector2 TALL_BUILDING_SIZE = { 3.5f, 2.9f };
-	Vector2 THIN_BUILDING_SIZE = { 2.5f, 2.3f };
-	Vector2 CAMPFIRE_SIZE = { 1.0f, 1.0f };
-	Vector2 SIGN_SIZE = { 1.0f, 1.0f };
 	Vector2 LOADER_SIZE = { 1.0f, 0.85f };
-	Vector2 ROCK_SIZE = { 2.0f, 1.8f };
-	Vector2 SMALL_ROCK_SIZE = { 0.65f, 0.65f };
 	Vector2 POTION_SIZE = { 0.5f, 0.5f };
 
 };

@@ -30,6 +30,7 @@ class SceneManager{
 		void DrawDialogue();
 		void DrawSelectedItem();
 		void DrawInventory();
+		void DrawHeartsAndMana();
 		void PopupText(float timeToDisplay, float& dT, std::string text, Vector3& position);
 		void ScaleUI();
 		void DrawCharacterPanelRectangles();
@@ -73,6 +74,7 @@ class SceneManager{
 		std::string frametime;
 		std::string m_ActiveQuest {"Save the BlackSmith from the Goblins!"};
 		//
+	//
 
 	// Character Panel Rectangles
 		// Character Panel
@@ -122,6 +124,41 @@ class SceneManager{
 			m_CharacterPanel.width / 4,
 			66 * G_VARS.HEIGHT_SCALE
 		};
+
+		// Action Bar
+		Rectangle m_ActionBar = {
+			G_VARS.WIDTH / 2.0f - 80 * G_VARS.WIDTH_SCALE / 2.0f, 
+			G_VARS.HEIGHT - 150 * G_VARS.HEIGHT_SCALE, 
+			80 * G_VARS.WIDTH_SCALE, 
+			95 * G_VARS.HEIGHT_SCALE
+		};
+
+		Vector2 m_SpellTexDimension = {50 * G_VARS.WIDTH_SCALE, 75 * G_VARS.HEIGHT_SCALE};
+
+		// Active Quest
+		Rectangle m_ActiveQuestRec = {
+		0.0f,
+		175 * G_VARS.HEIGHT_SCALE,
+		200 * G_VARS.WIDTH_SCALE,
+		85 * G_VARS.HEIGHT_SCALE
+		};
+
+		// Inventory
+		Rectangle m_InventoryDest = {
+			(float)G_VARS.WIDTH / 1.46f, 
+			(float)G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
+			200 * G_VARS.WIDTH_SCALE,
+			300 * G_VARS.HEIGHT_SCALE
+		};
+
+		// Item Card
+		Rectangle m_ItemCardDest = {
+			G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f),
+			G_VARS.HEIGHT / 1.8f,
+			350 * G_VARS.WIDTH_SCALE,
+			250 * G_VARS.HEIGHT_SCALE
+		};
+
 		//
 		Texture2D m_Heart = LoadTexture("classes/utilities/artwork/ui/singleHeart.png");
 		Texture2D m_HalfHeart = LoadTexture("classes/utilities/artwork/ui/halfHeart.png");

@@ -62,12 +62,103 @@ void SceneManager::DrawCharacterPanelRectangles(){
 		DrawRectangleRec(m_Ring02Slot, DARKGRAY);
 }
 
+void SceneManager::DrawHeartsAndMana(){
+	// Heart Positions
+	Vector2 heartPosition = {10 * G_VARS.WIDTH_SCALE, 15 * G_VARS.HEIGHT_SCALE};
+	Vector2 maxHeartPosition = {10 * G_VARS.WIDTH_SCALE, 15 * G_VARS.HEIGHT_SCALE};
+
+	// Star Positions
+	Vector2 manaPosition = {25 * G_VARS.WIDTH_SCALE, 75 * G_VARS.HEIGHT_SCALE};
+	Vector2 maxManaPosition = {25 * G_VARS.WIDTH_SCALE, 75 * G_VARS.HEIGHT_SCALE};
+
+	// Draw empty hearts
+	for(int H = 0; H < maxHearts; ++H){
+		DrawTextureEx(
+			m_EmptyHeart, 
+			maxHeartPosition, 
+			0.0f, 
+			G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 
+			WHITE);
+		maxHeartPosition.x += m_Heart.width * G_VARS.WIDTH_SCALE + 15.0f;
+	}
+
+	// Draw all the full hearts
+	for(int h = 0; h < fullHearts; ++h){
+		DrawTextureEx(
+			m_Heart, 
+			heartPosition,
+			0.0f,
+			G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE,
+			WHITE);
+		heartPosition.x += m_Heart.width * G_VARS.WIDTH_SCALE + 15.0f;
+	}
+
+	// Draw half heart
+	if(Scene::m_Player->m_OnHalfHeart){
+		DrawTextureEx(
+			m_HalfHeart,
+			heartPosition,
+			0.0f,
+			G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE,
+			WHITE);
+	}
+
+// Player Mana Stars
+	// Draw empty stars
+	for(int M = 0; M < maxStars; ++M){
+		DrawTextureEx(
+			m_EmptyManaStar, 
+			maxManaPosition, 
+			0.0f,
+			1.5 * G_VARS.WIDTH_SCALE,
+			WHITE);
+		maxManaPosition.x += m_ManaStar.width * G_VARS.WIDTH_SCALE + 15.0f;	
+	}
+
+	// Draw all the full stars
+	for(int m = 0; m < fullStars; ++m){
+		DrawTextureEx(
+			m_ManaStar, 
+			manaPosition,
+			0.0f, 
+			1.5 * G_VARS.WIDTH_SCALE,
+			WHITE);
+		manaPosition.x += m_ManaStar.width * G_VARS.WIDTH_SCALE + 15.0f;
+	}
+
+	// Draw half star
+	if(Scene::m_Player->m_OnHalfStar){
+		DrawTextureEx(
+			m_HalfManaStar, 
+			manaPosition, 
+			0.0f,
+			1.5 * G_VARS.WIDTH_SCALE,
+			WHITE);
+	}
+}
+
 void SceneManager::ScaleUI(){
+	// Action Bar
+	m_ActionBar.x = G_VARS.WIDTH / 2.0f - 80 * G_VARS.WIDTH_SCALE / 2.0f; 
+	m_ActionBar.y = G_VARS.HEIGHT - 150 * G_VARS.HEIGHT_SCALE;
+	m_ActionBar.width = 80 * G_VARS.WIDTH_SCALE;
+	m_ActionBar.height = 95 * G_VARS.HEIGHT_SCALE;
+
+	m_SpellTexDimension = {50 * G_VARS.WIDTH_SCALE, 75 * G_VARS.HEIGHT_SCALE};
+
+	// Active Quest
+	m_ActiveQuestRec.x = 0.0f;
+	m_ActiveQuestRec.y = 175 * G_VARS.HEIGHT_SCALE;
+	m_ActiveQuestRec.width = 200 * G_VARS.WIDTH_SCALE;
+	m_ActiveQuestRec.height = 85 * G_VARS.HEIGHT_SCALE;
+
 	// Character Panel
 	if(G_VARS.FULLSCREEN){
-		m_CharacterPanel.x = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE - 150 * G_VARS.WIDTH_SCALE / 2.3f;
+		m_CharacterPanel.x = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE - 27.0f;
+		m_InventoryDest.x = (float)G_VARS.WIDTH / 1.55f;
 	}else{
 		m_CharacterPanel.x = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE;
+		m_InventoryDest.x = (float)G_VARS.WIDTH / 1.46f;
 	}
 	
 	m_CharacterPanel.y = G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE;
@@ -103,6 +194,23 @@ void SceneManager::ScaleUI(){
 	m_Ring02Slot.y = m_Ring01Slot.y + m_Ring01Slot.height + 2;
 	m_Ring02Slot.width = m_CharacterPanel.width / 4;
 	m_Ring02Slot.height = 66 * G_VARS.HEIGHT_SCALE;
+
+	// Inventory
+	m_InventoryDest.y = (float)G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE;
+	m_InventoryDest.width = 200 * G_VARS.WIDTH_SCALE;
+	m_InventoryDest.height = 300 * G_VARS.HEIGHT_SCALE;
+
+	// Item Card
+	m_ItemCardDest.x = G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f);
+	m_ItemCardDest.y = G_VARS.HEIGHT / 1.8f;
+	m_ItemCardDest.width = 350 * G_VARS.WIDTH_SCALE;
+	m_ItemCardDest.height = 250 * G_VARS.HEIGHT_SCALE;
+
+	// Selected Item
+	// m_SelectedItemDest.x = 100 * G_VARS.WIDTH_SCALE;
+	// m_SelectedItemDest.y = 100 * G_VARS.HEIGHT_SCALE;
+	// m_SelectedItemDest.width = m_ItemCardDest.x + m_ItemCardDest.width / 2.0f - 100 * G_VARS.WIDTH_SCALE / 2.0f;
+	// m_SelectedItemDest.height = m_ItemCardDest.y + 35 * G_VARS.HEIGHT_SCALE;
 
 	m_UpdateUI = false;
 }
@@ -376,11 +484,30 @@ void SceneManager::Draw(){
 }
 
 void SceneManager::DrawUI(){
+	if(m_UpdateUI){
+		ScaleUI();
+	}
 	// Draw Dialogue Menu
 	if(G_VARS.IN_DIALOGUE){
 		G_VARS.INVENTORY_OPEN = false;
 		G_VARS.CHARACTER_PANEL = false;
 		DrawDialogue();
+	}else{
+		// Draw Action Bar
+		DrawTexturePro(
+			m_ActionBarTex,
+			{0.0f, 0.0f, (float)m_ActionBarTex.width, (float)m_ActionBarTex.height},
+			m_ActionBar,
+			{}, 0.0f, WHITE);
+
+		DrawTexturePro(
+			Scene::m_Player->m_SpellTexture,
+			{0.0f, 0.0f, (float)Scene::m_Player->m_SpellTexture.width, (float)Scene::m_Player->m_SpellTexture.height},
+			{m_ActionBar.x + m_ActionBar.width / 2.0f - m_SpellTexDimension.x / 2.0f, 
+			m_ActionBar.y + m_ActionBar.height / 2.0f - m_SpellTexDimension.y / 2.0f, 
+			m_SpellTexDimension.x, 
+			m_SpellTexDimension.y},
+			{}, 0.0f, WHITE);
 	}
 
 	// Draw Inventory
@@ -402,139 +529,22 @@ void SceneManager::DrawUI(){
 	}
 
 // Player Resources
-
-	// TODO Move these into the header file as well, ideally we should have most of this in the header
-	// That way we only call draw and then using update ui variable to change sizes :D
-	// Move these draw calls to the top of this function 
-
-	// Heart Positions
-	Vector2 heartPosition = {10 * G_VARS.WIDTH_SCALE, 15 * G_VARS.HEIGHT_SCALE};
-	Vector2 maxHeartPosition = {10 * G_VARS.WIDTH_SCALE, 15 * G_VARS.HEIGHT_SCALE};
-
-	// Star Positions
-	Vector2 manaPosition = {25 * G_VARS.WIDTH_SCALE, 75 * G_VARS.HEIGHT_SCALE};
-	Vector2 maxManaPosition = {25 * G_VARS.WIDTH_SCALE, 75 * G_VARS.HEIGHT_SCALE};
-
-	// Draw empty hearts
-	for(int H = 0; H < maxHearts; ++H){
-		DrawTextureEx(
-			m_EmptyHeart, 
-			maxHeartPosition, 
-			0.0f, 
-			G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 
-			WHITE);
-		maxHeartPosition.x += m_Heart.width * G_VARS.WIDTH_SCALE + 15.0f;
-	}
-
-	// Draw all the full hearts
-	for(int h = 0; h < fullHearts; ++h){
-		DrawTextureEx(
-			m_Heart, 
-			heartPosition,
-			0.0f,
-			G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE,
-			WHITE);
-		heartPosition.x += m_Heart.width * G_VARS.WIDTH_SCALE + 15.0f;
-	}
-
-	// Draw half heart
-	if(Scene::m_Player->m_OnHalfHeart){
-		DrawTextureEx(
-			m_HalfHeart,
-			heartPosition,
-			0.0f,
-			G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE,
-			WHITE);
-	}
-
-// Player Mana Stars
-	// Draw empty stars
-	for(int M = 0; M < maxStars; ++M){
-		DrawTextureEx(
-			m_EmptyManaStar, 
-			maxManaPosition, 
-			0.0f,
-			1.5 * G_VARS.WIDTH_SCALE,
-			WHITE);
-		maxManaPosition.x += m_ManaStar.width * G_VARS.WIDTH_SCALE + 15.0f;	
-	}
-
-	// Draw all the full stars
-	for(int m = 0; m < fullStars; ++m){
-		DrawTextureEx(
-			m_ManaStar, 
-			manaPosition,
-			0.0f, 
-			1.5 * G_VARS.WIDTH_SCALE,
-			WHITE);
-		manaPosition.x += m_ManaStar.width * G_VARS.WIDTH_SCALE + 15.0f;
-	}
-
-	// Draw half star
-	if(Scene::m_Player->m_OnHalfStar){
-		DrawTextureEx(
-			m_HalfManaStar, 
-			manaPosition, 
-			0.0f,
-			1.5 * G_VARS.WIDTH_SCALE,
-			WHITE);
-	}
+	DrawHeartsAndMana();
 
 // MiniMap
 	DrawRectangle(G_VARS.WIDTH - 200 * G_VARS.WIDTH_SCALE, 0, 200 * G_VARS.WIDTH_SCALE, 150 * G_VARS.HEIGHT_SCALE, {253, 249, 0, 100});
 
 // Current Active Quest
-	Rectangle ActiveQuest = {
-		0.0f,
-		175 * G_VARS.HEIGHT_SCALE,
-		200 * G_VARS.WIDTH_SCALE,
-		85 * G_VARS.HEIGHT_SCALE
-	};
-
 	// TODO Make this a variable that we can acccess and change to update current quest objective
 	DrawTextEx(
 		G_VARS.FONT, 
 		m_ActiveQuest.c_str(), 
-		{ActiveQuest.x + 10 * G_VARS.WIDTH_SCALE, ActiveQuest.y + 5 * G_VARS.HEIGHT_SCALE},
+		{m_ActiveQuestRec.x + 10 * G_VARS.WIDTH_SCALE, m_ActiveQuestRec.y + 5 * G_VARS.HEIGHT_SCALE},
 		25 * G_VARS.WIDTH_SCALE, G_VARS.FONT_SPACING, WHITE);
-
-// Action Bar 
-	if(!G_VARS.IN_DIALOGUE){
-		// TODO Also move this into header and only call draw call in here
-		// Connect it to update ui call
-		Rectangle ActionBar = {
-			G_VARS.WIDTH / 2.0f - 80 * G_VARS.WIDTH_SCALE / 2.0f, 
-			G_VARS.HEIGHT - 150 * G_VARS.HEIGHT_SCALE, 
-			80 * G_VARS.WIDTH_SCALE, 
-			95 * G_VARS.HEIGHT_SCALE
-		};
-
-		DrawTexturePro(
-			m_ActionBarTex,
-			{0.0f, 0.0f, (float)m_ActionBarTex.width, (float)m_ActionBarTex.height},
-			ActionBar,
-			{}, 0.0f, WHITE);
-
-		// TODO Also move this into header and only call draw call in here
-		// Connect it to update ui call
-		Vector2 spellTexDimension = {50 * G_VARS.WIDTH_SCALE, 75 * G_VARS.HEIGHT_SCALE};
-
-		DrawTexturePro(
-			Scene::m_Player->m_SpellTexture,
-			{0.0f, 0.0f, (float)Scene::m_Player->m_SpellTexture.width, (float)Scene::m_Player->m_SpellTexture.height},
-			{ActionBar.x + ActionBar.width / 2.0f - spellTexDimension.x / 2.0f, 
-			ActionBar.y + ActionBar.height / 2.0f - spellTexDimension.y / 2.0f, 
-			spellTexDimension.x, 
-			spellTexDimension.y},
-			{}, 0.0f, WHITE);
-	}
 
 // Character Panel
 	if(G_VARS.CHARACTER_PANEL && !G_VARS.IN_DIALOGUE){
 		// Character Panel
-		if(m_UpdateUI){
-			ScaleUI();
-		}
 
 		DrawCharacterPanelRectangles();
 
@@ -547,7 +557,6 @@ void SceneManager::DrawUI(){
 				{}, 0.0f, WHITE
 			);
 		}
-
 
 		// TODO Also move this into header and only call draw call in here
 		// Connect it to update ui call
@@ -700,23 +709,15 @@ void SceneManager::DrawDialogue(){
 // Inventory Screen
 void SceneManager::DrawInventory(){
 	// TODO Move this into header like rest of shit
-	// Connect to update ui call
-	Rectangle InventoryDest = {
-		(float)G_VARS.WIDTH / 1.46f, 
-		(float)G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE, 
-		200 * G_VARS.WIDTH_SCALE,
-		300 * G_VARS.HEIGHT_SCALE
-	};
-
 	DrawTexturePro(
 		m_InventoryTex, 
 		{0.0f, 0.0f, (float)m_InventoryTex.width, (float)m_InventoryTex.height}, 
-		InventoryDest, {}, 0.0f, WHITE);
+		m_InventoryDest, {}, 0.0f, WHITE);
 
 	float itemWidth = 45 * G_VARS.WIDTH_SCALE;
 	float itemHeight = 50 * G_VARS.HEIGHT_SCALE;
-	int posX = InventoryDest.x + 20 * G_VARS.WIDTH_SCALE;
-	int posY = InventoryDest.y + 25 * G_VARS.HEIGHT_SCALE;
+	int posX = m_InventoryDest.x + 20 * G_VARS.WIDTH_SCALE;
+	int posY = m_InventoryDest.y + 25 * G_VARS.HEIGHT_SCALE;
 	int offSetX = 55;
 	int offSetY = 65;
 	int rowCount = 1;
@@ -750,7 +751,7 @@ void SceneManager::DrawInventory(){
 				    15 * G_VARS.WIDTH_SCALE, WHITE);
 
 			if(rowCount >= 3){
-				posX = InventoryDest.x + 20 * G_VARS.WIDTH_SCALE;
+				posX = m_InventoryDest.x + 20 * G_VARS.WIDTH_SCALE;
 				posY += offSetY * G_VARS.HEIGHT_SCALE;
 				rowCount = 1;
 			}else{
@@ -771,52 +772,41 @@ void SceneManager::DrawInventory(){
 }
 
 void SceneManager::DrawSelectedItem(){
-
-	// TODO Move this into header AS WELL :DDDD
-
-	// Item Card
-	Rectangle ItemCardDest = {
-		G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f),
-		G_VARS.HEIGHT / 1.8f,
-		350 * G_VARS.WIDTH_SCALE,
-		250 * G_VARS.HEIGHT_SCALE
-	};
-
 	DrawTexturePro(
 		m_ItemCardTex, 
 		{0.0f, 0.0f, (float)m_ItemCardTex.width, (float)m_ItemCardTex.height}, 
-		ItemCardDest, 
+		m_ItemCardDest, 
 		{}, 0.0f, WHITE);
 
 	// TODO Create two more rectangles inside of the header file for these buttons
 	// Use Item Button
 	DrawRectanglePro(
-		{ItemCardDest.x + 30 * G_VARS.WIDTH_SCALE, 
-		ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 
+		{m_ItemCardDest.x + 30 * G_VARS.WIDTH_SCALE, 
+		m_ItemCardDest.y + m_ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 
 		75 * G_VARS.WIDTH_SCALE, 60 * G_VARS.HEIGHT_SCALE},
 		{}, 0.0f, GREEN);
 
 	// Discard Item Button
 	DrawRectanglePro(
-		{ItemCardDest.x + ItemCardDest.width - 120 * G_VARS.WIDTH_SCALE, 
-		ItemCardDest.y + ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 
+		{m_ItemCardDest.x + m_ItemCardDest.width - 120 * G_VARS.WIDTH_SCALE, 
+		m_ItemCardDest.y + m_ItemCardDest.height / 2.0f - 60 * G_VARS.HEIGHT_SCALE, 
 		75 * G_VARS.WIDTH_SCALE, 60 * G_VARS.HEIGHT_SCALE},
 		{}, 0.0f, RED);
 
 	// Item Name
-	Vector2 nameTextSize = MeasureTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemName().c_str(), 16 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 1.0f);
-	float nameXPos = ItemCardDest.x + ItemCardDest.width / 2.0f - nameTextSize.x / 2.0f;
+	Vector2 nameTextSize = MeasureTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemName().c_str(), 16 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, G_VARS.FONT_SPACING);
+	float nameXPos = m_ItemCardDest.x + m_ItemCardDest.width / 2.0f - nameTextSize.x / 2.0f;
 
-	DrawTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemName().c_str(), {nameXPos, ItemCardDest.y + 10 * G_VARS.HEIGHT_SCALE}, 18 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 1.0f, WHITE);
+	DrawTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemName().c_str(), {nameXPos, m_ItemCardDest.y + 10 * G_VARS.HEIGHT_SCALE}, 18 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, G_VARS.FONT_SPACING, WHITE);
 
 	// Item Texture
-	float itemWidth = 100 * G_VARS.WIDTH_SCALE;
+	float itemWidth = 70 * G_VARS.WIDTH_SCALE;
 	float itemHeight = 100 * G_VARS.HEIGHT_SCALE;
-	float posX = ItemCardDest.x + ItemCardDest.width / 2.0f - itemWidth / 2.0f;
-	float posY = ItemCardDest.y + 35 * G_VARS.HEIGHT_SCALE;
+	float posX = m_ItemCardDest.x + (m_ItemCardDest.width / 2.0f) - (itemWidth / 2.0f);
+	float posY = m_ItemCardDest.y + 35 * G_VARS.HEIGHT_SCALE;
 
 	// TODO Move this into header AS WELL :DDDD
-
+	// At some point lol, im tired of this this
 	Rectangle dest = {
 		posX,
 		posY,
@@ -831,7 +821,7 @@ void SceneManager::DrawSelectedItem(){
 		{}, 1.0f, WHITE);
 
 	// Item Description
-	Vector2 descriptionTextSize = MeasureTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemDescription().c_str(), 25 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 1.0f);
-	float descriptionXPos = ItemCardDest.x + ItemCardDest.width / 2.0f - descriptionTextSize.x / 2.0f;
-	DrawTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemDescription().c_str(), {descriptionXPos, dest.y + dest.height + 20}, 25 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, 1.0f, WHITE);
+	Vector2 descriptionTextSize = MeasureTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemDescription().c_str(), 25 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, G_VARS.FONT_SPACING);
+	float descriptionXPos = m_ItemCardDest.x + m_ItemCardDest.width / 2.0f - descriptionTextSize.x / 2.0f;
+	DrawTextEx(G_VARS.FONT, Scene::m_SelectedItem->GetItemDescription().c_str(), {descriptionXPos, dest.y + dest.height + 40 * G_VARS.HEIGHT_SCALE}, 25 * G_VARS.WIDTH_SCALE + G_VARS.HEIGHT_SCALE, G_VARS.FONT_SPACING, WHITE);
 }

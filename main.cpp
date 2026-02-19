@@ -20,8 +20,7 @@
 
 // TODO NEXT
 
-// TODO Make size a default parameter inside of structure params, make it {1.0f, 1.0f};
-// Let the class take in a parameter but default it to the base size of items/structures
+// TODO Create a basic background that has the golden border like inventory for charaterpanel
 
 // TODO Redo our shared pointers BACK into unique pointers since we do NOT need no shared pointers
 
@@ -75,9 +74,6 @@
 
 // TODO When doing quest system, create a pointer to the active quest to display it in sceneManager
 // Might not do this, could have something more simple instead...idk
-
-// TODO Minimize the amount of times we draw static things
-// Wait, since the screen is cleared, can we even do this?
 
 // TODO Create player textures
 // Resize player && || Trees for better sizes
