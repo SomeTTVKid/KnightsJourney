@@ -182,6 +182,8 @@ void LoadGlobalTexturesAndAudio(){
 	SceneManager::m_InventoryTex = LoadTexture("classes/utilities/artwork/ui/InventoryBackground.png");
 	SceneManager::m_DialogueTex = LoadTexture("classes/utilities/artwork/ui/DialogueBackground.png");
 	SceneManager::m_ActionBarTex = LoadTexture("classes/utilities/artwork/ui/ActionBarBackground.png");
+	SceneManager::m_CharacterPanelTex = LoadTexture("classes/utilities/artwork/ui/CharacterPanelBackground.png");
+	SceneManager::m_BorderTex = LoadTexture("classes/utilities/artwork/ui/Border.png");
 
 	// Scene
 	Scene::m_PickUpAudio = LoadSound("audio/interaction/item_pickup.wav");

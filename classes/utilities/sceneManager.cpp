@@ -54,12 +54,23 @@ Rectangle& SceneManager::GetRing02SlotRec(){
 }
 
 void SceneManager::DrawCharacterPanelRectangles(){
-		DrawRectangleRec(m_CharacterPanel, GRAY);
+		DrawTexturePro(
+			m_CharacterPanelTex, 
+			{0, 0, (float)m_CharacterPanelTex.width, (float)m_CharacterPanelTex.height}, 
+			m_CharacterPanel, {}, 0.0f, WHITE
+		);
+		
 		DrawRectangleRec(m_MeleeSlot, DARKGRAY);
 		DrawRectangleRec(m_WandSlot, DARKGRAY);
 		DrawRectangleRec(m_NecklaceSlot, DARKGRAY);
 		DrawRectangleRec(m_Ring01Slot, DARKGRAY);
 		DrawRectangleRec(m_Ring02Slot, DARKGRAY);
+
+		DrawTexturePro(
+			m_BorderTex,
+			{0, 0, (float)m_BorderTex.width, (float)m_BorderTex.height},
+			m_CharacterPanel, {}, 0.0f, WHITE
+		);
 }
 
 void SceneManager::DrawHeartsAndMana(){
@@ -549,7 +560,6 @@ void SceneManager::DrawUI(){
 // Character Panel
 	if(G_VARS.CHARACTER_PANEL && !G_VARS.IN_DIALOGUE){
 		// Character Panel
-
 		DrawCharacterPanelRectangles();
 
 		if(Scene::m_Player->GetMeleeWeapon()){

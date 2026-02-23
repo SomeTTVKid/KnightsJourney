@@ -47,6 +47,8 @@ class SceneManager{
 		static inline Texture2D m_InventoryTex;
 		static inline Texture2D m_DialogueTex;
 		static inline Texture2D m_ActionBarTex;
+		static inline Texture2D m_CharacterPanelTex;
+		static inline Texture2D m_BorderTex;
 		//
 		bool m_Transitioning = false; 
 		// 0 = fade-out
