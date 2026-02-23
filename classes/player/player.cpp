@@ -123,6 +123,10 @@ void Player::Update(float& dT){
 				m_Casted = true;
 
 			}
+			// TODO Add out of mana / not enough mana popup here
+			// Would be cool to flash the mana bar as well??? 
+			// Change the color of the mana stars to slowly fade from white to yellow and back a few times???
+			// Create some sort of rng message to choose from either out of mana or not enough mana :D
 		}
 
 		// TEMP stat changes

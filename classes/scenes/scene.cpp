@@ -347,14 +347,6 @@ void Scene::Update(float& dT){
 				}
 
 				// Collision with structures
-				// TODO Remove this later :D once we get signs into structure class
-				for( auto& entity : m_Entities){
-					if(CheckCollisionBoxes(projectile->GetCollider(), entity->GetCollider())){
-						projectile->GetState() = false;
-						break;
-					}
-				}
-
 				for( auto& structure : m_Structures){
 					if(CheckCollisionBoxes(projectile->GetCollider(), structure->GetCollider())){
 						projectile->GetState() = false;
@@ -370,7 +362,6 @@ void Scene::Update(float& dT){
 					}
 				}
 			}
-
 		}
 	}
 
@@ -378,9 +369,10 @@ void Scene::Update(float& dT){
 	if(!m_Items.empty()){
 		for( auto& item : m_Items){
 			if(item && item->GetState()){
-					if(CheckCollisionBoxes(m_Player->GetCollider(), item->GetCollider())){
-						SetInteractText();
-						if(IsKeyPressed(KEY_E) && m_Player->GetInventory().size() < m_Player->GetInventoryMaxSize()){
+				if(CheckCollisionBoxes(m_Player->GetCollider(), item->GetCollider())){
+					SetInteractText();
+					if(IsKeyPressed(KEY_E)){
+						if(m_Player->GetInventory().size() < m_Player->GetInventoryMaxSize()){
 							item->GetState() = false;
 							m_Player->AddToInventory(item);
 							auto itemToRemove = std::find(m_Items.begin(), m_Items.end(), item);
@@ -388,12 +380,14 @@ void Scene::Update(float& dT){
 							PlaySound(m_PickUpAudio);
 							break;
 						}else{
-							// Add a drawtext function call here with a timer 
-							// Will say 'Inventory Full'
+							// Setup check here so we can still pick up items that stack that we already have
+							SetPopupInfo("Inventory Full", m_Player->GetPos(), 255, 0, 0);
+							G_VARS.POPUP_TEXT = true;
 							break;
-						} 
+						}
 					}
 				}
+			}
 		}
 	}
 
@@ -401,6 +395,7 @@ void Scene::Update(float& dT){
 	if(G_VARS.INVENTORY_OPEN && !m_Player->GetInventory().empty()){
 		if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
 			// TEMP
+			// TODO Update this later after we update the use and dlt buttons into scenemanager header
 			Rectangle UseBtn = {
 				G_VARS.WIDTH / 2.0f - ((350 * G_VARS.WIDTH_SCALE) / 2.0f) + 30 * G_VARS.WIDTH_SCALE, 
 				G_VARS.HEIGHT / 1.8f + 250 * (G_VARS.HEIGHT_SCALE / 2.0f) - 60 * G_VARS.HEIGHT_SCALE, 
@@ -422,6 +417,8 @@ void Scene::Update(float& dT){
 				// So that we dont clear selectedItem pointer before interacting!
 				if(CheckCollisionPointRec(mousePos, item->GetRect())) {
 					G_VARS.ITEM_SELECTED = true;
+					// Might need to make selected item a vector? and just clear it after unselecting an item???
+					// Might need a shared pointer to make this work?
 					m_SelectedItem = item; 
 					// TODO Maybe remove this break call and seperate the checks for the buttons?
 					break;

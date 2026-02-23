@@ -81,7 +81,7 @@ class Player : public Entity{
 		float m_SpellDamage {2.0f};
 		float m_SpellCost{};
 		float m_Defense{};
-		size_t m_MaxInventorySize = 12;
+		size_t m_MaxInventorySize = 3;
 		// Spell settings
 		int m_SelectedSpell = 0;
 		bool m_Casted = false;

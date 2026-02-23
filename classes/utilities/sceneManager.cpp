@@ -367,15 +367,19 @@ void SceneManager::Update(float& dT){
 		}
 	}else if(m_CurrentSceneID != 0){
 		if(IsKeyPressed(KEY_ESCAPE)){
-			G_VARS.INVENTORY_OPEN = false;
-			G_VARS.ITEM_SELECTED = false;
-			G_VARS.CHARACTER_PANEL = false;
-			Scene::m_SelectedItem = nullptr;
-			if(G_VARS.IS_PAUSED != true){
-				m_PendingPause = true;
-				m_PauseTimer = 0.0f;
+			if(m_CurrentScene->m_SelectedItem != nullptr){
+				m_CurrentScene->m_SelectedItem = nullptr;
 			}else{
-				G_VARS.IS_PAUSED = false;
+				G_VARS.INVENTORY_OPEN = false;
+				G_VARS.ITEM_SELECTED = false;
+				G_VARS.CHARACTER_PANEL = false;
+				Scene::m_SelectedItem = nullptr;
+				if(G_VARS.IS_PAUSED != true){
+					m_PendingPause = true;
+					m_PauseTimer = 0.0f;
+				}else{
+					G_VARS.IS_PAUSED = false;
+				}
 			}
 		}
 	}

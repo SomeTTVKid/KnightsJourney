@@ -20,9 +20,15 @@
 
 // TODO NEXT
 
-// TODO Create a basic background that has the golden border like inventory for charaterpanel
+// TODO Create new controls and update control list/readme :D
+
+// TODO Create a basic background that has the golden border like inventory for characterpanel
 
 // TODO Redo our shared pointers BACK into unique pointers since we do NOT need no shared pointers
+// We need some other way of creating a duplicate of items for selected item...
+// Unless we can call move on the item in inventory to move it into the selected item
+// I dont know how that would effect our inventory though since its a map...
+// For now shared pointers work without introducing too much overhead but will look into
 
 // TODO Remove public member variables from player class and add in getters/setters
 
