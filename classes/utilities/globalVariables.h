@@ -33,8 +33,8 @@ struct GlobalVariables{
 		{"'~' To Toggle Debug-Mode"},
 		{"'Esc' To Pause Game, Leave Dialogue AND unselect currently selected item"},
 		{"'M' To Print Player Coordinates"},
-		{"'2' To Equip Axe"},
-		{"'3' To Increase Axe Tier"}
+		{"'Space' To Progress Dialogue"},
+		{"'Z' To Step Back In Dialogue"}
 	};
 
 	// States
