@@ -26,12 +26,12 @@ struct GlobalVariables{
 	std::vector<std::string> KEYBINDS{
 		{"'E' To Interact"},
 		{"'TAB' To Open Inventory"},
-		{"'LMB or G' To Attack"},
+		{"'LMB' To Attack"},
 		{"'RMB' To Cast Spell"},
 		{"'1' To Switch Spells"},
 		{"'F' To Toggle Fullscreen"},
 		{"'~' To Toggle Debug-Mode"},
-		{"'Esc' To Pause Game AND Leave Dialogue"},
+		{"'Esc' To Pause Game, Leave Dialogue AND unselect currently selected item"},
 		{"'M' To Print Player Coordinates"},
 		{"'2' To Equip Axe"},
 		{"'3' To Increase Axe Tier"}
