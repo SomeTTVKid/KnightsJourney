@@ -1,12 +1,12 @@
 # Knight's Journey Keybinds
-{"'E' To Interact"},<bp>
-{"'TAB' To Open Inventory"},<bp>
-{"'LMB' To Attack"},<bp>
-{"'RMB' To Cast Spell"},<bp>
-{"'1' To Switch Spells"},<bp>
-{"'F' To Toggle Fullscreen"},<bp>
-{"'~' To Toggle Debug-Mode"},<bp>
-{"'Esc' To Pause Game, Leave Dialogue AND unselect currently selected item"},<bp>
-{"'M' To Print Player Coordinates"},<bp>
-{"'Space' To Progress Dialogue"},<bp>
-{"'Z' To Step Back In Dialogue"}<bp>
+{"'E' To Interact"},<br>
+{"'TAB' To Open Inventory"},<br>
+{"'LMB' To Attack"},<br>
+{"'RMB' To Cast Spell"},<br>
+{"'1' To Switch Spells"},<br>
+{"'F' To Toggle Fullscreen"},<br>
+{"'~' To Toggle Debug-Mode"},<br>
+{"'Esc' To Pause Game, Leave Dialogue AND unselect currently selected item"},<br>
+{"'M' To Print Player Coordinates"},<br>
+{"'Space' To Progress Dialogue"},<br>
+{"'Z' To Step Back In Dialogue"}<br>
