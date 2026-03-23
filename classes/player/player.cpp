@@ -145,10 +145,18 @@ void Player::Update(float& dT){
 		}
 
 		// TEMP skin change
+		// if(IsKeyPressed(KEY_DOWN)){
+		// 	G_VARS.UPDATE_SKIN = true;
+		// 	G_VARS.IS_CHICKEN = !G_VARS.IS_CHICKEN;
+		// 	G_VARS.IS_KNIGHT = !G_VARS.IS_KNIGHT;
+		// }
+
+		// Add if check or clamp value to minimum
 		if(IsKeyPressed(KEY_DOWN)){
-			G_VARS.UPDATE_SKIN = true;
-			G_VARS.IS_CHICKEN = !G_VARS.IS_CHICKEN;
-			G_VARS.IS_KNIGHT = !G_VARS.IS_KNIGHT;
+			m_ManaRegen -= 0.1f;
+			m_HealthRegen -= 0.1f;
+			m_Defense -= 0.1f;
+			m_SprintSpeed -= 0.1f;
 		}
 
 		// Axe Testing
@@ -492,7 +500,7 @@ size_t& Player::GetInventoryMaxSize(){
 void Player::checkWorldBounds(){
 	if(m_Pos.x >= worldSize.x / 2.0f - m_Size.x ||
 		m_Pos.x <= (worldSize.x / 2.0f) * -1.0f  ||
-		m_Pos.z >= worldSize.y / 2.0f	+ m_Size.x||
+		m_Pos.z >= worldSize.y / 2.0f + (m_Size.x + (m_Size.x / 2.0f)) ||
 		m_Pos.z <= (worldSize.y / 2.0f) * -1.0f + m_Size.x){
 		m_Pos = m_LastPos;
 	}else{

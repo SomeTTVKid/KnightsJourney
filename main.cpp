@@ -20,9 +20,18 @@
 
 // TODO NEXT
 
-// TODO Create new controls and update control list/readme :D
+// TODO Add more debug keybinds PUH-LEASE!
+// Unbind chicken mode from down key
+// Make downkey lower whatever up key increases
+// Rename and create new player variables,
+// We need a base value variable for player stats
+// We also need changing variables for our player stats
 
-// TODO Create a basic background that has the golden border like inventory for characterpanel
+// TODO Fix level 3 from using player height with level loader
+
+// TODO FOR THE LOVE OF GOD FIX THE SPELL TARGETING
+
+// TODO Create new controls and update control list/readme :D
 
 // TODO Redo our shared pointers BACK into unique pointers since we do NOT need no shared pointers
 // We need some other way of creating a duplicate of items for selected item...

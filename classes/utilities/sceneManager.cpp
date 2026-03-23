@@ -167,9 +167,11 @@ void SceneManager::ScaleUI(){
 	if(G_VARS.FULLSCREEN){
 		m_CharacterPanel.x = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE - 27.0f;
 		m_InventoryDest.x = (float)G_VARS.WIDTH / 1.55f;
+		CharacterPanelStatX = m_CharacterPanel.x + 12;
 	}else{
 		m_CharacterPanel.x = G_VARS.WIDTH / 7.0f * G_VARS.WIDTH_SCALE;
 		m_InventoryDest.x = (float)G_VARS.WIDTH / 1.46f;
+		CharacterPanelStatX = m_CharacterPanel.x + 5;
 	}
 	
 	m_CharacterPanel.y = G_VARS.HEIGHT - 300 * G_VARS.HEIGHT_SCALE;
@@ -416,6 +418,9 @@ void SceneManager::Update(float& dT){
 	if(IsKeyPressed(KEY_M)){
 		std::cout << "Player X Coord " << Scene::m_Player->GetPos().x << "\n"
 					<< "Player Z Coord " << Scene::m_Player->GetPos().z << std::endl;
+		std::cout << "WorldMapSize.x " << Scene::m_Player->GetWorldSize().x << "\n"
+					<< "WorldMapSize.y " << Scene::m_Player->GetWorldSize().y << std::endl;
+		std::cout << Scene::m_Player->GetPos().z << " >= " << Scene::m_Player->GetPos().y / 2.0f + 1.0f << std::endl;
 	}
 
 	// Only update when not transitioning, unpaused, and player alive
@@ -575,7 +580,7 @@ void SceneManager::DrawUI(){
 		// TODO Also move this into header and only call draw call in here
 		// Connect it to update ui call
 		float CharacterPanelStatY = m_CharacterPanel.y + m_CharacterPanel.height / 2.0f;
-		float CharacterPanelStatX = m_CharacterPanel.x + 2;
+		// float CharacterPanelStatX = m_CharacterPanel.x + 5;
 
 		// TODO For these strings, set a base value and make functions for each section to update their values
 	

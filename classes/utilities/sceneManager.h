@@ -87,6 +87,8 @@ class SceneManager{
 			300 * G_VARS.HEIGHT_SCALE
 		};
 
+		float CharacterPanelStatX = m_CharacterPanel.x + 5;
+
 		// Melee Weapon Slot
 		Rectangle m_MeleeSlot{
 			m_CharacterPanel.x + 11 * G_VARS.WIDTH_SCALE,

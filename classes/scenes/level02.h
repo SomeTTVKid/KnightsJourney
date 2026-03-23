@@ -39,7 +39,7 @@ class Level02 : public Scene{
 		Vector3 m_ToForestPos = { m_MapSize.x / 2.0f - 1.5f, 1.0f, -1.0f };
 		Vector3 m_ToForestOut = { -4.9f, 1.0f, 0.5f };
 		Vector3 m_ToWoodsPos = { -0.5f, 1.0f, -m_MapSize.y / 2.0f };
-		Vector3 m_ToWoodsOut = { -0.5f, 1.0f, 8.3f };
+		Vector3 m_ToWoodsOut = { -0.8f, 1.0f, 8.9f };
 		Vector3 m_ToBlackSmithPos = { -3.2f, 1.0f, -1.1f };
 		Vector3 m_ToBlackSmithOut = { -0.5f, 1.0f, 3.2f };
 		std::vector<Vector3> housePositions{
